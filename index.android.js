@@ -26,8 +26,9 @@ var Pick = require('./Pick');
 var Dimensions = require('Dimensions');
 var Linking = require('Linking');
 
-var drawerWidth=Dimensions.get('window').width-80;
-var viewHeight=Dimensions.get('window').height-56;
+var toolbarHeight=56;
+var drawerWidth=Dimensions.get('window').width-toolbarHeight;
+
 var _navigator;
 
 var viewProp=[{
@@ -335,7 +336,7 @@ var styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   toolbar: {
-    height: 56,
+    height: toolbarHeight,
     elevation: 4,
   },
   pageStyle: {
