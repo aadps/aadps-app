@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react-native');
-var Store = require('react-native-store');
 
 var {
   AppRegistry,
@@ -19,8 +18,8 @@ var {
   StatusBar,
 } = React;
 
-var Db=Store.model('db');
-
+var Db = require('./Db');
+var myDb = new Db();
 var Nav = require('./Nav');
 var Pick = require('./Pick');
 var Dimensions = require('Dimensions');
@@ -257,7 +256,7 @@ class User extends React.Component {
                     />
           </View>
           <View style={{flexDirection: 'row', width: Dimensions.get('window').width, top: Dimensions.get('window').height-160, position: "absolute", }}>
-            <TouchableHighlight style={{flex: 0.5, margin: 12, height: 40, borderRadius: 5}} onPress={()=>{Db.add({test: 'test'})}}>
+            <TouchableHighlight style={{flex: 0.5, margin: 12, height: 40, borderRadius: 5}} onPress={()=>{myDb.test();}}>
               <View style={[styles.button, {backgroundColor: "#888"}]}>
                 <Text style={{alignSelf: 'center', color: '#fff'}}>{this.state.register?'注册':'登录'}</Text>
               </View>
