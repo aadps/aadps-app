@@ -13,6 +13,8 @@ var {
 var Dimensions = require('Dimensions');
 var ProgressBar = require('ProgressBarAndroid');
 
+var cardWidth=Dimensions.get('window').width-16;
+
 class Card extends React.Component {
   constructor(props) {
     super(props);
@@ -54,8 +56,8 @@ class Card extends React.Component {
      return (
        <View style={[styles.card,{height:this.state.height}]}>
         <Image style={styles.photo} resizeMode={Image.resizeMode.cover} source={{uri: "http://aadps.qiniudn.com/wp-content/uploads/2016/02/930.jpg"}} />
-        <View style={{height: 60, width: Dimensions.get('window').width-14, top: 80, position: 'absolute', }}>
-          <View style={{backgroundColor: "#444", opacity: 0.5, height: 60, width: Dimensions.get('window').width-14, top: 0, position: 'absolute', borderRadius: 5,}} />
+        <View style={styles.textArea}>
+          <View style={styles.background} />
           <Text style={styles.caption}>University of Stanford</Text>
           <Text style={styles.caption}>斯坦福大学 私立/公立 综合</Text>
           <View style={{height: 6}} />
@@ -158,10 +160,25 @@ var styles = StyleSheet.create({
   },
   photo: {
     height: 140,
-    width: Dimensions.get('window').width-14,
+    width: cardWidth,
     borderRadius: 5,
     flexDirection: "column",
     justifyContent: "flex-end",
+  },
+  textArea: {
+    height: 60,
+    width: cardWidth,
+    top: 80,
+    position: 'absolute',
+  },
+  background: {
+    backgroundColor: "#444",
+    opacity: 0.5,
+    height: 60,
+    width: cardWidth,
+    top: 0,
+    position: 'absolute',
+    borderRadius: 5,
   },
   linkList: {
     flexDirection:'row',
