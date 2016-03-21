@@ -27,8 +27,31 @@ class Db {
     await this.user.add({user: user, passwd: passwd, profile: profile});
   }
 
-  getProfile() { // myDb.getProfile().then(resp => { ... });
-    return this.user.find({fields: {profile:true}});
+  getUser() { // myDb.getUser().then(resp => { ... });
+    return this.user.find({});
+  }
+
+  eraseUser() {
+    this.user.remove({});
+  }
+
+  filter(geo, comp, size) { // myDb.filter([6], [1], [1]).then(resp => { ... });
+    var geoo = [], compo = [], sizeo = [];
+
+    for(id in geo)geoo.push({geo: geo[id]});
+    for(id in comp)compo.push({comp: comp[id]});
+    for(id in size)sizeo.push({size: size[id]});
+
+    return this.college.find({
+      fields: {collid: true},
+      where: {
+        and: [
+          {or: geoo},
+          {or: compo},
+          {or: sizeo}
+        ]
+      }
+    });
   }
 }
 
