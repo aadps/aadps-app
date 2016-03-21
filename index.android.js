@@ -377,7 +377,7 @@ var styles = StyleSheet.create({
   },
   menuItem: {
     height: 48,
-    paddingLeft: 16,
+    paddingLeft: 40,
     flexDirection:'row',
     alignItems:'center',
     backgroundColor: '#fff',
@@ -387,9 +387,9 @@ var styles = StyleSheet.create({
     height: 24,
   },
   menuText: {
-    left: 48,
+    left: 44,
     fontSize: 16,
-    color: '#333333',
+    color: '#333',
   },
   menuSpace: {
     height: 8,
