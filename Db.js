@@ -57,10 +57,10 @@ class Db {
 
 module.exports = Db;
 
-var ver = 5;
+var ver = 6;
 var data = [
   {
-    "collid": 177,
+    "id": 177,
     "type": "私立",
     "geo": 2,
     "comp": 1,
@@ -68,11 +68,11 @@ var data = [
     "name": "Univ. of Chicago",
     "cname": "芝大",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Chicago IL",
+    "setting": "都市"
   },
   {
-    "collid": 205,
+    "id": 205,
     "type": "私立",
     "geo": 3,
     "comp": 3,
@@ -80,11 +80,11 @@ var data = [
     "name": "Wake Forest Univ.",
     "cname": "维克森林",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Winston-Salem NC",
+    "setting": "市郊"
   },
   {
-    "collid": 232,
+    "id": 232,
     "type": "私立",
     "geo": 1,
     "comp": 1,
@@ -92,11 +92,11 @@ var data = [
     "name": "Univ. of Pennsylvania",
     "cname": "宾大",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Philadelphia PA",
+    "setting": "都市"
   },
   {
-    "collid": 241,
+    "id": 241,
     "type": "公立",
     "geo": 2,
     "comp": 4,
@@ -104,11 +104,11 @@ var data = [
     "name": "Univ. of Illinois UC",
     "cname": "伊利诺伊香槟",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Champaign IL",
+    "setting": "城镇"
   },
   {
-    "collid": 925,
+    "id": 925,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -116,11 +116,11 @@ var data = [
     "name": "Carnegie Mellon Univ.",
     "cname": "卡耐基梅隆",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Pittsburgh PA",
+    "setting": "都市"
   },
   {
-    "collid": 928,
+    "id": 928,
     "type": "私立",
     "geo": 1,
     "comp": 1,
@@ -128,11 +128,11 @@ var data = [
     "name": "Columbia Univ.",
     "cname": "哥大",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "New York NY",
+    "setting": "都市"
   },
   {
-    "collid": 930,
+    "id": 930,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -140,11 +140,11 @@ var data = [
     "name": "Cornell Univ.",
     "cname": "康奈尔",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Ithaca NY",
+    "setting": "乡村"
   },
   {
-    "collid": 933,
+    "id": 933,
     "type": "私立",
     "geo": 3,
     "comp": 3,
@@ -152,11 +152,11 @@ var data = [
     "name": "Emory Univ.",
     "cname": "埃默里",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Atlanta GA",
+    "setting": "城镇"
   },
   {
-    "collid": 937,
+    "id": 937,
     "type": "私立",
     "geo": 1,
     "comp": 1,
@@ -164,11 +164,11 @@ var data = [
     "name": "Harvard Univ.",
     "cname": "哈佛",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Cambridge MA",
+    "setting": "都市"
   },
   {
-    "collid": 943,
+    "id": 943,
     "type": "公立",
     "geo": 2,
     "comp": 3,
@@ -176,11 +176,11 @@ var data = [
     "name": "Univ. of Michigan",
     "cname": "密歇根",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Ann Arbor MI",
+    "setting": "城镇"
   },
   {
-    "collid": 945,
+    "id": 945,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -188,11 +188,11 @@ var data = [
     "name": "New York Univ.",
     "cname": "纽大",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "New York NY",
+    "setting": "都市"
   },
   {
-    "collid": 947,
+    "id": 947,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -200,11 +200,11 @@ var data = [
     "name": "Univ. of Rochester",
     "cname": "罗彻斯特",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Rochester NY",
+    "setting": "市郊"
   },
   {
-    "collid": 952,
+    "id": 952,
     "type": "公立",
     "geo": 2,
     "comp": 4,
@@ -212,11 +212,11 @@ var data = [
     "name": "Univ. of Wisconsin Madison",
     "cname": "威斯康星",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Madison WI",
+    "setting": "城镇"
   },
   {
-    "collid": 1131,
+    "id": 1131,
     "type": "公立",
     "geo": 3,
     "comp": 3,
@@ -224,11 +224,11 @@ var data = [
     "name": "Georgia Institute of Tech.",
     "cname": "佐治亚理工",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Atlanta GA",
+    "setting": "都市"
   },
   {
-    "collid": 1387,
+    "id": 1387,
     "type": "私立",
     "geo": 1,
     "comp": 1,
@@ -236,11 +236,11 @@ var data = [
     "name": "Princeton Univ.",
     "cname": "普林斯顿",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Princeton NJ",
+    "setting": "市郊"
   },
   {
-    "collid": 1391,
+    "id": 1391,
     "type": "私立",
     "geo": 1,
     "comp": 1,
@@ -248,11 +248,11 @@ var data = [
     "name": "Yale Univ.",
     "cname": "耶鲁",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "New Haven CT",
+    "setting": "城镇"
   },
   {
-    "collid": 1397,
+    "id": 1397,
     "type": "私立",
     "geo": 1,
     "comp": 1,
@@ -260,11 +260,11 @@ var data = [
     "name": "Mass. Institute of Tech.",
     "cname": "麻省理工",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Cambridge MA",
+    "setting": "都市"
   },
   {
-    "collid": 1399,
+    "id": 1399,
     "type": "私立",
     "geo": 6,
     "comp": 1,
@@ -272,11 +272,11 @@ var data = [
     "name": "Stanford Univ.",
     "cname": "斯坦福",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Stanford CA",
+    "setting": "市郊"
   },
   {
-    "collid": 1404,
+    "id": 1404,
     "type": "私立",
     "geo": 3,
     "comp": 2,
@@ -284,11 +284,11 @@ var data = [
     "name": "Duke Univ.",
     "cname": "杜克",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Durham NC",
+    "setting": "市郊"
   },
   {
-    "collid": 1407,
+    "id": 1407,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -296,11 +296,11 @@ var data = [
     "name": "Dartmouth Coll.",
     "cname": "达特茅斯",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Hanover NH",
+    "setting": "乡村"
   },
   {
-    "collid": 1554,
+    "id": 1554,
     "type": "私立",
     "geo": 6,
     "comp": 1,
@@ -308,11 +308,11 @@ var data = [
     "name": "California Institute of Tech.",
     "cname": "加州理工",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Pasadena CA",
+    "setting": "市郊"
   },
   {
-    "collid": 1557,
+    "id": 1557,
     "type": "私立",
     "geo": 2,
     "comp": 2,
@@ -320,11 +320,11 @@ var data = [
     "name": "Northwestern Univ.",
     "cname": "西北",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Evanston IL",
+    "setting": "市郊"
   },
   {
-    "collid": 1560,
+    "id": 1560,
     "type": "私立",
     "geo": 1,
     "comp": 1,
@@ -332,11 +332,11 @@ var data = [
     "name": "Brown Univ.",
     "cname": "布朗",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Providence RI",
+    "setting": "城镇"
   },
   {
-    "collid": 1563,
+    "id": 1563,
     "type": "私立",
     "geo": 3,
     "comp": 2,
@@ -344,11 +344,11 @@ var data = [
     "name": "Vanderbilt Univ.",
     "cname": "范德堡",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Nashville TN",
+    "setting": "都市"
   },
   {
-    "collid": 1574,
+    "id": 1574,
     "type": "私立",
     "geo": 3,
     "comp": 2,
@@ -356,11 +356,11 @@ var data = [
     "name": "Rice Univ.",
     "cname": "莱斯",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Houston TX",
+    "setting": "都市"
   },
   {
-    "collid": 1576,
+    "id": 1576,
     "type": "私立",
     "geo": 2,
     "comp": 2,
@@ -368,11 +368,11 @@ var data = [
     "name": "Univ. of Notre Dame",
     "cname": "圣母",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Notre Dame IN",
+    "setting": "城镇"
   },
   {
-    "collid": 1593,
+    "id": 1593,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -380,11 +380,11 @@ var data = [
     "name": "Georgetown Univ.",
     "cname": "乔治城",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Washington DC",
+    "setting": "都市"
   },
   {
-    "collid": 1606,
+    "id": 1606,
     "type": "公立",
     "geo": 1,
     "comp": 3,
@@ -392,11 +392,11 @@ var data = [
     "name": "Univ. of Virginia",
     "cname": "弗吉尼亚大学",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Charlottesville VA",
+    "setting": "市郊"
   },
   {
-    "collid": 1610,
+    "id": 1610,
     "type": "私立",
     "geo": 6,
     "comp": 2,
@@ -404,11 +404,11 @@ var data = [
     "name": "Univ. of Southern California",
     "cname": "南加大",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Los Angeles CA",
+    "setting": "都市"
   },
   {
-    "collid": 1612,
+    "id": 1612,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -416,11 +416,11 @@ var data = [
     "name": "Tufts Univ.",
     "cname": "塔夫茨",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Medford MA",
+    "setting": "市郊"
   },
   {
-    "collid": 1617,
+    "id": 1617,
     "type": "公立",
     "geo": 3,
     "comp": 3,
@@ -428,11 +428,11 @@ var data = [
     "name": "Univ. of North Carolina CH",
     "cname": "北卡教堂山",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Chapel Hill NC",
+    "setting": "市郊"
   },
   {
-    "collid": 1641,
+    "id": 1641,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -440,11 +440,11 @@ var data = [
     "name": "Boston Coll.",
     "cname": "波士顿学院",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Chestnut Hill MA",
+    "setting": "市郊"
   },
   {
-    "collid": 1647,
+    "id": 1647,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -452,11 +452,11 @@ var data = [
     "name": "Brandeis Univ.",
     "cname": "布兰戴斯",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Waltham MA",
+    "setting": "市郊"
   },
   {
-    "collid": 1651,
+    "id": 1651,
     "type": "公立",
     "geo": 1,
     "comp": 3,
@@ -464,11 +464,11 @@ var data = [
     "name": "Coll. of William & Mary",
     "cname": "威廉玛丽",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Williamsburg VA",
+    "setting": "市郊"
   },
   {
-    "collid": 1714,
+    "id": 1714,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -476,11 +476,11 @@ var data = [
     "name": "Lehigh Univ.",
     "cname": "利哈伊",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Bethlehem PA",
+    "setting": "城镇"
   },
   {
-    "collid": 1718,
+    "id": 1718,
     "type": "公立",
     "geo": 1,
     "comp": 4,
@@ -488,11 +488,11 @@ var data = [
     "name": "Pennsylvania State Univ.",
     "cname": "宾州州立",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "University Park PA",
+    "setting": "城镇"
   },
   {
-    "collid": 1724,
+    "id": 1724,
     "type": "公立",
     "geo": 3,
     "comp": 3,
@@ -500,11 +500,11 @@ var data = [
     "name": "Univ. of Texas Austin",
     "cname": "德州奥斯汀",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Austin TX",
+    "setting": "都市"
   },
   {
-    "collid": 1733,
+    "id": 1733,
     "type": "公立",
     "geo": 5,
     "comp": 4,
@@ -512,11 +512,11 @@ var data = [
     "name": "Univ. of Washington",
     "cname": "华大西雅图",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Seattle WA",
+    "setting": "都市"
   },
   {
-    "collid": 1737,
+    "id": 1737,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -524,11 +524,11 @@ var data = [
     "name": "Boston Univ.",
     "cname": "波士顿大学",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Boston MA",
+    "setting": "都市"
   },
   {
-    "collid": 1739,
+    "id": 1739,
     "type": "私立",
     "geo": 3,
     "comp": 3,
@@ -536,11 +536,11 @@ var data = [
     "name": "Tulane Univ.",
     "cname": "杜兰",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "New Orleans LA",
+    "setting": "都市"
   },
   {
-    "collid": 1745,
+    "id": 1745,
     "type": "公立",
     "geo": 3,
     "comp": 3,
@@ -548,11 +548,11 @@ var data = [
     "name": "Univ. of Florida",
     "cname": "佛罗里达",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Gainesville FL",
+    "setting": "市郊"
   },
   {
-    "collid": 1750,
+    "id": 1750,
     "type": "私立",
     "geo": 6,
     "comp": 3,
@@ -560,11 +560,11 @@ var data = [
     "name": "Pepperdine Univ.",
     "cname": "佩珀代因",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Malibu CA",
+    "setting": "市郊"
   },
   {
-    "collid": 1756,
+    "id": 1756,
     "type": "公立",
     "geo": 1,
     "comp": 4,
@@ -573,10 +573,10 @@ var data = [
     "cname": "马里兰",
     "type2": "综合",
     "city": "College Park MD",
-    "setting": "urban"
+    "setting": "市郊"
   },
   {
-    "collid": 1760,
+    "id": 1760,
     "type": "私立",
     "geo": 3,
     "comp": 4,
@@ -584,11 +584,11 @@ var data = [
     "name": "Southern Methodist Univ.",
     "cname": "南方卫理公会",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Dallas TX",
+    "setting": "都市"
   },
   {
-    "collid": 1762,
+    "id": 1762,
     "type": "公立",
     "geo": 1,
     "comp": 4,
@@ -596,11 +596,11 @@ var data = [
     "name": "Univ. of Pittsburgh",
     "cname": "匹兹堡",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Pittsburgh PA",
+    "setting": "都市"
   },
   {
-    "collid": 1768,
+    "id": 1768,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -608,11 +608,11 @@ var data = [
     "name": "George Washington Univ.",
     "cname": "乔治华盛顿",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Washington DC",
+    "setting": "都市"
   },
   {
-    "collid": 1770,
+    "id": 1770,
     "type": "私立",
     "geo": 1,
     "comp": 4,
@@ -620,11 +620,11 @@ var data = [
     "name": "Syracuse Univ.",
     "cname": "雪城",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Syracuse NY",
+    "setting": "城镇"
   },
   {
-    "collid": 1789,
+    "id": 1789,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -632,11 +632,11 @@ var data = [
     "name": "Williams Coll.",
     "cname": "威廉姆斯",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Williamstown MA",
+    "setting": "乡村"
   },
   {
-    "collid": 1791,
+    "id": 1791,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -644,11 +644,11 @@ var data = [
     "name": "Amherst Coll.",
     "cname": "阿默斯特",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Amherst MA",
+    "setting": "乡村"
   },
   {
-    "collid": 1796,
+    "id": 1796,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -656,11 +656,11 @@ var data = [
     "name": "Swarthmore Coll.",
     "cname": "斯沃斯莫尔",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Swarthmore PA",
+    "setting": "市郊"
   },
   {
-    "collid": 1801,
+    "id": 1801,
     "type": "私立",
     "geo": 6,
     "comp": 2,
@@ -668,11 +668,11 @@ var data = [
     "name": "Pomona Coll.",
     "cname": "波莫纳",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Claremont CA",
+    "setting": "市郊"
   },
   {
-    "collid": 1806,
+    "id": 1806,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -680,11 +680,11 @@ var data = [
     "name": "Middlebury Coll.",
     "cname": "明德",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Middlebury VT",
+    "setting": "乡村"
   },
   {
-    "collid": 1977,
+    "id": 1977,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -692,11 +692,11 @@ var data = [
     "name": "Bowdoin Coll.",
     "cname": "鲍登",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Brunswick ME",
+    "setting": "市郊"
   },
   {
-    "collid": 1981,
+    "id": 1981,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -704,11 +704,11 @@ var data = [
     "name": "Wellesley Coll.",
     "cname": "威尔斯利",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Wellesley MA",
+    "setting": "市郊"
   },
   {
-    "collid": 1985,
+    "id": 1985,
     "type": "私立",
     "geo": 2,
     "comp": 3,
@@ -716,11 +716,11 @@ var data = [
     "name": "Carleton Coll.",
     "cname": "卡尔顿",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Northfield MN",
+    "setting": "乡村"
   },
   {
-    "collid": 1988,
+    "id": 1988,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -728,11 +728,11 @@ var data = [
     "name": "Haverford Coll.",
     "cname": "哈弗福德",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Haverford PA",
+    "setting": "市郊"
   },
   {
-    "collid": 2110,
+    "id": 2110,
     "type": "私立",
     "geo": 6,
     "comp": 2,
@@ -740,11 +740,11 @@ var data = [
     "name": "Claremont McKenna Coll.",
     "cname": "克莱蒙特",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Claremont CA",
+    "setting": "市郊"
   },
   {
-    "collid": 2112,
+    "id": 2112,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -752,11 +752,11 @@ var data = [
     "name": "Vassar Coll.",
     "cname": "瓦萨",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Poughkeepsie NY",
+    "setting": "市郊"
   },
   {
-    "collid": 2116,
+    "id": 2116,
     "type": "私立",
     "geo": 3,
     "comp": 2,
@@ -764,11 +764,11 @@ var data = [
     "name": "Davidson Coll.",
     "cname": "戴维森",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Davidson NC",
+    "setting": "市郊"
   },
   {
-    "collid": 2118,
+    "id": 2118,
     "type": "私立",
     "geo": 6,
     "comp": 2,
@@ -776,11 +776,11 @@ var data = [
     "name": "Harvey Mudd Coll.",
     "cname": "哈维姆德",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Claremont CA",
+    "setting": "市郊"
   },
   {
-    "collid": 2126,
+    "id": 2126,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -788,11 +788,11 @@ var data = [
     "name": "Washington & Lee Univ.",
     "cname": "华盛顿与李",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Lexington VA",
+    "setting": "乡村"
   },
   {
-    "collid": 2130,
+    "id": 2130,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -800,11 +800,11 @@ var data = [
     "name": "Hamilton Coll.",
     "cname": "汉密尔顿",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Clinton NY",
+    "setting": "乡村"
   },
   {
-    "collid": 2132,
+    "id": 2132,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -812,11 +812,11 @@ var data = [
     "name": "Wesleyan Univ.",
     "cname": "卫斯理安",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Middletown CT",
+    "setting": "都市"
   },
   {
-    "collid": 2192,
+    "id": 2192,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -824,11 +824,11 @@ var data = [
     "name": "Colby Coll.",
     "cname": "科尔比",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Waterville ME",
+    "setting": "乡村"
   },
   {
-    "collid": 2194,
+    "id": 2194,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -836,11 +836,11 @@ var data = [
     "name": "Colgate Univ.",
     "cname": "科尔盖特",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Hamilton NY",
+    "setting": "乡村"
   },
   {
-    "collid": 2196,
+    "id": 2196,
     "type": "私立",
     "geo": 1,
     "comp": 4,
@@ -848,11 +848,11 @@ var data = [
     "name": "Smith Coll.",
     "cname": "史密斯",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Northampton MA",
+    "setting": "市郊"
   },
   {
-    "collid": 2198,
+    "id": 2198,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -860,11 +860,11 @@ var data = [
     "name": "Bates Coll.",
     "cname": "贝茨",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Lewiston ME",
+    "setting": "城镇"
   },
   {
-    "collid": 2202,
+    "id": 2202,
     "type": "私立",
     "geo": 2,
     "comp": 3,
@@ -872,11 +872,11 @@ var data = [
     "name": "Macalester Coll.",
     "cname": "马卡莱斯特",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "St. Paul MN",
+    "setting": "都市"
   },
   {
-    "collid": 2206,
+    "id": 2206,
     "type": "私立",
     "geo": 6,
     "comp": 3,
@@ -884,11 +884,11 @@ var data = [
     "name": "Scripps Coll.",
     "cname": "斯克利普斯",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Claremont CA",
+    "setting": "市郊"
   },
   {
-    "collid": 2227,
+    "id": 2227,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -896,11 +896,11 @@ var data = [
     "name": "Bryn Mawr Coll.",
     "cname": "布林茅尔",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Bryn Mawr PA",
+    "setting": "市郊"
   },
   {
-    "collid": 2229,
+    "id": 2229,
     "type": "私立",
     "geo": 2,
     "comp": 3,
@@ -908,11 +908,11 @@ var data = [
     "name": "Oberlin Coll.",
     "cname": "欧柏林",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Oberlin OH",
+    "setting": "市郊"
   },
   {
-    "collid": 2233,
+    "id": 2233,
     "type": "私立",
     "geo": 1,
     "comp": 2,
@@ -920,11 +920,11 @@ var data = [
     "name": "Barnard Coll.",
     "cname": "巴纳德",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "New York NY",
+    "setting": "都市"
   },
   {
-    "collid": 2238,
+    "id": 2238,
     "type": "私立",
     "geo": 4,
     "comp": 2,
@@ -932,11 +932,11 @@ var data = [
     "name": "Colorado Coll.",
     "cname": "科罗拉多学院",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Colorado Springs CO",
+    "setting": "城镇"
   },
   {
-    "collid": 2240,
+    "id": 2240,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -944,11 +944,11 @@ var data = [
     "name": "Univ. of Richmond",
     "cname": "里士满",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Richmond VA",
+    "setting": "市郊"
   },
   {
-    "collid": 2242,
+    "id": 2242,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -956,11 +956,11 @@ var data = [
     "name": "Bucknell Univ.",
     "cname": "巴克内尔",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Lewisburg PA",
+    "setting": "乡村"
   },
   {
-    "collid": 2244,
+    "id": 2244,
     "type": "私立",
     "geo": 1,
     "comp": 4,
@@ -968,11 +968,11 @@ var data = [
     "name": "Mount Holyoke Coll.",
     "cname": "曼荷莲",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "South Hadley MA",
+    "setting": "市郊"
   },
   {
-    "collid": 2246,
+    "id": 2246,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -980,11 +980,11 @@ var data = [
     "name": "Coll. of the Holy Cross",
     "cname": "圣十字",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Worcester MA",
+    "setting": "市郊"
   },
   {
-    "collid": 2248,
+    "id": 2248,
     "type": "私立",
     "geo": 3,
     "comp": 4,
@@ -992,11 +992,11 @@ var data = [
     "name": "Sewanee: Univ. of the South",
     "cname": "西沃恩",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Sewanee TN",
+    "setting": "乡村"
   },
   {
-    "collid": 3531,
+    "id": 3531,
     "type": "公立",
     "geo": 6,
     "comp": 2,
@@ -1004,11 +1004,11 @@ var data = [
     "name": "Univ. of Calif. Berkeley",
     "cname": "加州伯克利",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Berkeley CA",
+    "setting": "城镇"
   },
   {
-    "collid": 3533,
+    "id": 3533,
     "type": "公立",
     "geo": 6,
     "comp": 4,
@@ -1016,11 +1016,11 @@ var data = [
     "name": "Univ. of Calif. Davis",
     "cname": "加州戴维斯",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Davis CA",
+    "setting": "城镇"
   },
   {
-    "collid": 3535,
+    "id": 3535,
     "type": "公立",
     "geo": 6,
     "comp": 3,
@@ -1028,11 +1028,11 @@ var data = [
     "name": "Univ. of Calif. Irvine",
     "cname": "加州欧文",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Irvine CA",
+    "setting": "市郊"
   },
   {
-    "collid": 3537,
+    "id": 3537,
     "type": "公立",
     "geo": 6,
     "comp": 2,
@@ -1040,11 +1040,11 @@ var data = [
     "name": "Univ. of Calif. Los Angeles",
     "cname": "加州洛杉矶",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Los Angeles CA",
+    "setting": "都市"
   },
   {
-    "collid": 3539,
+    "id": 3539,
     "type": "公立",
     "geo": 6,
     "comp": 4,
@@ -1052,11 +1052,11 @@ var data = [
     "name": "Univ. of Calif. Merced",
     "cname": "加州默塞德",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Merced?CA",
+    "setting": "乡村"
   },
   {
-    "collid": 3541,
+    "id": 3541,
     "type": "公立",
     "geo": 6,
     "comp": 4,
@@ -1064,11 +1064,11 @@ var data = [
     "name": "Univ. of Calif. Riverside",
     "cname": "加州河滨",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Riverside?CA",
+    "setting": "城镇"
   },
   {
-    "collid": 3543,
+    "id": 3543,
     "type": "公立",
     "geo": 6,
     "comp": 3,
@@ -1076,11 +1076,11 @@ var data = [
     "name": "Univ. of Calif. San Diego",
     "cname": "加州圣地亚哥",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "La Jolla CA",
+    "setting": "都市"
   },
   {
-    "collid": 3547,
+    "id": 3547,
     "type": "公立",
     "geo": 6,
     "comp": 3,
@@ -1088,11 +1088,11 @@ var data = [
     "name": "Univ. of Calif. Santa Barbara",
     "cname": "加州圣芭芭拉",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Santa Barbara CA",
+    "setting": "市郊"
   },
   {
-    "collid": 3549,
+    "id": 3549,
     "type": "公立",
     "geo": 6,
     "comp": 4,
@@ -1100,11 +1100,11 @@ var data = [
     "name": "Univ. of Calif. Santa Cruz",
     "cname": "加州圣克鲁兹",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Santa Cruz CA",
+    "setting": "市郊"
   },
   {
-    "collid": 3559,
+    "id": 3559,
     "type": "私立",
     "geo": 2,
     "comp": 4,
@@ -1112,11 +1112,11 @@ var data = [
     "name": "Case Western Reserve Univ.",
     "cname": "凯斯西储",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Cleveland OH",
+    "setting": "都市"
   },
   {
-    "collid": 3561,
+    "id": 3561,
     "type": "公立",
     "geo": 1,
     "comp": 4,
@@ -1124,11 +1124,11 @@ var data = [
     "name": "Univ. of Connecticut",
     "cname": "康涅狄格大学",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Storrs?CT",
+    "setting": "乡村"
   },
   {
-    "collid": 3563,
+    "id": 3563,
     "type": "私立",
     "geo": 1,
     "comp": 4,
@@ -1136,11 +1136,11 @@ var data = [
     "name": "Fordham Univ.",
     "cname": "福特汉姆",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "New York?NY",
+    "setting": "都市"
   },
   {
-    "collid": 3565,
+    "id": 3565,
     "type": "私立",
     "geo": 3,
     "comp": 4,
@@ -1148,11 +1148,11 @@ var data = [
     "name": "Univ. of Miami",
     "cname": "迈阿密大学",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Coral Gables?FL",
+    "setting": "市郊"
   },
   {
-    "collid": 3567,
+    "id": 3567,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -1160,11 +1160,11 @@ var data = [
     "name": "Northeastern Univ.",
     "cname": "东北",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Boston?MA",
+    "setting": "都市"
   },
   {
-    "collid": 3569,
+    "id": 3569,
     "type": "公立",
     "geo": 2,
     "comp": 4,
@@ -1172,11 +1172,11 @@ var data = [
     "name": "Ohio State Univ.",
     "cname": "俄亥俄州立",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Columbus OH",
+    "setting": "都市"
   },
   {
-    "collid": 3571,
+    "id": 3571,
     "type": "私立",
     "geo": 1,
     "comp": 4,
@@ -1184,11 +1184,11 @@ var data = [
     "name": "Rensselaer Poly. Institute",
     "cname": "伦斯勒理工",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Troy NY",
+    "setting": "市郊"
   },
   {
-    "collid": 3573,
+    "id": 3573,
     "type": "私立",
     "geo": 2,
     "comp": 2,
@@ -1196,11 +1196,11 @@ var data = [
     "name": "Washington Univ. St. Louis",
     "cname": "圣路易斯华大",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "St. Louis MO",
+    "setting": "市郊"
   },
   {
-    "collid": 3575,
+    "id": 3575,
     "type": "私立",
     "geo": 2,
     "comp": 3,
@@ -1208,11 +1208,11 @@ var data = [
     "name": "Grinnell Coll.",
     "cname": "格林内尔",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Grinnell IA",
+    "setting": "乡村"
   },
   {
-    "collid": 3577,
+    "id": 3577,
     "type": "私立",
     "geo": 2,
     "comp": 2,
@@ -1220,11 +1220,11 @@ var data = [
     "name": "Kenyon Coll.",
     "cname": "肯尼恩",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Gambier OH",
+    "setting": "乡村"
   },
   {
-    "collid": 3580,
+    "id": 3580,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -1232,11 +1232,11 @@ var data = [
     "name": "Bard Coll.",
     "cname": "巴德",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Annandale-On-Hudson NY",
+    "setting": "乡村"
   },
   {
-    "collid": 3582,
+    "id": 3582,
     "type": "私立",
     "geo": 1,
     "comp": 3,
@@ -1244,11 +1244,11 @@ var data = [
     "name": "Trinity Coll.",
     "cname": "三一",
     "type2": "文理",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Hartford CT",
+    "setting": "都市"
   },
   {
-    "collid": 3634,
+    "id": 3634,
     "type": "公立",
     "geo": 3,
     "comp": 4,
@@ -1256,11 +1256,11 @@ var data = [
     "name": "Univ. of Georgia",
     "cname": "佐治亚大学",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Athens GA",
+    "setting": "城镇"
   },
   {
-    "collid": 3636,
+    "id": 3636,
     "type": "公立",
     "geo": 1,
     "comp": 4,
@@ -1268,11 +1268,11 @@ var data = [
     "name": "Rutgers Univ.",
     "cname": "罗格斯",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Newark NJ",
+    "setting": "都市"
   },
   {
-    "collid": 3638,
+    "id": 3638,
     "type": "公立",
     "geo": 2,
     "comp": 4,
@@ -1280,11 +1280,11 @@ var data = [
     "name": "Purdue Univ.",
     "cname": "普渡",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "West Lafayette IN",
+    "setting": "城镇"
   },
   {
-    "collid": 3640,
+    "id": 3640,
     "type": "公立",
     "geo": 2,
     "comp": 4,
@@ -1292,11 +1292,11 @@ var data = [
     "name": "Univ. of Minnesota TC",
     "cname": "明尼苏达双城",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Minneapolis MN",
+    "setting": "都市"
   },
   {
-    "collid": 3642,
+    "id": 3642,
     "type": "公立",
     "geo": 2,
     "comp": 4,
@@ -1304,11 +1304,11 @@ var data = [
     "name": "Michigan State Univ.",
     "cname": "密歇根州立",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "East Lansing MI",
+    "setting": "市郊"
   },
   {
-    "collid": 3644,
+    "id": 3644,
     "type": "公立",
     "geo": 2,
     "comp": 4,
@@ -1316,11 +1316,11 @@ var data = [
     "name": "Univ. of Iowa",
     "cname": "爱荷华",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Iowa City IA",
+    "setting": "城镇"
   },
   {
-    "collid": 3646,
+    "id": 3646,
     "type": "公立",
     "geo": 2,
     "comp": 4,
@@ -1328,11 +1328,11 @@ var data = [
     "name": "Indiana Univ. Bloomington",
     "cname": "印地安那",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Bloomington IN",
+    "setting": "城镇"
   },
   {
-    "collid": 3648,
+    "id": 3648,
     "type": "公立",
     "geo": 2,
     "comp": 4,
@@ -1340,11 +1340,11 @@ var data = [
     "name": "Miami Univ. Oxford",
     "cname": "牛津迈阿密",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Oxford OH",
+    "setting": "乡村"
   },
   {
-    "collid": 3650,
+    "id": 3650,
     "type": "公立",
     "geo": 1,
     "comp": 4,
@@ -1352,11 +1352,11 @@ var data = [
     "name": "Stony Brook Univ. SUNY",
     "cname": "石溪",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Stony Brook NY",
+    "setting": "市郊"
   },
   {
-    "collid": 3652,
+    "id": 3652,
     "type": "私立",
     "geo": 1,
     "comp": 4,
@@ -1364,11 +1364,11 @@ var data = [
     "name": "Worcester Poly. Institute",
     "cname": "伍斯特理工",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Worcester MA",
+    "setting": "城镇"
   },
   {
-    "collid": 3661,
+    "id": 3661,
     "type": "公立",
     "geo": 3,
     "comp": 4,
@@ -1376,11 +1376,11 @@ var data = [
     "name": "Texas A&M Univ.",
     "cname": "德州农工",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "College Station TX",
+    "setting": "城镇"
   },
   {
-    "collid": 3663,
+    "id": 3663,
     "type": "公立",
     "geo": 1,
     "comp": 4,
@@ -1388,11 +1388,11 @@ var data = [
     "name": "Virginia Poly. Institute",
     "cname": "弗吉尼亚理工",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Blacksburg VA",
+    "setting": "乡村"
   },
   {
-    "collid": 3665,
+    "id": 3665,
     "type": "私立",
     "geo": 1,
     "comp": 4,
@@ -1400,11 +1400,11 @@ var data = [
     "name": "American Univ.",
     "cname": "美国大学",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Washington DC",
+    "setting": "市郊"
   },
   {
-    "collid": 3667,
+    "id": 3667,
     "type": "公立",
     "geo": 1,
     "comp": 4,
@@ -1412,11 +1412,11 @@ var data = [
     "name": "Univ. of Delaware",
     "cname": "特拉华",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Newark DE",
+    "setting": "市郊"
   },
   {
-    "collid": 3669,
+    "id": 3669,
     "type": "公立",
     "geo": 1,
     "comp": 4,
@@ -1424,11 +1424,11 @@ var data = [
     "name": "Univ. of Vermont",
     "cname": "佛蒙特",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Burlington VT",
+    "setting": "市郊"
   },
   {
-    "collid": 3671,
+    "id": 3671,
     "type": "私立",
     "geo": 3,
     "comp": 4,
@@ -1436,11 +1436,11 @@ var data = [
     "name": "Univ. of Tulsa",
     "cname": "塔尔萨",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Tulsa OK",
+    "setting": "城镇"
   },
   {
-    "collid": 3673,
+    "id": 3673,
     "type": "公立",
     "geo": 4,
     "comp": 4,
@@ -1448,11 +1448,11 @@ var data = [
     "name": "Univ. of Colorado Boulder",
     "cname": "科罗拉多大学",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Boulder CO",
+    "setting": "城镇"
   },
   {
-    "collid": 3675,
+    "id": 3675,
     "type": "公立",
     "geo": 3,
     "comp": 4,
@@ -1460,11 +1460,11 @@ var data = [
     "name": "Univ. of Alabama",
     "cname": "阿拉巴马",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Tuscaloosa AL",
+    "setting": "市郊"
   },
   {
-    "collid": 3677,
+    "id": 3677,
     "type": "公立",
     "geo": 1,
     "comp": 4,
@@ -1472,11 +1472,11 @@ var data = [
     "name": "Univ. of Mass. Amherst",
     "cname": "马萨诸塞",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Amherst MA",
+    "setting": "市郊"
   },
   {
-    "collid": 3679,
+    "id": 3679,
     "type": "私立",
     "geo": 4,
     "comp": 4,
@@ -1484,11 +1484,11 @@ var data = [
     "name": "Univ. of Denver",
     "cname": "丹佛",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Denver CO",
+    "setting": "城镇"
   },
   {
-    "collid": 3681,
+    "id": 3681,
     "type": "私立",
     "geo": 1,
     "comp": 4,
@@ -1496,11 +1496,11 @@ var data = [
     "name": "Drexel Univ.",
     "cname": "德雷塞尔",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Philadelphia PA",
+    "setting": "都市"
   },
   {
-    "collid": 3683,
+    "id": 3683,
     "type": "公立",
     "geo": 2,
     "comp": 4,
@@ -1508,11 +1508,11 @@ var data = [
     "name": "Univ. of Kansas",
     "cname": "堪萨斯",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Lawrence KS",
+    "setting": "城镇"
   },
   {
-    "collid": 3685,
+    "id": 3685,
     "type": "公立",
     "geo": 3,
     "comp": 4,
@@ -1520,11 +1520,11 @@ var data = [
     "name": "North Carolina State Univ.",
     "cname": "北卡州立",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Raleigh NC",
+    "setting": "城镇"
   },
   {
-    "collid": 3687,
+    "id": 3687,
     "type": "公立",
     "geo": 5,
     "comp": 4,
@@ -1532,11 +1532,11 @@ var data = [
     "name": "Univ. of Oregon",
     "cname": "俄勒冈",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Eugene OR",
+    "setting": "城镇"
   },
   {
-    "collid": 3689,
+    "id": 3689,
     "type": "公立",
     "geo": 3,
     "comp": 4,
@@ -1544,7 +1544,7 @@ var data = [
     "name": "Univ. of Oklahoma",
     "cname": "俄克拉荷马",
     "type2": "综合",
-    "city": "College Park MD",
-    "setting": "urban"
+    "city": "Norman OK",
+    "setting": "城镇"
   }
 ];
