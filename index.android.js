@@ -49,6 +49,7 @@ var viewProp=[{
   fabIcon: 'image!ic_chat_white_24dp',
 },
 ];
+var nullProfile=['', '请注册或登录', '']
 
 class aadps extends React.Component{
   render() {
@@ -77,14 +78,14 @@ class Main extends React.Component {
     _main = this;
     this.state = {
       currentView: 0,
-      profile: ['https://aadps.net/wp-content/uploads/2016/03/nullavatar_big.gif', '请注册或登录', ''],
+      profile: nullProfile,
     };
     myDb.getUser().then(user => {if(user){this.setState({profile: user[0].profile})}});
   }
 
   logout() {
     myDb.eraseUser();
-    this.setState({profile: ['https://aadps.net/wp-content/uploads/2016/03/nullavatar_big.gif', '请注册或登录', '']});
+    this.setState({profile: nullProfile});
   }
 
   onPressFab () {
@@ -98,11 +99,13 @@ class Main extends React.Component {
   render() {
     var navigationView = (
       <ScrollView style={styles.menu}>
-      <Image style={styles.menuImage} resizeMode={Image.resizeMode.cover} source={require('./image/header.jpg')}>
-      <Image style={styles.menuAvatar} resizeMode={Image.resizeMode.cover} source={{uri: this.state.profile[0]}} />
+
+      <Image style={styles.menuHead} resizeMode={Image.resizeMode.cover} source={require('./image/head.jpg')}>
+      <Image style={styles.menuAvatar} resizeMode={Image.resizeMode.cover} source={this.state.profile[2]?{uri: this.state.profile[0]}:require('./image/nullavatar.gif')} />
       <Text style={styles.menuName}>{this.state.profile[1]}</Text>
       <Text style={styles.menuCell}>{this.state.profile[2]}</Text>
       </Image>
+
       <View style={styles.menuSpace}></View>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.setState({currentView:0});this.drawer.closeDrawer();}}>
       <View style={[styles.menuItem,{backgroundColor: this.state.currentView==0?'#eee':'#fff'}]}>
@@ -150,11 +153,11 @@ class Main extends React.Component {
       <Text style={styles.menuText}>关于AADPS</Text>
       </View></TouchableHighlight>
       <View style={styles.menuSeparator}></View>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{!this.state.profile[2]?_navigator.push({id: 'user'}):this.logout();}}><View style={styles.menuItem}>
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.state.profile[2]?this.logout():_navigator.push({id: 'user'});}}><View style={styles.menuItem}>
       <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
       resizeMode={Image.resizeMode.stretch}
       source={!this.state.profile[2]?require('image!ic_person_white_24dp'):require('image!ic_person_outline_white_24dp')} />
-      <Text style={styles.menuText}>{!this.state.profile[2]?'注册/登录':'注销'}</Text>
+      <Text style={styles.menuText}>{this.state.profile[2]?'注销':'注册/登录'}</Text>
       </View></TouchableHighlight>
       </ScrollView>
     );
@@ -225,8 +228,34 @@ class User extends React.Component {
     });
   }
 
-  register() {
+  validateCell(number) {
+    return number.match(/(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/);
+  }
 
+  register() {
+    if(!this.validateCell(this.state.user)){
+      ToastAndroid.show('请输入手机号！', ToastAndroid.SHORT);
+      return;
+    }
+    fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: 'register=&type=android&user='+this.state.user+'&passwd='+this.state.passwd+'&nick='+this.state.nick
+    })
+    .then((response) => response.json())
+    .then((profile) => {
+      if(profile.length>0) {
+        myDb.setUser(this.state.user, this.state.passwd, profile);
+        _main.setState({profile: profile});
+        _navigator.pop();
+      }
+      else ToastAndroid.show('该用户已注册，请直接登录！', ToastAndroid.SHORT);
+    })
+    .catch((error) => {
+      ToastAndroid.show('网络错误，请重试！', ToastAndroid.SHORT);
+    });
   }
 
   render() {
@@ -323,8 +352,8 @@ var styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
   },
-  menuImage: {
-    height: 192,
+  menuHead: {
+    height: 130,
     width: drawerWidth,
   },
   menuAvatar: {
@@ -335,15 +364,16 @@ var styles = StyleSheet.create({
     marginTop: 40,
   },
   menuName: {
-    fontSize: 16,
-    color: '#ffffff',
-    marginLeft: 16,
-    marginTop: 24,
+    fontSize: 20,
+    left: 108,
+    top: 50,
+    position: 'absolute',
   },
   menuCell: {
     fontSize: 14,
-    color: '#fff',
-    marginLeft: 16,
+    left: 108,
+    top: 80,
+    position: 'absolute',
   },
   menuItem: {
     height: 48,
