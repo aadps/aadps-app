@@ -9,8 +9,8 @@ class Db {
       where: {
         ver: {gte: ver}
       }
-    }).then(resp => {
-      if(!resp)this.load();
+    }).then(result => {
+      if(!result)this.load();
     });
   }
 
@@ -27,7 +27,7 @@ class Db {
     await this.user.add({user: user, passwd: passwd, profile: profile});
   }
 
-  getUser() { // myDb.getUser().then(resp => { ... });
+  getUser() { // myDb.getUser().then(result => { ... });
     return this.user.find({});
   }
 
@@ -35,7 +35,7 @@ class Db {
     this.user.remove({});
   }
 
-  filter(geo, comp, size) { // myDb.filter([6], [1], [1]).then(resp => { ... });
+  filter(geo, comp, size) { // myDb.filter([6], [1], [1]).then(result => { ... });
     var geoo = [], compo = [], sizeo = [];
 
     for(id in geo)geoo.push({geo: geo[id]});
