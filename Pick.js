@@ -53,21 +53,23 @@ class Section extends React.Component {
   }
 
   render() {
-    var items = [];
-    for(var i = 0; i < this.state.data.length; i++)
+    if(this.state.data.length >0){
+      var items = [];
+      for(var i = 0; i < this.state.data.length; i++)
       items.push(<Item key={i} data={this.state.data[i]} picked={this.props.picked} onChange={this.props.onChange}/>);
-    return (
-      <View>
+      return (
+        <View>
 
-      <View style={styles.section}>
-      <Text style={styles.heading}>{this.state.name}</Text>
-      </View>
-      <View style={styles.itemContainer}>
-      {items}
-      </View>
+        <View style={styles.section}>
+        <Text style={styles.heading}>{this.state.name}</Text>
+        </View>
+        <View style={styles.itemContainer}>
+        {items}
+        </View>
 
-      </View>
-    )
+        </View>
+      )
+    }else return <View />
   }
 }
 
@@ -75,7 +77,7 @@ class Pick extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: this.props.data,
+      data: [],
       picked: this.props.picked,
     };
   }
