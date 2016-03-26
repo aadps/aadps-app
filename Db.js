@@ -35,20 +35,22 @@ class Db {
     this.user.remove({});
   }
 
-  filter(geo, comp, size) { // myDb.filter([6], [1], [1]).then(result => { ... });
-    var geoo = [], compo = [], sizeo = [];
+  filter(data) { // myDb.filter([6, 11, 21]).then(result => { ... });
+    var geo = [], comp = [], size = [];
 
-    for(id in geo)geoo.push({geo: geo[id]});
-    for(id in comp)compo.push({comp: comp[id]});
-    for(id in size)sizeo.push({size: size[id]});
+    for(id in data){
+      if(parseInt(data[id] / 10) == 0)geo.push({geo: data[id] % 10});
+      else if(parseInt(data[id] / 10) == 1)comp.push({comp: data[id] % 10});
+      else if(parseInt(data[id] / 10) == 2)size.push({size: data[id] % 10});
+    }
 
     return this.college.find({
-      fields: {collid: true},
+      fields: {id: true, cname: true},
       where: {
         and: [
-          {or: geoo},
-          {or: compo},
-          {or: sizeo}
+          {or: geo},
+          {or: comp},
+          {or: size}
         ]
       }
     });
