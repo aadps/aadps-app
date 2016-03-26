@@ -51,6 +51,48 @@ var viewProp=[{
 ];
 var nullProfile=['', '请注册或登录', '']
 
+var criteria=[{name: '地理位置', data: [{id: 1, name: '新英格兰'},
+  {id: 2, name: '五大湖'},
+  {id: 3, name: '老南方'},
+  {id: 4, name: '中部山区'},
+  {id: 5, name: '西北'},
+  {id: 6, name: '加州'}]},
+  {name: '申请难度', data: [{id: 11, name: '极难'},
+  {id: 12, name: '难'},
+  {id: 13, name: '尚可'},
+  {id: 14, name: '保底'}]},
+  {name: '院校规模', data: [{id: 21, name: '迷你'},
+  {id: 22, name: '中等'},
+  {id: 23, name: '大型'},
+  {id: 24, name: '超大型'}]}];
+var list=[{name: '字母A', ids: [1791, 3665, 3675]},
+  {name: '字母B', ids: [1560, 1737, 1977, 2198, 2227, 2233, 2242, 3580]},
+  {name: '字母C', ids: [177, 925, 928, 930, 1554, 1641, 1647, 1985, 2110, 2192,
+  2194, 2238, 3531, 3533, 3535, 3537, 3539, 3541, 3543, 3547, 3549, 3559, 3561,
+  3673]},
+  {name: '字母D', ids: [1404, 1407, 2116, 3667, 3679, 3681]},
+  {name: '字母E', ids: [933]},
+  {name: '字母F', ids: [1745, 3563]},
+  {name: '字母G', ids: [1593, 1768, 3575, 3634]},
+  {name: '字母H', ids: [937, 1988, 2118, 2130, 2246]},
+  {name: '字母I', ids: [241, 3644, 3646]},
+  {name: '字母K', ids: [3577, 3683]},
+  {name: '字母L', ids: [1714]},
+  {name: '字母M', ids: [943, 1397, 1756, 1760, 1806, 2202, 2244, 3565, 3640, 3642,
+  3648, 3677]},
+  {name: '字母N', ids: [945, 1557, 1576, 1617, 3567, 3685]},
+  {name: '字母O', ids: [2229, 3569, 3687, 3689]},
+  {name: '字母P', ids: [232, 1387, 1718, 1750, 1762, 1801, 3638]},
+  {name: '字母R', ids: [947, 1574, 2240, 3571, 3636]},
+  {name: '字母S', ids: [1399, 1610, 1770, 1796, 2196, 2206, 2248, 3650]},
+  {name: '字母T', ids: [1612, 1724, 1739, 3582, 3661, 3671]},
+  {name: '字母V', ids: [1563, 1606, 2112, 3663, 3669]},
+  {name: '字母W', ids: [205, 952, 1651, 1733, 1789, 1981, 2126, 2132, 3573, 3652
+  ]},
+  {name: '字母Y', ids: [1391]}];
+
+var criteriaPicked=[1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 21, 22, 23, 24];
+
 class aadps extends React.Component{
   render() {
     return (
@@ -91,9 +133,24 @@ class Main extends React.Component {
   onPressFab () {
     switch(this.state.currentView){
       case 0: this.setState({currentView: 1}); break;
-      case 1: this.setState({currentView: 0}); break;
+      case 1: myDb.filter([6], [1], [1]).then(result => { console.warn(JSON.stringify(result)) });; break;
       default: break;
     }
+  }
+
+  buildPickData(list, filterResult) {
+    var cnames={};
+    for(var i = 0; i< filterResult.length; i++){
+      cnames[filterResult[i].id]=filterResult[i].cname;
+    }
+    for(var i = 0; i < list.length; i++){
+      var data=[];
+      for(var j = 0; j < list[i].ids.length; j++){
+        if(cnames[list[i].ids[j]])data.push({id: list[i].ids[j], name: cnames[list[i].ids[j]]});
+      }
+      list[i].data=data;
+    }
+    return list;
   }
 
   render() {
@@ -165,7 +222,11 @@ class Main extends React.Component {
     var mainView = <Nav />;
     switch (this.state.currentView) {
       case 0: mainView = <Nav />; break;
-      case 1: mainView = <Pick />; break;
+      case 1: mainView = <Pick picked={[]} ref="myPick"/>;
+      myDb.filter(criteriaPicked).then(result => {
+        this.refs.myPick.setState({data: this.buildPickData(list, result)});
+      });
+      break;
       defualt: break;
     }
 
@@ -181,8 +242,7 @@ class Main extends React.Component {
       onIconClicked={() => this.drawer.openDrawer()}
       style={[styles.toolbar,{backgroundColor: viewProp[this.state.currentView].color}]}
       title={viewProp[this.state.currentView].title}
-      titleColor='#ffffff'>
-      </ToolbarAndroid>
+      titleColor='#ffffff'></ToolbarAndroid>
       {mainView}
       <TouchableHighlight style={styles.fab} onPress={()=>{this.onPressFab()}}>
       <View style={[styles.fabView,{backgroundColor: viewProp[this.state.currentView].color}]}>
