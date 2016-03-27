@@ -17,7 +17,7 @@ class Db {
   async load() { // Load college statistics into the app database
     await this.college.remove({});
     await this.college.add({ver: ver});
-    for(id in data){
+    for(var id in data){
       await this.college.add(data[id]);
     }
   }
@@ -32,13 +32,13 @@ class Db {
   }
 
   eraseUser() {
-    this.user.remove({});
+    return this.user.remove({});
   }
 
   filter(data) { // myDb.filter([6, 11, 21]).then(result => { ... });
     var geo = [], comp = [], size = [];
 
-    for(id in data){
+    for(var id in data){
       if(parseInt(data[id] / 10) == 0)geo.push({geo: data[id] % 10});
       else if(parseInt(data[id] / 10) == 1)comp.push({comp: data[id] % 10});
       else if(parseInt(data[id] / 10) == 2)size.push({size: data[id] % 10});

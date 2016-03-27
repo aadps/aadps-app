@@ -38,7 +38,7 @@ const viewProp = [{
 },{
   title: '院校筛选',
   color: '#8bc34a',
-  fabIcon: 'image!ic_star_white_24dp',
+  fabIcon: 'image!ic_filter_list_white_24dp',
 },{
   title: '留学资讯',
   color: '#f44336',
@@ -164,7 +164,9 @@ class Main extends React.Component {
   }
 
   logout() {
-    myDb.eraseUser();
+    myDb.eraseUser().then(() => {
+      this.forceUpdate();
+    });
   }
 
   onPressFab() {
@@ -176,9 +178,10 @@ class Main extends React.Component {
   }
 
   render() {
+
     myDb.getUser().then(user => {
-      if(user && this.state.profile != user[0].profile)this.setState({profile: user[0].profile});
-      else if(this.state.profile != nullProfile) this.setState({profile: nullProfile});
+      if(user && this.state.profile[2] != user[0].profile[2])this.setState({profile: user[0].profile});
+      else if(!user && this.state.profile[2] != '')this.setState({profile: nullProfile});
     });
     var navigationView = (
       <ScrollView style={styles.menu}>
@@ -259,7 +262,10 @@ class Main extends React.Component {
       ref={(drawer) => { this.drawer = drawer; }}
       drawerPosition={DrawerLayoutAndroid.positions.Left}
       renderNavigationView={() => navigationView}>
+
+      <Image style={{width: 0, height: 0,}} source={require('image!ic_filter_list_white_24dp')} />
       <StatusBar backgroundColor="rgba(52,52,52,0.4)" translucent={true} />
+
       <View style={{height: 24, elevation: 4, backgroundColor: viewProp[this.state.currentView].color}}/>
       <ToolbarAndroid
       navIcon={require('image!ic_menu_white_24dp')}
