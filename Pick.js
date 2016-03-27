@@ -12,23 +12,15 @@ var {
 var Dimensions = require('Dimensions');
 
 class Item extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: this.props.data.id,
-      name: this.props.data.name,
-    };
-  }
-
   render() {
-    var picked = this.props.picked.indexOf(this.state.id) >= 0;
+    var picked = this.props.picked.indexOf(this.props.data.id) >= 0;
     return (
       <TouchableWithoutFeedback onPress={() => {
         var array = this.props.picked;
-        var index = array.indexOf(this.state.id);
+        var index = array.indexOf(this.props.data.id);
 
         if (index === -1) {
-          array.push(this.state.id);
+          array.push(this.props.data.id);
         } else {
           array.splice(index, 1);
         }
@@ -36,7 +28,7 @@ class Item extends React.Component {
         this.props.onChange(array);
       }}>
       <View style={[styles.item, picked?styles.itemPicked:{}]}>
-      <Text style={picked?styles.textPicked:{}}>{this.state.name}</Text>
+      <Text style={picked?styles.textPicked:{}}>{this.props.data.name}</Text>
       </View>
       </TouchableWithoutFeedback>
     )
