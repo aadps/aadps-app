@@ -21,7 +21,7 @@ class Item extends React.Component {
   }
 
   render() {
-    var picked = this.props.picked.indexOf(this.props.data.id) >= 0;
+    var picked = this.props.picked.indexOf(this.state.id) >= 0;
     return (
       <TouchableWithoutFeedback onPress={() => {
         var array = this.props.picked;
@@ -44,24 +44,16 @@ class Item extends React.Component {
 }
 
 class Section extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: this.props.data.name,
-      data: this.props.data.data,
-    };
-  }
-
   render() {
-    if(this.state.data.length >0){
+    if(this.props.data.data.length > 0){
       var items = [];
-      for(var i = 0; i < this.state.data.length; i++)
-      items.push(<Item key={i} data={this.state.data[i]} picked={this.props.picked} onChange={this.props.onChange}/>);
+      for(var i = 0; i < this.props.data.data.length; i++)
+        items.push(<Item key={i} data={this.props.data.data[i]} picked={this.props.picked} onChange={this.props.onChange}/>);
       return (
         <View>
 
         <View style={styles.section}>
-        <Text style={styles.heading}>{this.state.name}</Text>
+        <Text style={styles.heading}>{this.props.data.name}</Text>
         </View>
         <View style={styles.itemContainer}>
         {items}
@@ -77,19 +69,25 @@ class Pick extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
       picked: this.props.picked,
     };
   }
 
   render() {
-    var sections = [];
-    for(var i = 0; i < this.state.data.length; i++)
-      sections.push(<Section key={i} data={this.state.data[i]} picked={this.state.picked} onChange={this.onChange}/>);
-    return (
-      <ScrollView>
-      {sections}
-      </ScrollView>
+    if(this.props.data.length > 0){
+      var sections = [];
+      for(var i = 0; i < this.props.data.length; i++)
+      sections.push(<Section key={i} data={this.props.data[i]} picked={this.state.picked} onChange={this.onChange}/>);
+      return (
+        <ScrollView>
+        {sections}
+        </ScrollView>
+      )
+    }else return(
+      <View style={styles.container}>
+      <Text style={styles.message}>空空如也呢( ´・ω・` )</Text>
+      <Text style={styles.hint}>点击右下角按钮调整一下范围吧</Text>
+      </View>
     )
   }
 
@@ -136,5 +134,20 @@ var styles = StyleSheet.create({
   },
   textPicked: {
     color: '#fff',
-  }
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  message: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#333',
+  },
+  hint: {
+    fontSize: 16,
+    textAlign: 'center',
+    margin: 10,
+  },
 });
