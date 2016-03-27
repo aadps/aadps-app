@@ -26,12 +26,12 @@ var Pick = require('./Pick');
 var Dimensions = require('Dimensions');
 var Linking = require('Linking');
 
-var toolbarHeight=56;
-var drawerWidth=Dimensions.get('window').width-toolbarHeight;
+var toolbarHeight = 56;
+var drawerWidth = Dimensions.get('window').width-toolbarHeight;
 
-var _navigator, _main;
+var _navigator;
 
-var viewProp=[{
+const viewProp = [{
   title: '我的大学',
   color: '#ffc107',
   fabIcon: 'image!ic_search_white_24dp',
@@ -47,25 +47,8 @@ var viewProp=[{
   title: '即时聊天',
   color: '#2196f3',
   fabIcon: 'image!ic_chat_white_24dp',
-},
-];
-var nullProfile=['', '请注册或登录', '']
-
-var criteria=[{name: '地理位置', data: [{id: 1, name: '新英格兰'},
-  {id: 2, name: '五大湖'},
-  {id: 3, name: '老南方'},
-  {id: 4, name: '中部山区'},
-  {id: 5, name: '西北'},
-  {id: 6, name: '加州'}]},
-  {name: '申请难度', data: [{id: 11, name: '极难'},
-  {id: 12, name: '难'},
-  {id: 13, name: '尚可'},
-  {id: 14, name: '保底'}]},
-  {name: '院校规模', data: [{id: 21, name: '迷你'},
-  {id: 22, name: '中等'},
-  {id: 23, name: '大型'},
-  {id: 24, name: '超大型'}]}];
-var list=[{name: '字母A', ids: [1791, 3665, 3675]},
+}];
+const list = [{name: '字母A', ids: [1791, 3665, 3675]},
   {name: '字母B', ids: [1560, 1737, 1977, 2198, 2227, 2233, 2242, 3580]},
   {name: '字母C', ids: [177, 925, 928, 930, 1554, 1641, 1647, 1985, 2110, 2192,
   2194, 2238, 3531, 3533, 3535, 3537, 3539, 3541, 3543, 3547, 3549, 3559, 3561,
@@ -90,15 +73,49 @@ var list=[{name: '字母A', ids: [1791, 3665, 3675]},
   {name: '字母W', ids: [205, 952, 1651, 1733, 1789, 1981, 2126, 2132, 3573, 3652
   ]},
   {name: '字母Y', ids: [1391]}];
+const nullProfile = ['', '请注册或登录', ''];
 
-var criteriaPicked=[1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 21, 22, 23, 24];
+const filterData = [{name: '地理位置', data: [{id: 1, name: '新英格兰'},
+  {id: 2, name: '五大湖'},
+  {id: 3, name: '老南方'},
+  {id: 4, name: '中部山区'},
+  {id: 5, name: '西北'},
+  {id: 6, name: '加州'}]},
+  {name: '申请难度', data: [{id: 11, name: '极难'},
+  {id: 12, name: '难'},
+  {id: 13, name: '尚可'},
+  {id: 14, name: '保底'}]},
+  {name: '院校规模', data: [{id: 21, name: '迷你'},
+  {id: 22, name: '中等'},
+  {id: 23, name: '大型'},
+  {id: 24, name: '超大型'}]}];
+var pickData = [];
+
+var filterFav = [1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 21, 22, 23, 24];
+var fav = [];
+
+function buildPick(list, filterResult) {
+  if(!filterResult)return[];
+  var cnames={};
+  for(var i = 0; i< filterResult.length; i++){
+    cnames[filterResult[i].id]=filterResult[i].cname;
+  }
+  for(var i = 0; i < list.length; i++){
+    var data=[];
+    for(var j = 0; j < list[i].ids.length; j++){
+      if(cnames[list[i].ids[j]])data.push({id: list[i].ids[j], name: cnames[list[i].ids[j]]});
+    }
+    list[i].data=data;
+  }
+  return list;
+}
 
 class aadps extends React.Component{
   render() {
     return (
         <Navigator
           style={styles.container}
-          initialRoute={{id: 'first'}}
+          initialRoute={{id: 'main'}}
           renderScene={this.navigatorRenderScene}/>
     );
   }
@@ -106,10 +123,29 @@ class aadps extends React.Component{
   navigatorRenderScene(route, navigator) {
     _navigator = navigator;
     switch (route.id) {
-      case 'first':
-        return (<Main navigator={navigator} />);
+      case 'main':
+        return (<Main navigator = {navigator} />);
       case 'user':
-        return (<User navigator={navigator} />);
+        return (<User navigator = {navigator} />);
+      case 'filter':
+        return (
+          <View style={{flexDirection: "column", flex: 1, }}>
+          <View style={{height: 24, elevation: 4, backgroundColor: '#8bc34a'}} />
+          <ToolbarAndroid
+          navIcon={require('image!ic_arrow_back_white_24dp')}
+          onIconClicked={() => {
+            _navigator.pop();
+            myDb.filter(filterFav).then(result => {pickData = buildPick(list, result)});
+          }}
+          style={[styles.toolbar,{backgroundColor: '#8bc34a'}]}
+          title={'筛选器'}
+          titleColor='#fff'>
+          </ToolbarAndroid>
+
+          <Pick data={filterData} picked={filterFav} />
+
+          </View>
+        );
     }
   }
 }
@@ -117,43 +153,33 @@ class aadps extends React.Component{
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    _main = this;
     this.state = {
       currentView: 0,
       profile: nullProfile,
     };
-    myDb.getUser().then(user => {if(user){this.setState({profile: user[0].profile})}});
+  }
+
+  componentDidMount() {
+    myDb.filter(filterFav).then(result => {pickData=buildPick(list, result)});
   }
 
   logout() {
     myDb.eraseUser();
-    this.setState({profile: nullProfile});
   }
 
-  onPressFab () {
+  onPressFab() {
     switch(this.state.currentView){
       case 0: this.setState({currentView: 1}); break;
-      case 1: myDb.filter([6], [1], [1]).then(result => { console.warn(JSON.stringify(result)) });; break;
+      case 1: _navigator.push({id: 'filter'}); break;
       default: break;
     }
   }
 
-  buildPickData(list, filterResult) {
-    var cnames={};
-    for(var i = 0; i< filterResult.length; i++){
-      cnames[filterResult[i].id]=filterResult[i].cname;
-    }
-    for(var i = 0; i < list.length; i++){
-      var data=[];
-      for(var j = 0; j < list[i].ids.length; j++){
-        if(cnames[list[i].ids[j]])data.push({id: list[i].ids[j], name: cnames[list[i].ids[j]]});
-      }
-      list[i].data=data;
-    }
-    return list;
-  }
-
   render() {
+    myDb.getUser().then(user => {
+      if(user && this.state.profile != user[0].profile)this.setState({profile: user[0].profile});
+      else if(this.state.profile != nullProfile) this.setState({profile: nullProfile});
+    });
     var navigationView = (
       <ScrollView style={styles.menu}>
 
@@ -219,13 +245,10 @@ class Main extends React.Component {
       </ScrollView>
     );
 
-    var mainView = <Nav />;
+    var mainView=<View />;
     switch (this.state.currentView) {
       case 0: mainView = <Nav />; break;
-      case 1: mainView = <Pick picked={[]} ref="myPick"/>;
-      myDb.filter(criteriaPicked).then(result => {
-        this.refs.myPick.setState({data: this.buildPickData(list, result)});
-      });
+      case 1: mainView = <Pick data={pickData} picked={fav} />;
       break;
       defualt: break;
     }
@@ -236,6 +259,7 @@ class Main extends React.Component {
       ref={(drawer) => { this.drawer = drawer; }}
       drawerPosition={DrawerLayoutAndroid.positions.Left}
       renderNavigationView={() => navigationView}>
+      <StatusBar backgroundColor="rgba(52,52,52,0.4)" translucent={true} />
       <View style={{height: 24, elevation: 4, backgroundColor: viewProp[this.state.currentView].color}}/>
       <ToolbarAndroid
       navIcon={require('image!ic_menu_white_24dp')}
@@ -249,7 +273,6 @@ class Main extends React.Component {
       <Image style={styles.fabIcon} source={require(viewProp[this.state.currentView].fabIcon)} />
       </View>
       </TouchableHighlight>
-      <StatusBar backgroundColor="rgba(52,52,52,0.4)" translucent={true} />
       </DrawerLayoutAndroid>
     );
   }
@@ -278,7 +301,6 @@ class User extends React.Component {
     .then((profile) => {
       if(profile.length>0) {
         myDb.setUser(this.state.user, this.state.passwd, profile);
-        _main.setState({profile: profile});
         _navigator.pop();
       }
       else ToastAndroid.show('手机号或密码错误，请重试！', ToastAndroid.SHORT);
@@ -308,7 +330,6 @@ class User extends React.Component {
     .then((profile) => {
       if(profile.length>0) {
         myDb.setUser(this.state.user, this.state.passwd, profile);
-        _main.setState({profile: profile});
         _navigator.pop();
       }
       else ToastAndroid.show('该用户已注册，请直接登录！', ToastAndroid.SHORT);
@@ -341,7 +362,7 @@ class User extends React.Component {
 
     return (
       <View style={{flexDirection: "column", flex: 1, }}>
-      <View style={{height: 24, elevation: 4, backgroundColor: '#888'}}/>
+      <View style={{height: 24, elevation: 4, backgroundColor: '#888'}} />
       <ToolbarAndroid
       navIcon={require('image!ic_arrow_back_white_24dp')}
       onIconClicked={() => {_navigator.pop()} }
