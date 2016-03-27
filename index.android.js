@@ -177,17 +177,21 @@ class Main extends React.Component {
     }
   }
 
+  isLoggedIn() {
+    return this.state.profile[2];
+  }
+
   render() {
 
     myDb.getUser().then(user => {
       if(user && this.state.profile[2] != user[0].profile[2])this.setState({profile: user[0].profile});
-      else if(!user && this.state.profile[2] != '')this.setState({profile: nullProfile});
+      else if(!user && this.isLoggedIn())this.setState({profile: nullProfile});
     });
     var navigationView = (
       <ScrollView style={styles.menu}>
 
       <Image style={styles.menuHead} resizeMode={Image.resizeMode.cover} source={require('./image/head.jpg')}>
-      <Image style={styles.menuAvatar} resizeMode={Image.resizeMode.cover} source={this.state.profile[2]?{uri: this.state.profile[0]}:require('./image/nullavatar.gif')} />
+      <Image style={styles.menuAvatar} resizeMode={Image.resizeMode.cover} source={this.isLoggedIn()?{uri: this.state.profile[0]}:require('./image/nullavatar.gif')} />
       <Text style={styles.menuName}>{this.state.profile[1]}</Text>
       <Text style={styles.menuCell}>{this.state.profile[2]}</Text>
       </Image>
@@ -239,11 +243,11 @@ class Main extends React.Component {
       <Text style={styles.menuText}>关于AADPS</Text>
       </View></TouchableHighlight>
       <View style={styles.menuSeparator}></View>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.state.profile[2]?this.logout():_navigator.push({id: 'user'});}}><View style={styles.menuItem}>
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.isLoggedIn()?this.logout():_navigator.push({id: 'user'});}}><View style={styles.menuItem}>
       <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
       resizeMode={Image.resizeMode.stretch}
-      source={!this.state.profile[2]?require('image!ic_person_white_24dp'):require('image!ic_person_outline_white_24dp')} />
-      <Text style={styles.menuText}>{this.state.profile[2]?'注销':'注册/登录'}</Text>
+      source={!this.isLoggedIn()?require('image!ic_person_white_24dp'):require('image!ic_person_outline_white_24dp')} />
+      <Text style={styles.menuText}>{this.isLoggedIn()?'注销':'注册/登录'}</Text>
       </View></TouchableHighlight>
       </ScrollView>
     );
