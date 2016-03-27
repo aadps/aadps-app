@@ -95,7 +95,7 @@ class Card extends React.Component {
 class Nav extends React.Component {
    render() {
      return (
-       <ScrollView style={{backgroundColor:'#eeeeee'}}>
+       <ScrollView>
           <Card />
           <Card />
           <Card />
