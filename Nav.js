@@ -133,7 +133,7 @@ class Card extends React.Component {
 
 class Nav extends React.Component {
   render() {
-    if(this.props.data){
+    if(this.props.data && this.props.data.length > 0){
       var cards = [], fav = [];
       for(var i = 0; i < this.props.data.length; i++)fav.push(this.props.data[i].id);
       for(var i = 0; i < this.props.data.length; i++)

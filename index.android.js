@@ -115,7 +115,7 @@ function buildPick(list, filterResult) {
 function syncFav(callback) {
   myDb.getUser().then(user => {
     if(user)myDb.getFav().then(dbFav => {
-      if(fav)fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
+      if(dbFav)fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
         method: 'POST',
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -129,6 +129,19 @@ function syncFav(callback) {
           fav = JSON.parse(result.fav);
           myDb.setFav(fav,result.time);
         }
+      });
+      else fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: 'syncfav=&user=' + user[0].user + '&passwd=' + user[0].passwd
+          + '&fav=[]&time=0'
+      })
+      .then((response) => response.json())
+      .then((result) => {
+        fav = JSON.parse(result.fav);
+        myDb.setFav(fav,result.time);
       });
     });
   });
