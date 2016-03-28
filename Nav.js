@@ -33,12 +33,16 @@ class Card extends React.Component {
   }
 
   onClose() {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    LayoutAnimation.spring();
     this.setState({height: 0, closed: true});
+    var array = this.props.fav;
+    var index = array.indexOf(this.props.data.id);
+    array.splice(index, 1);
+    this.props.onChange(array);
   }
 
   onExpand() {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    LayoutAnimation.easeInEaseOut();
     if(this.state.expanded)this.setState({height: 240, expanded: false});
     else this.setState({height: 140, expanded: true});
   }
@@ -46,12 +50,12 @@ class Card extends React.Component {
   render() {
     var content, card;
     if(this.state.expanded){
-      content =       <WebView style={styles.stat}
+      content =       <WebView style={[styles.stat, {height: this.state.height - 150}]}
             source={{uri: 'http://aadps.net/wp-content/themes/aadps/stat.php?id=' + this.props.data.id}}
             javaScriptEnabled={true}
             domStorageEnabled={false}
             onLoadEnd={()=>{
-              LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+              LayoutAnimation.easeInEaseOut();
               this.setState({height: 390});
             }} />;
 
@@ -125,33 +129,41 @@ class Card extends React.Component {
 }
 
 class Nav extends React.Component {
-   render() {
-     if(this.props.data.length > 0){
-       var cards = [];
-       for(var i = 0; i < this.props.data.length; i++)
-       cards.push(<Card key={i} data={this.props.data[i]} />);
-       return (
-         <ScrollView>
-         {cards}
-         <View style={{height: 8}} />
-         </ScrollView>
-       )
-     }else return(
-       <View style={styles.container}>
-       <Text style={styles.message}>空空如也呢( ´・ω・` )</Text>
-       <Text style={styles.hint}>点击右下角按钮去选校吧</Text>
-       </View>
-     )
-   }
- }
+  constructor(props) {
+    super(props);
+    this.state = {
+      fav: this.props.fav,
+    };
+  }
+
+  render() {
+    if(this.props.data.length > 0){
+      var cards = [];
+      for(var i = 0; i < this.props.data.length; i++)
+      cards.push(<Card key={i} data={this.props.data[i]} fav={this.state.fav} onChange={this.onChange}/>);
+      return (
+        <ScrollView>
+        {cards}
+        <View style={{height: 8}} />
+        </ScrollView>
+      )
+    }else return(
+      <View style={styles.container}>
+      <Text style={styles.message}>空空如也呢( ´・ω・` )</Text>
+      <Text style={styles.hint}>点击右下角按钮去选校吧</Text>
+      </View>
+    )
+  }
+
+  onChange = (data) => {
+    this.setState({picked: data});
+  }
+}
 
 module.exports = Nav;
 
 var styles = StyleSheet.create({
   stat: {
-    height: 240,
-    marginLeft: 2,
-    marginRight: 2,
     marginTop: 6,
   },
   iconBar: {

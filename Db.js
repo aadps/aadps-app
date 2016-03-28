@@ -4,6 +4,7 @@ class Db {
   constructor() {
     this.user = Store.model('user');
     this.college = Store.model('college');
+    this.fav = Store.model('fav');
 
     this.college.find({
       where: {
@@ -35,8 +36,13 @@ class Db {
     return this.user.remove({});
   }
 
-  setFav() {
+  async setFav(fav) {
+    await this.fav.remove({});
+    await this.fav.add({fav: fav});
+  }
 
+  getFav() {
+    return this.fav.find({});
   }
 
   getCardData(fav) {

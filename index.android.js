@@ -49,8 +49,8 @@ const viewProp = [{
   fabIcon: 'image!ic_chat_white_24dp',
 }];
 const list = [{name: '字母A', ids: [1791, 3665, 3675]},
-  {name: '字母B', ids: [1560, 1737, 1977, 2198, 2227, 2233, 2242, 3580]},
-  {name: '字母C', ids: [177, 925, 928, 930, 1554, 1641, 1647, 1985, 2110, 2192,
+  {name: '字母B', ids: [1560, 1641, 1647, 1737, 1977, 2198, 2227, 2233, 2242, 3580]},
+  {name: '字母C', ids: [177, 925, 928, 930, 1554, 1985, 2110, 2192,
   2194, 2238, 3531, 3533, 3535, 3537, 3539, 3541, 3543, 3547, 3549, 3559, 3561,
   3673]},
   {name: '字母D', ids: [1404, 1407, 2116, 3667, 3679, 3681]},
@@ -263,7 +263,7 @@ class Main extends React.Component {
 
     var mainView=<View />;
     switch (this.state.currentView) {
-      case 0: mainView = <Nav data={cardData} />; break;
+      case 0: mainView = <Nav data={cardData} fav={fav} />; break;
       case 1: mainView = <Pick data={pickData} picked={fav} />;
       break;
       defualt: break;
@@ -349,6 +349,7 @@ class User extends React.Component {
     .then((profile) => {
       if(profile.length>0) {
         myDb.setUser(this.state.user, this.state.passwd, profile);
+        ToastAndroid.show('帐号也可以用来登录网站aadps.net并同步选校数据！', ToastAndroid.LONG);
         _navigator.pop();
       }
       else ToastAndroid.show('该用户已注册，请直接登录！', ToastAndroid.SHORT);
