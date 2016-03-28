@@ -7,102 +7,141 @@ var {
   View,
   ScrollView,
   WebView,
+  TouchableHighlight,
   TouchableOpacity,
+  UIManager,
 } = React;
+
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
 var Dimensions = require('Dimensions');
 var ProgressBar = require('ProgressBarAndroid');
+var Linking = require('Linking');
+var LayoutAnimation = require('LayoutAnimation');
 
-var cardWidth=Dimensions.get('window').width-16;
+var windowWidth = Dimensions.get('window').width;
+var cardWidth = windowWidth - 16;
 
 class Card extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      stat: null,
+      expanded: false,
       height: 240,
-      loading: null,
-      sign: '+',
+      closed: false,
     };
   }
-  _onLoadEndStat(){
-    this.setState({loading: null,});
+
+  onClose() {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    this.setState({height: 0, closed: true});
   }
 
-  _onPressStat() {
-    if(!this.state.stat)this.setState({stat:
-      <View>
-        <View style={{marginTop: 8, marginLeft: 8, marginRight: 8, borderBottomWidth: 1, borderColor: '#aaaaaa',}}/>
-        <WebView style={styles.stat}
-          source={{uri: 'http://aadps.net/m/'}}
-          javaScriptEnabled={true}
-          domStorageEnabled={false}
-          onLoadEnd={()=>{this._onLoadEndStat()}} />
-      </View>,
-      height: 480,
-      loading: <Image style={styles.loading}
-              resizeMode={Image.resizeMode.stretch}
-              source={require('./image/loading.gif')}/>,
-      sign: '-',
-    });
-    else this.setState({
-      stat: null,
-      height: 240,
-      sign: '+',
-    });
+  onExpand() {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    if(this.state.expanded)this.setState({height: 240, expanded: false});
+    else this.setState({height: 140, expanded: true});
   }
 
   render() {
-     return (
-       <View style={[styles.card,{height:this.state.height}]}>
-        <Image style={styles.photo} resizeMode={Image.resizeMode.cover} source={{uri: "http://aadps.qiniudn.com/wp-content/uploads/2016/02/930.jpg"}} />
-        <View style={styles.textArea}>
-          <View style={styles.background} />
-          <Text style={styles.caption}>University of Stanford</Text>
-          <Text style={styles.caption}>斯坦福大学 私立/公立 综合</Text>
-          <View style={{height: 6}} />
-        </View>
-        <View style={styles.right}>
-          <Image style={styles.star}
-            resizeMode={Image.resizeMode.stretch}
-            source={require('image!ic_star_white_24dp')} />
-          <TouchableOpacity style={{marginTop: 34,}} onPress={()=>{this._onPressStat()}}>
-              <Text style={styles.link}>图表[{this.state.sign}]</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{flexDirection:'row',}}>
+    var content, card;
+    if(this.state.expanded){
+      content =       <WebView style={styles.stat}
+            source={{uri: 'http://aadps.net/wp-content/themes/aadps/stat.php?id=' + this.props.data.id}}
+            javaScriptEnabled={true}
+            domStorageEnabled={false}
+            onLoadEnd={()=>{
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+              this.setState({height: 390});
+            }} />;
 
-        <View>
-        <Text style={styles.geoen}>Ithaca, NY</Text>
-        <Text style={styles.geo}>市郊</Text>
-        </View>
-        <View style={{position: 'absolute', left: Dimensions.get('window').width/2-7,}}>
-        <Text style={styles.date}>3月1日</Text>
-        <Text style={styles.text}>转学申请截止</Text>
-        </View>
-        </View>
-        <View style={styles.linkList}>
-          <Text style={[styles.link,{marginRight: 20,}]}>文书题目</Text>
-          <Text style={[styles.link,{marginRight: 20,}]}>院校指南</Text>
-        </View>
-        {this.state.stat}
-        {this.state.loading}
-       </View>
-     )
-   }
- }
+    }else content = <View>
+    <View style={{flexDirection:'row', height: 60,}}>
+
+    <View style={{position: 'absolute', left: 10,}}>
+    <Text style={styles.line1}>{this.props.data.city}</Text>
+    <Text style={styles.line2}>{this.props.data.setting}</Text>
+    </View>
+
+    <View style={{position: 'absolute', left: windowWidth / 2 - 7,}}>
+    <Text style={styles.line1}>A指数</Text>
+    <Text style={styles.line2}>99</Text>
+    </View>
+
+    <View style={{position: 'absolute', left: windowWidth / 2 + 65,}}>
+    <Text style={styles.line1}>CEEB</Text>
+    <Text style={styles.line2}>1234</Text>
+    </View>
+
+    </View>
+
+    <View style={styles.linkList}>
+
+    <TouchableHighlight  activeOpacity={0.935} onPress={() => {Linking.openURL('http://aadps.net/2016/' + this.props.data.id + '.html')}}>
+    <View style={styles.link}>
+    <Text style={styles.linkText}>文书题目</Text>
+    </View>
+    </TouchableHighlight>
+
+    </View>
+
+    </View>;
+
+    if(this.state.closed)card = <View />
+    else card = <View>
+    <Image style={styles.photo} resizeMode={Image.resizeMode.cover} source={{uri: 'http://aadps.qiniudn.com/wp-content/uploads/2016/02/' + this.props.data.id + '.jpg'}} />
+    <View style={styles.textArea}>
+    <View style={styles.background} />
+
+    <Text style={styles.caption}>{this.props.data.name}</Text>
+    <Text style={styles.caption}>{this.props.data.cname + ' ' + this.props.data.type + ' ' + this.props.data.type2}</Text>
+    <View style={{height: 6}} />
+
+    <View style={styles.iconBar}>
+
+    <TouchableOpacity activeOpacity={0.935} onPress={()=>this.onExpand()}>
+    <Image style={styles.icon}
+    resizeMode={Image.resizeMode.stretch}
+    source={this.state.expanded?require('image!ic_expand_less_white_24dp'):require('image!ic_expand_more_white_24dp')} />
+    </TouchableOpacity>
+
+    <TouchableOpacity activeOpacity={0.935} onPress={()=>this.onClose()}>
+    <Image style={styles.icon}
+    resizeMode={Image.resizeMode.stretch}
+    source={require('image!ic_close_white_24dp')} />
+    </TouchableOpacity>
+
+    </View>
+    </View>
+
+    {content}
+    </View>;
+
+    return (
+      <View style={[styles.card,{height:this.state.height},this.state.closed?{}:styles.cardOpen]}>
+      {card}
+      </View>
+    )
+  }
+}
 
 class Nav extends React.Component {
    render() {
-     return (
-       <ScrollView>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <View style={{height: 8}} />
-       </ScrollView>
+     if(this.props.data.length > 0){
+       var cards = [];
+       for(var i = 0; i < this.props.data.length; i++)
+       cards.push(<Card key={i} data={this.props.data[i]} />);
+       return (
+         <ScrollView>
+         {cards}
+         <View style={{height: 8}} />
+         </ScrollView>
+       )
+     }else return(
+       <View style={styles.container}>
+       <Text style={styles.message}>空空如也呢( ´・ω・` )</Text>
+       <Text style={styles.hint}>点击右下角按钮去选校吧</Text>
+       </View>
      )
    }
  }
@@ -110,53 +149,30 @@ class Nav extends React.Component {
 module.exports = Nav;
 
 var styles = StyleSheet.create({
-  loading:{position: 'absolute',
-    left: Dimensions.get('window').width/2-30,
-    top: 300,
-    width: 50,
-    height: 50,
-  },
-  stat: {
-    height: 240,
-    marginLeft: 2,
-    marginRight: 2,
-    marginTop: 6,
-  },
-  right:{
+  iconBar: {
     position: 'absolute',
     right: 12,
-    top: 150,
-    alignItems: 'flex-end',
+    top: 12,
+    flexDirection: 'row',
   },
-  star: {
+  icon: {
     width: 24,
     height: 24,
-    tintColor: '#ffc107',
+    margin: 6,
   },
   caption: {
     fontSize: 20,
     color: '#ffffff',
     marginLeft: 10,
   },
-  geo: {
-    marginLeft: 12,
+  line2: {
     fontSize: 16,
-    color: '#333333',
+    color: '#333',
   },
-  geoen: {
-    marginLeft: 12,
+  line1: {
     fontSize: 14,
     marginTop: 9,
-    color: '#888888',
-  },
-  text: {
-    fontSize: 16,
-    color: '#333333',
-  },
-  date: {
-    fontSize: 14,
-    marginTop: 9,
-    color: '#888888',
+    color: '#888',
   },
   photo: {
     height: 140,
@@ -182,21 +198,40 @@ var styles = StyleSheet.create({
   },
   linkList: {
     flexDirection:'row',
-    marginLeft: 12,
-    marginTop: 18,
+    marginLeft: 4,
   },
   link: {
+    backgroundColor: '#fff',
+    padding: 6,
+  },
+  linkText: {
     color: '#ffc107',
     fontSize: 16,
-    fontFamily: 'monospace',
   },
   card: {
     marginLeft: 7,
     marginRight: 7,
-    marginTop: 8,
     borderRadius: 5,
+  },
+  cardOpen: {
     borderWidth: 1,
     backgroundColor: '#fff',
     borderColor: '#888',
+    marginTop: 8,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  message: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#333',
+  },
+  hint: {
+    fontSize: 16,
+    textAlign: 'center',
+    margin: 10,
   },
 });

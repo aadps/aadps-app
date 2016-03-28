@@ -75,6 +75,8 @@ const list = [{name: '字母A', ids: [1791, 3665, 3675]},
   {name: '字母Y', ids: [1391]}];
 const nullProfile = ['', '请注册或登录', ''];
 
+var cardData = [];
+
 const filterData = [{name: '地理位置', data: [{id: 1, name: '新英格兰'},
   {id: 2, name: '五大湖'},
   {id: 3, name: '老南方'},
@@ -197,7 +199,14 @@ class Main extends React.Component {
       </Image>
 
       <View style={styles.menuSpace}></View>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.setState({currentView:0});this.drawer.closeDrawer();}}>
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{
+        this.drawer.closeDrawer();
+        myDb.getCardData(fav).then(result => {
+          if(result)cardData = result;
+          else cardData = [];
+          this.setState({currentView:0});
+        });
+      }}>
       <View style={[styles.menuItem,{backgroundColor: this.state.currentView==0?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#ffc107'}]}
       resizeMode={Image.resizeMode.stretch}
@@ -254,7 +263,7 @@ class Main extends React.Component {
 
     var mainView=<View />;
     switch (this.state.currentView) {
-      case 0: mainView = <Nav />; break;
+      case 0: mainView = <Nav data={cardData} />; break;
       case 1: mainView = <Pick data={pickData} picked={fav} />;
       break;
       defualt: break;

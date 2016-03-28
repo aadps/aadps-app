@@ -17,8 +17,8 @@ class Db {
   async load() { // Load college statistics into the app database
     await this.college.remove({});
     await this.college.add({ver: ver});
-    for(var id in data){
-      await this.college.add(data[id]);
+    for(var i in data){
+      await this.college.add(data[i]);
     }
   }
 
@@ -35,13 +35,23 @@ class Db {
     return this.user.remove({});
   }
 
+  setFav() {
+
+  }
+
+  getCardData(fav) {
+    var id = [];
+    for(var i in fav)id.push({id: fav[i]});
+    return this.college.find({where: {or: id}});
+  }
+
   filter(data) { // myDb.filter([6, 11, 21]).then(result => { ... });
     var geo = [], comp = [], size = [];
 
-    for(var id in data){
-      if(parseInt(data[id] / 10) == 0)geo.push({geo: data[id] % 10});
-      else if(parseInt(data[id] / 10) == 1)comp.push({comp: data[id] % 10});
-      else if(parseInt(data[id] / 10) == 2)size.push({size: data[id] % 10});
+    for(var i in data){
+      if(parseInt(data[i] / 10) == 0)geo.push({geo: data[i] % 10});
+      else if(parseInt(data[i] / 10) == 1)comp.push({comp: data[i] % 10});
+      else if(parseInt(data[i] / 10) == 2)size.push({size: data[i] % 10});
     }
 
     return this.college.find({
@@ -59,7 +69,7 @@ class Db {
 
 module.exports = Db;
 
-var ver = 6;
+var ver = 7;
 var data = [
   {
     "id": 177,
@@ -70,7 +80,7 @@ var data = [
     "name": "Univ. of Chicago",
     "cname": "芝大",
     "type2": "综合",
-    "city": "Chicago IL",
+    "city": "Chicago, IL",
     "setting": "都市"
   },
   {
@@ -82,7 +92,7 @@ var data = [
     "name": "Wake Forest Univ.",
     "cname": "维克森林",
     "type2": "综合",
-    "city": "Winston-Salem NC",
+    "city": "Winston-Salem, NC",
     "setting": "市郊"
   },
   {
@@ -94,7 +104,7 @@ var data = [
     "name": "Univ. of Pennsylvania",
     "cname": "宾大",
     "type2": "综合",
-    "city": "Philadelphia PA",
+    "city": "Philadelphia, PA",
     "setting": "都市"
   },
   {
@@ -106,7 +116,7 @@ var data = [
     "name": "Univ. of Illinois UC",
     "cname": "伊利诺伊香槟",
     "type2": "综合",
-    "city": "Champaign IL",
+    "city": "Champaign, IL",
     "setting": "城镇"
   },
   {
@@ -118,7 +128,7 @@ var data = [
     "name": "Carnegie Mellon Univ.",
     "cname": "卡耐基梅隆",
     "type2": "综合",
-    "city": "Pittsburgh PA",
+    "city": "Pittsburgh, PA",
     "setting": "都市"
   },
   {
@@ -130,7 +140,7 @@ var data = [
     "name": "Columbia Univ.",
     "cname": "哥大",
     "type2": "综合",
-    "city": "New York NY",
+    "city": "New York, NY",
     "setting": "都市"
   },
   {
@@ -142,7 +152,7 @@ var data = [
     "name": "Cornell Univ.",
     "cname": "康奈尔",
     "type2": "综合",
-    "city": "Ithaca NY",
+    "city": "Ithaca, NY",
     "setting": "乡村"
   },
   {
@@ -154,7 +164,7 @@ var data = [
     "name": "Emory Univ.",
     "cname": "埃默里",
     "type2": "综合",
-    "city": "Atlanta GA",
+    "city": "Atlanta, GA",
     "setting": "城镇"
   },
   {
@@ -166,7 +176,7 @@ var data = [
     "name": "Harvard Univ.",
     "cname": "哈佛",
     "type2": "综合",
-    "city": "Cambridge MA",
+    "city": "Cambridge, MA",
     "setting": "都市"
   },
   {
@@ -178,7 +188,7 @@ var data = [
     "name": "Univ. of Michigan",
     "cname": "密歇根",
     "type2": "综合",
-    "city": "Ann Arbor MI",
+    "city": "Ann Arbor, MI",
     "setting": "城镇"
   },
   {
@@ -190,7 +200,7 @@ var data = [
     "name": "New York Univ.",
     "cname": "纽大",
     "type2": "综合",
-    "city": "New York NY",
+    "city": "New York, NY",
     "setting": "都市"
   },
   {
@@ -202,7 +212,7 @@ var data = [
     "name": "Univ. of Rochester",
     "cname": "罗彻斯特",
     "type2": "综合",
-    "city": "Rochester NY",
+    "city": "Rochester, NY",
     "setting": "市郊"
   },
   {
@@ -214,7 +224,7 @@ var data = [
     "name": "Univ. of Wisconsin Madison",
     "cname": "威斯康星",
     "type2": "综合",
-    "city": "Madison WI",
+    "city": "Madison, WI",
     "setting": "城镇"
   },
   {
@@ -226,7 +236,7 @@ var data = [
     "name": "Georgia Institute of Tech.",
     "cname": "佐治亚理工",
     "type2": "综合",
-    "city": "Atlanta GA",
+    "city": "Atlanta, GA",
     "setting": "都市"
   },
   {
@@ -238,7 +248,7 @@ var data = [
     "name": "Princeton Univ.",
     "cname": "普林斯顿",
     "type2": "综合",
-    "city": "Princeton NJ",
+    "city": "Princeton, NJ",
     "setting": "市郊"
   },
   {
@@ -250,7 +260,7 @@ var data = [
     "name": "Yale Univ.",
     "cname": "耶鲁",
     "type2": "综合",
-    "city": "New Haven CT",
+    "city": "New Haven, CT",
     "setting": "城镇"
   },
   {
@@ -262,7 +272,7 @@ var data = [
     "name": "Mass. Institute of Tech.",
     "cname": "麻省理工",
     "type2": "综合",
-    "city": "Cambridge MA",
+    "city": "Cambridge, MA",
     "setting": "都市"
   },
   {
@@ -274,7 +284,7 @@ var data = [
     "name": "Stanford Univ.",
     "cname": "斯坦福",
     "type2": "综合",
-    "city": "Stanford CA",
+    "city": "Stanford, CA",
     "setting": "市郊"
   },
   {
@@ -286,7 +296,7 @@ var data = [
     "name": "Duke Univ.",
     "cname": "杜克",
     "type2": "综合",
-    "city": "Durham NC",
+    "city": "Durham, NC",
     "setting": "市郊"
   },
   {
@@ -298,7 +308,7 @@ var data = [
     "name": "Dartmouth Coll.",
     "cname": "达特茅斯",
     "type2": "综合",
-    "city": "Hanover NH",
+    "city": "Hanover, NH",
     "setting": "乡村"
   },
   {
@@ -310,7 +320,7 @@ var data = [
     "name": "California Institute of Tech.",
     "cname": "加州理工",
     "type2": "综合",
-    "city": "Pasadena CA",
+    "city": "Pasadena, CA",
     "setting": "市郊"
   },
   {
@@ -322,7 +332,7 @@ var data = [
     "name": "Northwestern Univ.",
     "cname": "西北",
     "type2": "综合",
-    "city": "Evanston IL",
+    "city": "Evanston, IL",
     "setting": "市郊"
   },
   {
@@ -334,7 +344,7 @@ var data = [
     "name": "Brown Univ.",
     "cname": "布朗",
     "type2": "综合",
-    "city": "Providence RI",
+    "city": "Providence, RI",
     "setting": "城镇"
   },
   {
@@ -346,7 +356,7 @@ var data = [
     "name": "Vanderbilt Univ.",
     "cname": "范德堡",
     "type2": "综合",
-    "city": "Nashville TN",
+    "city": "Nashville, TN",
     "setting": "都市"
   },
   {
@@ -358,7 +368,7 @@ var data = [
     "name": "Rice Univ.",
     "cname": "莱斯",
     "type2": "综合",
-    "city": "Houston TX",
+    "city": "Houston, TX",
     "setting": "都市"
   },
   {
@@ -370,7 +380,7 @@ var data = [
     "name": "Univ. of Notre Dame",
     "cname": "圣母",
     "type2": "综合",
-    "city": "Notre Dame IN",
+    "city": "Notre Dame, IN",
     "setting": "城镇"
   },
   {
@@ -382,7 +392,7 @@ var data = [
     "name": "Georgetown Univ.",
     "cname": "乔治城",
     "type2": "综合",
-    "city": "Washington DC",
+    "city": "Washington, DC",
     "setting": "都市"
   },
   {
@@ -394,7 +404,7 @@ var data = [
     "name": "Univ. of Virginia",
     "cname": "弗吉尼亚大学",
     "type2": "综合",
-    "city": "Charlottesville VA",
+    "city": "Charlottesville, VA",
     "setting": "市郊"
   },
   {
@@ -406,7 +416,7 @@ var data = [
     "name": "Univ. of Southern California",
     "cname": "南加大",
     "type2": "综合",
-    "city": "Los Angeles CA",
+    "city": "Los Angeles, CA",
     "setting": "都市"
   },
   {
@@ -418,7 +428,7 @@ var data = [
     "name": "Tufts Univ.",
     "cname": "塔夫茨",
     "type2": "综合",
-    "city": "Medford MA",
+    "city": "Medford, MA",
     "setting": "市郊"
   },
   {
@@ -430,7 +440,7 @@ var data = [
     "name": "Univ. of North Carolina CH",
     "cname": "北卡教堂山",
     "type2": "综合",
-    "city": "Chapel Hill NC",
+    "city": "Chapel Hill, NC",
     "setting": "市郊"
   },
   {
@@ -442,7 +452,7 @@ var data = [
     "name": "Boston Coll.",
     "cname": "波士顿学院",
     "type2": "综合",
-    "city": "Chestnut Hill MA",
+    "city": "Chestnut Hill, MA",
     "setting": "市郊"
   },
   {
@@ -454,7 +464,7 @@ var data = [
     "name": "Brandeis Univ.",
     "cname": "布兰戴斯",
     "type2": "综合",
-    "city": "Waltham MA",
+    "city": "Waltham, MA",
     "setting": "市郊"
   },
   {
@@ -466,7 +476,7 @@ var data = [
     "name": "Coll. of William & Mary",
     "cname": "威廉玛丽",
     "type2": "综合",
-    "city": "Williamsburg VA",
+    "city": "Williamsburg, VA",
     "setting": "市郊"
   },
   {
@@ -478,7 +488,7 @@ var data = [
     "name": "Lehigh Univ.",
     "cname": "利哈伊",
     "type2": "综合",
-    "city": "Bethlehem PA",
+    "city": "Bethlehem, PA",
     "setting": "城镇"
   },
   {
@@ -490,7 +500,7 @@ var data = [
     "name": "Pennsylvania State Univ.",
     "cname": "宾州州立",
     "type2": "综合",
-    "city": "University Park PA",
+    "city": "University Park, PA",
     "setting": "城镇"
   },
   {
@@ -502,7 +512,7 @@ var data = [
     "name": "Univ. of Texas Austin",
     "cname": "德州奥斯汀",
     "type2": "综合",
-    "city": "Austin TX",
+    "city": "Austin, TX",
     "setting": "都市"
   },
   {
@@ -514,7 +524,7 @@ var data = [
     "name": "Univ. of Washington",
     "cname": "华大西雅图",
     "type2": "综合",
-    "city": "Seattle WA",
+    "city": "Seattle, WA",
     "setting": "都市"
   },
   {
@@ -526,7 +536,7 @@ var data = [
     "name": "Boston Univ.",
     "cname": "波士顿大学",
     "type2": "综合",
-    "city": "Boston MA",
+    "city": "Boston, MA",
     "setting": "都市"
   },
   {
@@ -538,7 +548,7 @@ var data = [
     "name": "Tulane Univ.",
     "cname": "杜兰",
     "type2": "综合",
-    "city": "New Orleans LA",
+    "city": "New Orleans, LA",
     "setting": "都市"
   },
   {
@@ -550,7 +560,7 @@ var data = [
     "name": "Univ. of Florida",
     "cname": "佛罗里达",
     "type2": "综合",
-    "city": "Gainesville FL",
+    "city": "Gainesville, FL",
     "setting": "市郊"
   },
   {
@@ -562,7 +572,7 @@ var data = [
     "name": "Pepperdine Univ.",
     "cname": "佩珀代因",
     "type2": "综合",
-    "city": "Malibu CA",
+    "city": "Malibu, CA",
     "setting": "市郊"
   },
   {
@@ -574,7 +584,7 @@ var data = [
     "name": "Univ. of Maryland CP",
     "cname": "马里兰",
     "type2": "综合",
-    "city": "College Park MD",
+    "city": "College Park, MD",
     "setting": "市郊"
   },
   {
@@ -586,7 +596,7 @@ var data = [
     "name": "Southern Methodist Univ.",
     "cname": "南方卫理公会",
     "type2": "综合",
-    "city": "Dallas TX",
+    "city": "Dallas, TX",
     "setting": "都市"
   },
   {
@@ -598,7 +608,7 @@ var data = [
     "name": "Univ. of Pittsburgh",
     "cname": "匹兹堡",
     "type2": "综合",
-    "city": "Pittsburgh PA",
+    "city": "Pittsburgh, PA",
     "setting": "都市"
   },
   {
@@ -610,7 +620,7 @@ var data = [
     "name": "George Washington Univ.",
     "cname": "乔治华盛顿",
     "type2": "综合",
-    "city": "Washington DC",
+    "city": "Washington, DC",
     "setting": "都市"
   },
   {
@@ -622,7 +632,7 @@ var data = [
     "name": "Syracuse Univ.",
     "cname": "雪城",
     "type2": "综合",
-    "city": "Syracuse NY",
+    "city": "Syracuse, NY",
     "setting": "城镇"
   },
   {
@@ -634,7 +644,7 @@ var data = [
     "name": "Williams Coll.",
     "cname": "威廉姆斯",
     "type2": "文理",
-    "city": "Williamstown MA",
+    "city": "Williamstown, MA",
     "setting": "乡村"
   },
   {
@@ -646,7 +656,7 @@ var data = [
     "name": "Amherst Coll.",
     "cname": "阿默斯特",
     "type2": "文理",
-    "city": "Amherst MA",
+    "city": "Amherst, MA",
     "setting": "乡村"
   },
   {
@@ -658,7 +668,7 @@ var data = [
     "name": "Swarthmore Coll.",
     "cname": "斯沃斯莫尔",
     "type2": "文理",
-    "city": "Swarthmore PA",
+    "city": "Swarthmore, PA",
     "setting": "市郊"
   },
   {
@@ -670,7 +680,7 @@ var data = [
     "name": "Pomona Coll.",
     "cname": "波莫纳",
     "type2": "文理",
-    "city": "Claremont CA",
+    "city": "Claremont, CA",
     "setting": "市郊"
   },
   {
@@ -682,7 +692,7 @@ var data = [
     "name": "Middlebury Coll.",
     "cname": "明德",
     "type2": "文理",
-    "city": "Middlebury VT",
+    "city": "Middlebury, VT",
     "setting": "乡村"
   },
   {
@@ -694,7 +704,7 @@ var data = [
     "name": "Bowdoin Coll.",
     "cname": "鲍登",
     "type2": "文理",
-    "city": "Brunswick ME",
+    "city": "Brunswick, ME",
     "setting": "市郊"
   },
   {
@@ -706,7 +716,7 @@ var data = [
     "name": "Wellesley Coll.",
     "cname": "威尔斯利",
     "type2": "文理",
-    "city": "Wellesley MA",
+    "city": "Wellesley, MA",
     "setting": "市郊"
   },
   {
@@ -718,7 +728,7 @@ var data = [
     "name": "Carleton Coll.",
     "cname": "卡尔顿",
     "type2": "文理",
-    "city": "Northfield MN",
+    "city": "Northfield, MN",
     "setting": "乡村"
   },
   {
@@ -730,7 +740,7 @@ var data = [
     "name": "Haverford Coll.",
     "cname": "哈弗福德",
     "type2": "文理",
-    "city": "Haverford PA",
+    "city": "Haverford, PA",
     "setting": "市郊"
   },
   {
@@ -742,7 +752,7 @@ var data = [
     "name": "Claremont McKenna Coll.",
     "cname": "克莱蒙特",
     "type2": "文理",
-    "city": "Claremont CA",
+    "city": "Claremont, CA",
     "setting": "市郊"
   },
   {
@@ -754,7 +764,7 @@ var data = [
     "name": "Vassar Coll.",
     "cname": "瓦萨",
     "type2": "文理",
-    "city": "Poughkeepsie NY",
+    "city": "Poughkeepsie, NY",
     "setting": "市郊"
   },
   {
@@ -766,7 +776,7 @@ var data = [
     "name": "Davidson Coll.",
     "cname": "戴维森",
     "type2": "文理",
-    "city": "Davidson NC",
+    "city": "Davidson, NC",
     "setting": "市郊"
   },
   {
@@ -778,7 +788,7 @@ var data = [
     "name": "Harvey Mudd Coll.",
     "cname": "哈维姆德",
     "type2": "文理",
-    "city": "Claremont CA",
+    "city": "Claremont, CA",
     "setting": "市郊"
   },
   {
@@ -790,7 +800,7 @@ var data = [
     "name": "Washington & Lee Univ.",
     "cname": "华盛顿与李",
     "type2": "文理",
-    "city": "Lexington VA",
+    "city": "Lexington, VA",
     "setting": "乡村"
   },
   {
@@ -802,7 +812,7 @@ var data = [
     "name": "Hamilton Coll.",
     "cname": "汉密尔顿",
     "type2": "文理",
-    "city": "Clinton NY",
+    "city": "Clinton, NY",
     "setting": "乡村"
   },
   {
@@ -814,7 +824,7 @@ var data = [
     "name": "Wesleyan Univ.",
     "cname": "卫斯理安",
     "type2": "文理",
-    "city": "Middletown CT",
+    "city": "Middletown, CT",
     "setting": "都市"
   },
   {
@@ -826,7 +836,7 @@ var data = [
     "name": "Colby Coll.",
     "cname": "科尔比",
     "type2": "文理",
-    "city": "Waterville ME",
+    "city": "Waterville, ME",
     "setting": "乡村"
   },
   {
@@ -838,7 +848,7 @@ var data = [
     "name": "Colgate Univ.",
     "cname": "科尔盖特",
     "type2": "文理",
-    "city": "Hamilton NY",
+    "city": "Hamilton, NY",
     "setting": "乡村"
   },
   {
@@ -850,7 +860,7 @@ var data = [
     "name": "Smith Coll.",
     "cname": "史密斯",
     "type2": "文理",
-    "city": "Northampton MA",
+    "city": "Northampton, MA",
     "setting": "市郊"
   },
   {
@@ -862,7 +872,7 @@ var data = [
     "name": "Bates Coll.",
     "cname": "贝茨",
     "type2": "文理",
-    "city": "Lewiston ME",
+    "city": "Lewiston, ME",
     "setting": "城镇"
   },
   {
@@ -874,7 +884,7 @@ var data = [
     "name": "Macalester Coll.",
     "cname": "马卡莱斯特",
     "type2": "文理",
-    "city": "St. Paul MN",
+    "city": "St. Paul, MN",
     "setting": "都市"
   },
   {
@@ -886,7 +896,7 @@ var data = [
     "name": "Scripps Coll.",
     "cname": "斯克利普斯",
     "type2": "文理",
-    "city": "Claremont CA",
+    "city": "Claremont, CA",
     "setting": "市郊"
   },
   {
@@ -898,7 +908,7 @@ var data = [
     "name": "Bryn Mawr Coll.",
     "cname": "布林茅尔",
     "type2": "文理",
-    "city": "Bryn Mawr PA",
+    "city": "Bryn Mawr, PA",
     "setting": "市郊"
   },
   {
@@ -910,7 +920,7 @@ var data = [
     "name": "Oberlin Coll.",
     "cname": "欧柏林",
     "type2": "文理",
-    "city": "Oberlin OH",
+    "city": "Oberlin, OH",
     "setting": "市郊"
   },
   {
@@ -922,7 +932,7 @@ var data = [
     "name": "Barnard Coll.",
     "cname": "巴纳德",
     "type2": "文理",
-    "city": "New York NY",
+    "city": "New York, NY",
     "setting": "都市"
   },
   {
@@ -934,7 +944,7 @@ var data = [
     "name": "Colorado Coll.",
     "cname": "科罗拉多学院",
     "type2": "文理",
-    "city": "Colorado Springs CO",
+    "city": "Colorado Springs, CO",
     "setting": "城镇"
   },
   {
@@ -946,7 +956,7 @@ var data = [
     "name": "Univ. of Richmond",
     "cname": "里士满",
     "type2": "文理",
-    "city": "Richmond VA",
+    "city": "Richmond, VA",
     "setting": "市郊"
   },
   {
@@ -958,7 +968,7 @@ var data = [
     "name": "Bucknell Univ.",
     "cname": "巴克内尔",
     "type2": "文理",
-    "city": "Lewisburg PA",
+    "city": "Lewisburg, PA",
     "setting": "乡村"
   },
   {
@@ -970,7 +980,7 @@ var data = [
     "name": "Mount Holyoke Coll.",
     "cname": "曼荷莲",
     "type2": "文理",
-    "city": "South Hadley MA",
+    "city": "South Hadley, MA",
     "setting": "市郊"
   },
   {
@@ -982,7 +992,7 @@ var data = [
     "name": "Coll. of the Holy Cross",
     "cname": "圣十字",
     "type2": "文理",
-    "city": "Worcester MA",
+    "city": "Worcester, MA",
     "setting": "市郊"
   },
   {
@@ -994,7 +1004,7 @@ var data = [
     "name": "Sewanee: Univ. of the South",
     "cname": "西沃恩",
     "type2": "文理",
-    "city": "Sewanee TN",
+    "city": "Sewanee, TN",
     "setting": "乡村"
   },
   {
@@ -1006,7 +1016,7 @@ var data = [
     "name": "Univ. of Calif. Berkeley",
     "cname": "加州伯克利",
     "type2": "综合",
-    "city": "Berkeley CA",
+    "city": "Berkeley, CA",
     "setting": "城镇"
   },
   {
@@ -1018,7 +1028,7 @@ var data = [
     "name": "Univ. of Calif. Davis",
     "cname": "加州戴维斯",
     "type2": "综合",
-    "city": "Davis CA",
+    "city": "Davis, CA",
     "setting": "城镇"
   },
   {
@@ -1030,7 +1040,7 @@ var data = [
     "name": "Univ. of Calif. Irvine",
     "cname": "加州欧文",
     "type2": "综合",
-    "city": "Irvine CA",
+    "city": "Irvine, CA",
     "setting": "市郊"
   },
   {
@@ -1042,7 +1052,7 @@ var data = [
     "name": "Univ. of Calif. Los Angeles",
     "cname": "加州洛杉矶",
     "type2": "综合",
-    "city": "Los Angeles CA",
+    "city": "Los Angeles, CA",
     "setting": "都市"
   },
   {
@@ -1054,7 +1064,7 @@ var data = [
     "name": "Univ. of Calif. Merced",
     "cname": "加州默塞德",
     "type2": "综合",
-    "city": "Merced?CA",
+    "city": "Merced, CA",
     "setting": "乡村"
   },
   {
@@ -1066,7 +1076,7 @@ var data = [
     "name": "Univ. of Calif. Riverside",
     "cname": "加州河滨",
     "type2": "综合",
-    "city": "Riverside?CA",
+    "city": "Riverside, CA",
     "setting": "城镇"
   },
   {
@@ -1078,7 +1088,7 @@ var data = [
     "name": "Univ. of Calif. San Diego",
     "cname": "加州圣地亚哥",
     "type2": "综合",
-    "city": "La Jolla CA",
+    "city": "La Jolla, CA",
     "setting": "都市"
   },
   {
@@ -1090,7 +1100,7 @@ var data = [
     "name": "Univ. of Calif. Santa Barbara",
     "cname": "加州圣芭芭拉",
     "type2": "综合",
-    "city": "Santa Barbara CA",
+    "city": "Santa Barbara, CA",
     "setting": "市郊"
   },
   {
@@ -1102,7 +1112,7 @@ var data = [
     "name": "Univ. of Calif. Santa Cruz",
     "cname": "加州圣克鲁兹",
     "type2": "综合",
-    "city": "Santa Cruz CA",
+    "city": "Santa Cruz, CA",
     "setting": "市郊"
   },
   {
@@ -1114,7 +1124,7 @@ var data = [
     "name": "Case Western Reserve Univ.",
     "cname": "凯斯西储",
     "type2": "综合",
-    "city": "Cleveland OH",
+    "city": "Cleveland, OH",
     "setting": "都市"
   },
   {
@@ -1126,7 +1136,7 @@ var data = [
     "name": "Univ. of Connecticut",
     "cname": "康涅狄格大学",
     "type2": "综合",
-    "city": "Storrs?CT",
+    "city": "Storrs, CT",
     "setting": "乡村"
   },
   {
@@ -1138,7 +1148,7 @@ var data = [
     "name": "Fordham Univ.",
     "cname": "福特汉姆",
     "type2": "综合",
-    "city": "New York?NY",
+    "city": "New York, NY",
     "setting": "都市"
   },
   {
@@ -1150,7 +1160,7 @@ var data = [
     "name": "Univ. of Miami",
     "cname": "迈阿密大学",
     "type2": "综合",
-    "city": "Coral Gables?FL",
+    "city": "Coral Gables, FL",
     "setting": "市郊"
   },
   {
@@ -1162,7 +1172,7 @@ var data = [
     "name": "Northeastern Univ.",
     "cname": "东北",
     "type2": "综合",
-    "city": "Boston?MA",
+    "city": "Boston, MA",
     "setting": "都市"
   },
   {
@@ -1174,7 +1184,7 @@ var data = [
     "name": "Ohio State Univ.",
     "cname": "俄亥俄州立",
     "type2": "综合",
-    "city": "Columbus OH",
+    "city": "Columbus, OH",
     "setting": "都市"
   },
   {
@@ -1186,7 +1196,7 @@ var data = [
     "name": "Rensselaer Poly. Institute",
     "cname": "伦斯勒理工",
     "type2": "综合",
-    "city": "Troy NY",
+    "city": "Troy, NY",
     "setting": "市郊"
   },
   {
@@ -1198,7 +1208,7 @@ var data = [
     "name": "Washington Univ. St. Louis",
     "cname": "圣路易斯华大",
     "type2": "综合",
-    "city": "St. Louis MO",
+    "city": "St. Louis, MO",
     "setting": "市郊"
   },
   {
@@ -1210,7 +1220,7 @@ var data = [
     "name": "Grinnell Coll.",
     "cname": "格林内尔",
     "type2": "文理",
-    "city": "Grinnell IA",
+    "city": "Grinnell, IA",
     "setting": "乡村"
   },
   {
@@ -1222,7 +1232,7 @@ var data = [
     "name": "Kenyon Coll.",
     "cname": "肯尼恩",
     "type2": "文理",
-    "city": "Gambier OH",
+    "city": "Gambier, OH",
     "setting": "乡村"
   },
   {
@@ -1234,7 +1244,7 @@ var data = [
     "name": "Bard Coll.",
     "cname": "巴德",
     "type2": "文理",
-    "city": "Annandale-On-Hudson NY",
+    "city": "Annandale-On-Hudson, NY",
     "setting": "乡村"
   },
   {
@@ -1246,7 +1256,7 @@ var data = [
     "name": "Trinity Coll.",
     "cname": "三一",
     "type2": "文理",
-    "city": "Hartford CT",
+    "city": "Hartford, CT",
     "setting": "都市"
   },
   {
@@ -1258,7 +1268,7 @@ var data = [
     "name": "Univ. of Georgia",
     "cname": "佐治亚大学",
     "type2": "综合",
-    "city": "Athens GA",
+    "city": "Athens, GA",
     "setting": "城镇"
   },
   {
@@ -1270,7 +1280,7 @@ var data = [
     "name": "Rutgers Univ.",
     "cname": "罗格斯",
     "type2": "综合",
-    "city": "Newark NJ",
+    "city": "Newark, NJ",
     "setting": "都市"
   },
   {
@@ -1282,7 +1292,7 @@ var data = [
     "name": "Purdue Univ.",
     "cname": "普渡",
     "type2": "综合",
-    "city": "West Lafayette IN",
+    "city": "West Lafayette, IN",
     "setting": "城镇"
   },
   {
@@ -1294,7 +1304,7 @@ var data = [
     "name": "Univ. of Minnesota TC",
     "cname": "明尼苏达双城",
     "type2": "综合",
-    "city": "Minneapolis MN",
+    "city": "Minneapolis, MN",
     "setting": "都市"
   },
   {
@@ -1306,7 +1316,7 @@ var data = [
     "name": "Michigan State Univ.",
     "cname": "密歇根州立",
     "type2": "综合",
-    "city": "East Lansing MI",
+    "city": "East Lansing, MI",
     "setting": "市郊"
   },
   {
@@ -1318,7 +1328,7 @@ var data = [
     "name": "Univ. of Iowa",
     "cname": "爱荷华",
     "type2": "综合",
-    "city": "Iowa City IA",
+    "city": "Iowa City, IA",
     "setting": "城镇"
   },
   {
@@ -1330,7 +1340,7 @@ var data = [
     "name": "Indiana Univ. Bloomington",
     "cname": "印地安那",
     "type2": "综合",
-    "city": "Bloomington IN",
+    "city": "Bloomington, IN",
     "setting": "城镇"
   },
   {
@@ -1342,7 +1352,7 @@ var data = [
     "name": "Miami Univ. Oxford",
     "cname": "牛津迈阿密",
     "type2": "综合",
-    "city": "Oxford OH",
+    "city": "Oxford, OH",
     "setting": "乡村"
   },
   {
@@ -1354,7 +1364,7 @@ var data = [
     "name": "Stony Brook Univ. SUNY",
     "cname": "石溪",
     "type2": "综合",
-    "city": "Stony Brook NY",
+    "city": "Stony Brook, NY",
     "setting": "市郊"
   },
   {
@@ -1366,7 +1376,7 @@ var data = [
     "name": "Worcester Poly. Institute",
     "cname": "伍斯特理工",
     "type2": "综合",
-    "city": "Worcester MA",
+    "city": "Worcester, MA",
     "setting": "城镇"
   },
   {
@@ -1378,7 +1388,7 @@ var data = [
     "name": "Texas A&M Univ.",
     "cname": "德州农工",
     "type2": "综合",
-    "city": "College Station TX",
+    "city": "College Station, TX",
     "setting": "城镇"
   },
   {
@@ -1390,7 +1400,7 @@ var data = [
     "name": "Virginia Poly. Institute",
     "cname": "弗吉尼亚理工",
     "type2": "综合",
-    "city": "Blacksburg VA",
+    "city": "Blacksburg, VA",
     "setting": "乡村"
   },
   {
@@ -1402,7 +1412,7 @@ var data = [
     "name": "American Univ.",
     "cname": "美国大学",
     "type2": "综合",
-    "city": "Washington DC",
+    "city": "Washington, DC",
     "setting": "市郊"
   },
   {
@@ -1414,7 +1424,7 @@ var data = [
     "name": "Univ. of Delaware",
     "cname": "特拉华",
     "type2": "综合",
-    "city": "Newark DE",
+    "city": "Newark, DE",
     "setting": "市郊"
   },
   {
@@ -1426,7 +1436,7 @@ var data = [
     "name": "Univ. of Vermont",
     "cname": "佛蒙特",
     "type2": "综合",
-    "city": "Burlington VT",
+    "city": "Burlington, VT",
     "setting": "市郊"
   },
   {
@@ -1438,7 +1448,7 @@ var data = [
     "name": "Univ. of Tulsa",
     "cname": "塔尔萨",
     "type2": "综合",
-    "city": "Tulsa OK",
+    "city": "Tulsa, OK",
     "setting": "城镇"
   },
   {
@@ -1450,7 +1460,7 @@ var data = [
     "name": "Univ. of Colorado Boulder",
     "cname": "科罗拉多大学",
     "type2": "综合",
-    "city": "Boulder CO",
+    "city": "Boulder, CO",
     "setting": "城镇"
   },
   {
@@ -1462,7 +1472,7 @@ var data = [
     "name": "Univ. of Alabama",
     "cname": "阿拉巴马",
     "type2": "综合",
-    "city": "Tuscaloosa AL",
+    "city": "Tuscaloosa, AL",
     "setting": "市郊"
   },
   {
@@ -1474,7 +1484,7 @@ var data = [
     "name": "Univ. of Mass. Amherst",
     "cname": "马萨诸塞",
     "type2": "综合",
-    "city": "Amherst MA",
+    "city": "Amherst, MA",
     "setting": "市郊"
   },
   {
@@ -1486,7 +1496,7 @@ var data = [
     "name": "Univ. of Denver",
     "cname": "丹佛",
     "type2": "综合",
-    "city": "Denver CO",
+    "city": "Denver, CO",
     "setting": "城镇"
   },
   {
@@ -1498,7 +1508,7 @@ var data = [
     "name": "Drexel Univ.",
     "cname": "德雷塞尔",
     "type2": "综合",
-    "city": "Philadelphia PA",
+    "city": "Philadelphia, PA",
     "setting": "都市"
   },
   {
@@ -1510,7 +1520,7 @@ var data = [
     "name": "Univ. of Kansas",
     "cname": "堪萨斯",
     "type2": "综合",
-    "city": "Lawrence KS",
+    "city": "Lawrence, KS",
     "setting": "城镇"
   },
   {
@@ -1522,7 +1532,7 @@ var data = [
     "name": "North Carolina State Univ.",
     "cname": "北卡州立",
     "type2": "综合",
-    "city": "Raleigh NC",
+    "city": "Raleigh, NC",
     "setting": "城镇"
   },
   {
@@ -1534,7 +1544,7 @@ var data = [
     "name": "Univ. of Oregon",
     "cname": "俄勒冈",
     "type2": "综合",
-    "city": "Eugene OR",
+    "city": "Eugene, OR",
     "setting": "城镇"
   },
   {
@@ -1546,7 +1556,7 @@ var data = [
     "name": "Univ. of Oklahoma",
     "cname": "俄克拉荷马",
     "type2": "综合",
-    "city": "Norman OK",
+    "city": "Norman, OK",
     "setting": "城镇"
   }
 ];
