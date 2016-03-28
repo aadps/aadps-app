@@ -7,12 +7,17 @@ var {
   View,
   ScrollView,
   TouchableWithoutFeedback,
+  UIManager,
 } = React;
 
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+
 var Dimensions = require('Dimensions');
+var LayoutAnimation = require('LayoutAnimation');
 
 class Item extends React.Component {
   render() {
+    LayoutAnimation.spring();
     var picked = this.props.picked.indexOf(this.props.data.id) >= 0;
     return (
       <TouchableWithoutFeedback onPress={() => {
