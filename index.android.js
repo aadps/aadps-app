@@ -161,8 +161,17 @@ class Main extends React.Component {
     };
   }
 
-  componentDidMount() {
-    myDb.filter(filterFav).then(result => {pickData=buildPick(list, result)});
+  componentWillMount() {
+    myDb.filter(filterFav).then(result => {pickData = buildPick(list, result)});
+    myDb.getFav().then(result => {
+      if(result){
+        fav = result[0].fav;
+        myDb.getCardData(fav).then(result => {
+          cardData = result;
+          this.forceUpdate();
+        });
+      }
+    });
   }
 
   logout() {
@@ -264,8 +273,7 @@ class Main extends React.Component {
     var mainView=<View />;
     switch (this.state.currentView) {
       case 0: mainView = <Nav data={cardData} fav={fav} />; break;
-      case 1: mainView = <Pick data={pickData} picked={fav} />;
-      break;
+      case 1: mainView = <Pick data={pickData} picked={fav} />; break;
       defualt: break;
     }
 

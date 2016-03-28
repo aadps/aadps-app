@@ -14,6 +14,8 @@ var {
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
+var Db = require('./Db');
+var myDb = new Db();
 var Dimensions = require('Dimensions');
 var ProgressBar = require('ProgressBarAndroid');
 var Linking = require('Linking');
@@ -39,6 +41,7 @@ class Card extends React.Component {
     var index = array.indexOf(this.props.data.id);
     array.splice(index, 1);
     this.props.onChange(array);
+    myDb.setFav(array, parseInt(new Date().getTime() / 1000));
   }
 
   onExpand() {

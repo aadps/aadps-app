@@ -12,6 +12,8 @@ var {
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
+var Db = require('./Db');
+var myDb = new Db();
 var Dimensions = require('Dimensions');
 var LayoutAnimation = require('LayoutAnimation');
 
@@ -31,6 +33,7 @@ class Item extends React.Component {
         }
 
         this.props.onChange(array);
+        myDb.setFav(array, parseInt(new Date().getTime() / 1000));
       }}>
       <View style={[styles.item, picked?styles.itemPicked:{}]}>
       <Text style={picked?styles.textPicked:{}}>{this.props.data.name}</Text>

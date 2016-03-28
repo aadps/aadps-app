@@ -36,9 +36,9 @@ class Db {
     return this.user.remove({});
   }
 
-  async setFav(fav) {
+  async setFav(fav, time) {
     await this.fav.remove({});
-    await this.fav.add({fav: fav});
+    await this.fav.add({fav: fav, time: time});
   }
 
   getFav() {
