@@ -87,7 +87,7 @@ class Card extends React.Component {
 
     </View>;
 
-    if(this.state.closed)card = <View />
+    if(this.state.closed)card = <View />;
     else card = <View>
     <Image style={styles.photo} resizeMode={Image.resizeMode.cover} source={{uri: 'http://aadps.qiniudn.com/wp-content/uploads/2016/02/' + this.props.data.id + '.jpg'}} />
     <View style={styles.textArea}>
@@ -113,7 +113,6 @@ class Card extends React.Component {
 
     </View>
     </View>
-
     {content}
     </View>;
 
@@ -149,6 +148,12 @@ class Nav extends React.Component {
 module.exports = Nav;
 
 var styles = StyleSheet.create({
+  stat: {
+    height: 240,
+    marginLeft: 2,
+    marginRight: 2,
+    marginTop: 6,
+  },
   iconBar: {
     position: 'absolute',
     right: 12,
