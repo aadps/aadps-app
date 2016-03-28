@@ -40,7 +40,7 @@ class Card extends React.Component {
     var array = this.props.fav;
     var index = array.indexOf(this.props.data.id);
     array.splice(index, 1);
-    this.props.onChange(array);
+
     myDb.setFav(array, parseInt(new Date().getTime() / 1000));
   }
 
@@ -132,18 +132,12 @@ class Card extends React.Component {
 }
 
 class Nav extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      fav: this.props.fav,
-    };
-  }
-
   render() {
-    if(this.props.data.length > 0){
-      var cards = [];
+    if(this.props.data){
+      var cards = [], fav = [];
+      for(var i = 0; i < this.props.data.length; i++)fav.push(this.props.data[i].id);
       for(var i = 0; i < this.props.data.length; i++)
-      cards.push(<Card key={i} data={this.props.data[i]} fav={this.state.fav} onChange={this.onChange}/>);
+        cards.push(<Card key={i} data={this.props.data[i]} fav={fav} onChange={this.onChange} />);
       return (
         <ScrollView>
         {cards}
@@ -156,10 +150,6 @@ class Nav extends React.Component {
       <Text style={styles.hint}>点击右下角按钮去选校吧</Text>
       </View>
     )
-  }
-
-  onChange = (data) => {
-    this.setState({picked: data});
   }
 }
 

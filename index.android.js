@@ -112,6 +112,28 @@ function buildPick(list, filterResult) {
   return list;
 }
 
+function syncFav(callback) {
+  myDb.getUser().then(user => {
+    if(user)myDb.getFav().then(dbFav => {
+      if(fav)fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: 'syncfav=&user=' + user[0].user + '&passwd=' + user[0].passwd
+          + '&fav=' + JSON.stringify(dbFav[0].fav) + '&time=' + dbFav[0].time
+      })
+      .then((response) => response.json())
+      .then((result) => {
+        if(result.time > dbFav[0].time){
+          fav = JSON.parse(result.fav);
+          myDb.setFav(fav,result.time);
+        }
+      });
+    });
+  });
+}
+
 class aadps extends React.Component{
   render() {
     return (
@@ -156,12 +178,11 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentView: 0,
+      view: 0,
       profile: nullProfile,
     };
-  }
 
-  componentWillMount() {
+    syncFav();
     myDb.filter(filterFav).then(result => {pickData = buildPick(list, result)});
     myDb.getFav().then(result => {
       if(result){
@@ -181,9 +202,15 @@ class Main extends React.Component {
   }
 
   onPressFab() {
-    switch(this.state.currentView){
-      case 0: this.setState({currentView: 1}); break;
+    switch(this.state.view){
+      case 0: myDb.getFav().then(result => {
+        if(result)fav = result[0].fav;
+        else fav = [];
+        this.setState({view:1});
+      });
+      break;
       case 1: _navigator.push({id: 'filter'}); break;
+      case 2: break;
       default: break;
     }
   }
@@ -210,41 +237,52 @@ class Main extends React.Component {
       <View style={styles.menuSpace}></View>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{
         this.drawer.closeDrawer();
-        myDb.getCardData(fav).then(result => {
-          if(result)cardData = result;
-          else cardData = [];
-          this.setState({currentView:0});
-        });
+        myDb.getFav().then(result => {
+          if(result)fav = result[0].fav;
+          else fav = [];
+          myDb.getCardData(fav).then(result => {
+            if(result)cardData = result;
+            else cardData = [];
+            this.setState({view:0});
+          });
+        })
       }}>
-      <View style={[styles.menuItem,{backgroundColor: this.state.currentView==0?'#eee':'#fff'}]}>
+      <View style={[styles.menuItem,{backgroundColor: this.state.view==0?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#ffc107'}]}
       resizeMode={Image.resizeMode.stretch}
       source={require('image!ic_star_white_24dp')} />
-      <Text style={[styles.menuText,{color: this.state.currentView==0?'#ffc107':'#000000'} ]}>我的大学</Text>
+      <Text style={[styles.menuText,{color: this.state.view==0?'#ffc107':'#000000'} ]}>我的大学</Text>
       </View>
       </TouchableHighlight>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.setState({currentView:1});this.drawer.closeDrawer();}}>
-      <View style={[styles.menuItem,{backgroundColor: this.state.currentView==1?'#eee':'#fff'}]}>
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{
+        this.drawer.closeDrawer();
+        myDb.getFav().then(result => {
+          if(result)fav = result[0].fav;
+          else fav = [];
+          this.setState({view:1});
+        });
+      }}>
+      <View style={[styles.menuItem,{backgroundColor: this.state.view==1?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#8bc34a'}]}
       resizeMode={Image.resizeMode.stretch}
       source={require('image!ic_search_white_24dp')} />
-      <Text style={[styles.menuText, {color: this.state.currentView==1?'#8bc34a':'#000000'}]}>院校筛选</Text>
+      <Text style={[styles.menuText, {color: this.state.view==1?'#8bc34a':'#000000'}]}>院校筛选</Text>
       </View>
       </TouchableHighlight>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.setState({currentView:2});this.drawer.closeDrawer();}}>
-      <View style={[styles.menuItem,{backgroundColor: this.state.currentView==2?'#eee':'#fff'}]}>
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.setState({view:2});this.drawer.closeDrawer();}}>
+      <View style={[styles.menuItem,{backgroundColor: this.state.view==2?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#f44336'}]}
       resizeMode={Image.resizeMode.stretch}
       source={require('image!ic_description_white_24dp')} />
-      <Text style={[styles.menuText, {color: this.state.currentView==2?'#f44336':'#000000'}]}>留学资讯</Text>
+      <Text style={[styles.menuText, {color: this.state.view==2?'#f44336':'#000000'}]}>留学资讯</Text>
       </View>
       </TouchableHighlight>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.setState({currentView:3});this.drawer.closeDrawer();}}>
-      <View style={[styles.menuItem,{backgroundColor: this.state.currentView==3?'#eee':'#fff'}]}>
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.setState({view:3});this.drawer.closeDrawer();}}>
+      <View style={[styles.menuItem,{backgroundColor: this.state.view==3?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#2196f3'}]}
       resizeMode={Image.resizeMode.stretch}
       source={require('image!ic_chat_white_24dp')} />
-      <Text style={[styles.menuText, {color: this.state.currentView==3?'#2196f3':'#000000'}]}>即时聊天</Text>
+      <Text style={[styles.menuText, {color: this.state.view==3?'#2196f3':'#000000'}]}>即时聊天</Text>
       </View>
       </TouchableHighlight>
       <View style={styles.menuSeparator}></View>
@@ -271,9 +309,9 @@ class Main extends React.Component {
     );
 
     var mainView=<View />;
-    switch (this.state.currentView) {
-      case 0: mainView = <Nav data={cardData} fav={fav} />; break;
-      case 1: mainView = <Pick data={pickData} picked={fav} />; break;
+    switch (this.state.view) {
+      case 0: mainView = <Nav data={cardData} />; break;
+      case 1: syncFav(); mainView = <Pick data={pickData} picked={fav} />; break;
       defualt: break;
     }
 
@@ -287,17 +325,17 @@ class Main extends React.Component {
       <Image style={{width: 0, height: 0,}} source={require('image!ic_filter_list_white_24dp')} />
       <StatusBar backgroundColor="rgba(52,52,52,0.4)" translucent={true} />
 
-      <View style={{height: 24, elevation: 4, backgroundColor: viewProp[this.state.currentView].color}}/>
+      <View style={{height: 24, elevation: 4, backgroundColor: viewProp[this.state.view].color}}/>
       <ToolbarAndroid
       navIcon={require('image!ic_menu_white_24dp')}
       onIconClicked={() => this.drawer.openDrawer()}
-      style={[styles.toolbar,{backgroundColor: viewProp[this.state.currentView].color}]}
-      title={viewProp[this.state.currentView].title}
+      style={[styles.toolbar,{backgroundColor: viewProp[this.state.view].color}]}
+      title={viewProp[this.state.view].title}
       titleColor='#ffffff'></ToolbarAndroid>
       {mainView}
       <TouchableHighlight style={styles.fab} onPress={()=>{this.onPressFab()}}>
-      <View style={[styles.fabView,{backgroundColor: viewProp[this.state.currentView].color}]}>
-      <Image style={styles.fabIcon} source={require(viewProp[this.state.currentView].fabIcon)} />
+      <View style={[styles.fabView,{backgroundColor: viewProp[this.state.view].color}]}>
+      <Image style={styles.fabIcon} source={require(viewProp[this.state.view].fabIcon)} />
       </View>
       </TouchableHighlight>
       </DrawerLayoutAndroid>
@@ -327,7 +365,8 @@ class User extends React.Component {
     .then((response) => response.json())
     .then((profile) => {
       if(profile.length>0) {
-        myDb.setUser(this.state.user, this.state.passwd, profile);
+        myDb.setUser(this.state.user, this.state.passwd, profile)
+        .then(()=>{syncFav()});
         _navigator.pop();
       }
       else ToastAndroid.show('手机号或密码错误，请重试！', ToastAndroid.SHORT);
