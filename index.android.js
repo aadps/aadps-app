@@ -29,7 +29,7 @@ var Linking = require('Linking');
 var toolbarHeight = 56;
 var drawerWidth = Dimensions.get('window').width-toolbarHeight;
 
-var _navigator;
+var _navigator, _main;
 
 const viewProp = [{
   title: '我的大学',
@@ -48,7 +48,7 @@ const viewProp = [{
   color: '#2196f3',
   fabIcon: 'image!ic_chat_white_24dp',
 }];
-const list = [{name: '字母A', ids: [1791, 3665, 3675]},
+var list = [{name: '字母A', ids: [1791, 3665, 3675]},
   {name: '字母B', ids: [1560, 1641, 1647, 1737, 1977, 2198, 2227, 2233, 2242, 3580]},
   {name: '字母C', ids: [177, 925, 928, 930, 1554, 1985, 2110, 2192,
   2194, 2238, 3531, 3533, 3535, 3537, 3539, 3541, 3543, 3547, 3549, 3559, 3561,
@@ -109,7 +109,6 @@ function buildPick(list, filterResult) {
     }
     list[i].data=data;
   }
-  return list;
 }
 
 function syncFav(callback) {
@@ -172,7 +171,10 @@ class aadps extends React.Component{
           navIcon={require('image!ic_arrow_back_white_24dp')}
           onIconClicked={() => {
             _navigator.pop();
-            myDb.filter(filterFav).then(result => {pickData = buildPick(list, result)});
+            myDb.filter(filterFav).then(result => {
+              buildPick(list, result)
+              _main.refs.myPick.set(list);
+            });
           }}
           style={[styles.toolbar,{backgroundColor: '#8bc34a'}]}
           title={'筛选器'}
@@ -194,6 +196,8 @@ class Main extends React.Component {
       view: 0,
       profile: nullProfile,
     };
+
+    _main = this;
 
     syncFav();
     myDb.getFav().then(result => {
@@ -219,7 +223,7 @@ class Main extends React.Component {
         if(result)fav = result[0].fav;
         else fav = [];
         myDb.filter(filterFav).then(result => {
-          pickData = buildPick(list, result)
+          buildPick(list, result);
           this.setState({view:1});
         });
       });
@@ -275,7 +279,7 @@ class Main extends React.Component {
           if(result)fav = result[0].fav;
           else fav = [];
           myDb.filter(filterFav).then(result => {
-            pickData = buildPick(list, result)
+            buildPick(list, result)
             this.setState({view:1});
           });
         });
@@ -329,7 +333,7 @@ class Main extends React.Component {
     var mainView=<View />;
     switch (this.state.view) {
       case 0: mainView = <Nav data={cardData} />; break;
-      case 1: syncFav(); mainView = <Pick data={pickData} picked={fav} isPerm={true}/>; break;
+      case 1: syncFav(); mainView = <Pick data={list} picked={fav} isPerm={true} ref="myPick"/>; break;
       defualt: break;
     }
 

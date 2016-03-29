@@ -35,7 +35,7 @@ class Card extends React.Component {
   }
 
   onClose() {
-    LayoutAnimation.spring();
+    LayoutAnimation.linear();
     this.setState({height: 0, closed: true});
     var array = this.props.fav;
     var index = array.indexOf(this.props.data.id);
@@ -45,7 +45,7 @@ class Card extends React.Component {
   }
 
   onExpand() {
-    LayoutAnimation.easeInEaseOut();
+    LayoutAnimation.spring();
     if(this.state.expanded)this.setState({height: 240, expanded: false});
     else this.setState({height: 140, expanded: true});
   }
@@ -58,7 +58,7 @@ class Card extends React.Component {
             javaScriptEnabled={true}
             domStorageEnabled={false}
             onLoadEnd={()=>{
-              LayoutAnimation.easeInEaseOut();
+              LayoutAnimation.spring();
               this.setState({height: 390});
             }} />;
 

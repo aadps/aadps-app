@@ -17,43 +17,48 @@ var myDb = new Db();
 var Dimensions = require('Dimensions');
 var LayoutAnimation = require('LayoutAnimation');
 
-class Item extends React.Component {
-  render() {
-    LayoutAnimation.spring();
-    var picked = this.props.picked.indexOf(this.props.data.id) >= 0;
+class Pick extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      picked: this.props.picked,
+      data: this.props.data,
+    };
+  }
+
+  renderItem(data) {
+    var picked = this.props.picked.indexOf(data.id) >= 0;
     return (
-      <TouchableWithoutFeedback onPress={() => {
+      <TouchableWithoutFeedback key={data.id} onPress={() => {
         var array = this.props.picked;
-        var index = array.indexOf(this.props.data.id);
+        var index = array.indexOf(data.id);
 
         if (index === -1) {
-          array.push(this.props.data.id);
+          array.push(data.id);
         } else {
           array.splice(index, 1);
         }
 
-        this.props.onChange(array);
+        this.onChange(array);
         if(this.props.isPerm)myDb.setFav(array, parseInt(new Date().getTime() / 1000));
       }}>
       <View style={[styles.item, picked?styles.itemPicked:{}]}>
-      <Text style={picked?styles.textPicked:{}}>{this.props.data.name}</Text>
+      <Text style={picked?styles.textPicked:{}}>{data.name}</Text>
       </View>
       </TouchableWithoutFeedback>
     )
   }
-}
 
-class Section extends React.Component {
-  render() {
-    if(this.props.data.data.length > 0){
+  renderSection(data) {
+    if(data.data.length > 0){
       var items = [];
-      for(var i = 0; i < this.props.data.data.length; i++)
-        items.push(<Item key={i} data={this.props.data.data[i]} picked={this.props.picked} onChange={this.props.onChange} isPerm={this.props.isPerm} />);
+      for(var i = 0; i < data.data.length; i++)
+        items.push(this.renderItem(data.data[i]));
       return (
-        <View>
+        <View key={data.name}>
 
         <View style={styles.section}>
-        <Text style={styles.heading}>{this.props.data.name}</Text>
+        <Text style={styles.heading}>{data.name}</Text>
         </View>
         <View style={styles.itemContainer}>
         {items}
@@ -61,23 +66,14 @@ class Section extends React.Component {
 
         </View>
       )
-    }else return <View />
-  }
-}
-
-class Pick extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      picked: this.props.picked,
-    };
+    }else return <View key={data.name}/>
   }
 
   render() {
-    if(this.props.data.length > 0){
+    if(this.state.data.length > 0){
       var sections = [];
-      for(var i = 0; i < this.props.data.length; i++)
-      sections.push(<Section key={i} data={this.props.data[i]} picked={this.state.picked} onChange={this.onChange} isPerm={this.props.isPerm} />);
+      for(var i = 0; i < this.state.data.length; i++)
+        sections.push(this.renderSection(this.state.data[i]));
       return (
         <ScrollView>
         {sections}
@@ -89,6 +85,11 @@ class Pick extends React.Component {
       <Text style={styles.hint}>点击右下角按钮调整一下范围吧</Text>
       </View>
     )
+  }
+
+  set(data) {
+    LayoutAnimation.spring();
+    this.setState({data: data});
   }
 
   onChange = (data) => {
