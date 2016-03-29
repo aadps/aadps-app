@@ -53,7 +53,7 @@ class Card extends React.Component {
   render() {
     var content, card;
     if(this.state.expanded){
-      content =       <WebView style={[styles.stat, {height: this.state.height - 150}]}
+      content =       <WebView style={[styles.stat, {height: this.state.height - 154}]}
             source={{uri: 'http://aadps.net/wp-content/themes/aadps/stat.php?id=' + this.props.data.id}}
             javaScriptEnabled={true}
             domStorageEnabled={false}
