@@ -33,7 +33,7 @@ class Item extends React.Component {
         }
 
         this.props.onChange(array);
-        myDb.setFav(array, parseInt(new Date().getTime() / 1000));
+        if(this.props.isPerm)myDb.setFav(array, parseInt(new Date().getTime() / 1000));
       }}>
       <View style={[styles.item, picked?styles.itemPicked:{}]}>
       <Text style={picked?styles.textPicked:{}}>{this.props.data.name}</Text>
@@ -48,7 +48,7 @@ class Section extends React.Component {
     if(this.props.data.data.length > 0){
       var items = [];
       for(var i = 0; i < this.props.data.data.length; i++)
-        items.push(<Item key={i} data={this.props.data.data[i]} picked={this.props.picked} onChange={this.props.onChange}/>);
+        items.push(<Item key={i} data={this.props.data.data[i]} picked={this.props.picked} onChange={this.props.onChange} isPerm={this.props.isPerm} />);
       return (
         <View>
 
@@ -77,7 +77,7 @@ class Pick extends React.Component {
     if(this.props.data.length > 0){
       var sections = [];
       for(var i = 0; i < this.props.data.length; i++)
-      sections.push(<Section key={i} data={this.props.data[i]} picked={this.state.picked} onChange={this.onChange}/>);
+      sections.push(<Section key={i} data={this.props.data[i]} picked={this.state.picked} onChange={this.onChange} isPerm={this.props.isPerm} />);
       return (
         <ScrollView>
         {sections}

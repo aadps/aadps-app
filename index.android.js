@@ -179,7 +179,7 @@ class aadps extends React.Component{
           titleColor='#fff'>
           </ToolbarAndroid>
 
-          <Pick data={filterData} picked={filterFav} />
+          <Pick data={filterData} picked={filterFav} isPerm={false}/>
 
           </View>
         );
@@ -196,7 +196,6 @@ class Main extends React.Component {
     };
 
     syncFav();
-    myDb.filter(filterFav).then(result => {pickData = buildPick(list, result)});
     myDb.getFav().then(result => {
       if(result){
         fav = result[0].fav;
@@ -219,7 +218,10 @@ class Main extends React.Component {
       case 0: myDb.getFav().then(result => {
         if(result)fav = result[0].fav;
         else fav = [];
-        this.setState({view:1});
+        myDb.filter(filterFav).then(result => {
+          pickData = buildPick(list, result)
+          this.setState({view:1});
+        });
       });
       break;
       case 1: _navigator.push({id: 'filter'}); break;
@@ -272,7 +274,10 @@ class Main extends React.Component {
         myDb.getFav().then(result => {
           if(result)fav = result[0].fav;
           else fav = [];
-          this.setState({view:1});
+          myDb.filter(filterFav).then(result => {
+            pickData = buildPick(list, result)
+            this.setState({view:1});
+          });
         });
       }}>
       <View style={[styles.menuItem,{backgroundColor: this.state.view==1?'#eee':'#fff'}]}>
@@ -324,7 +329,7 @@ class Main extends React.Component {
     var mainView=<View />;
     switch (this.state.view) {
       case 0: mainView = <Nav data={cardData} />; break;
-      case 1: syncFav(); mainView = <Pick data={pickData} picked={fav} />; break;
+      case 1: syncFav(); mainView = <Pick data={pickData} picked={fav} isPerm={true}/>; break;
       defualt: break;
     }
 
