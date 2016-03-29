@@ -139,7 +139,7 @@ class Nav extends React.Component {
       for(var i = 0; i < this.props.data.length; i++)
         cards.push(<Card key={i} data={this.props.data[i]} fav={fav} onChange={this.onChange} />);
       return (
-        <ScrollView>
+        <ScrollView style={{backgroundColor: '#f0f0f0',}}>
         {cards}
         <View style={{height: 8}} />
         </ScrollView>
@@ -172,7 +172,7 @@ var styles = StyleSheet.create({
   },
   caption: {
     fontSize: 20,
-    color: '#ffffff',
+    color: '#fff',
     marginLeft: 10,
   },
   line2: {
@@ -233,6 +233,7 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f0f0f0',
   },
   message: {
     fontSize: 20,
@@ -243,5 +244,6 @@ var styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     margin: 10,
+    color: '#333',
   },
 });

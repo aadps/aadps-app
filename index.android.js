@@ -97,7 +97,7 @@ var filterFav = [1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 21, 22, 23, 24];
 var fav = [];
 
 function buildPick(list, filterResult) {
-  if(!filterResult)return[];
+  if(!filterResult)return false;
   var cnames={};
   for(var i = 0; i< filterResult.length; i++){
     cnames[filterResult[i].id]=filterResult[i].cname;
@@ -109,6 +109,7 @@ function buildPick(list, filterResult) {
     }
     list[i].data=data;
   }
+  return true;
 }
 
 function syncFav(callback) {
@@ -172,8 +173,8 @@ class aadps extends React.Component{
           onIconClicked={() => {
             _navigator.pop();
             myDb.filter(filterFav).then(result => {
-              buildPick(list, result)
-              _main.refs.myPick.set(list);
+              if(buildPick(list, result))_main.refs.myPick.set(list);
+              else _main.refs.myPick.set([]);
             });
           }}
           style={[styles.toolbar,{backgroundColor: '#8bc34a'}]}
@@ -440,17 +441,18 @@ class User extends React.Component {
     </View>
 
     <TextInput underlineColorAndroid='#fff'
-    style={{flex: 0.9}}
+    style={styles.input}
     autoCorrect={false}
     onChangeText={(nick) => this.setState({nick})}
     value={this.state.nick}
     placeholder={'昵称'}
+    placeholderTextColor='#888'
     />
 
     </View>;
 
     return (
-      <View style={{flexDirection: "column", flex: 1, }}>
+      <View style={{flexDirection: "column", flex: 1, backgroundColor: '#f0f0f0'}}>
       <View style={{height: 24, elevation: 4, backgroundColor: '#888'}} />
       <ToolbarAndroid
       navIcon={require('image!ic_arrow_back_white_24dp')}
@@ -468,11 +470,12 @@ class User extends React.Component {
       source={require('image!ic_phone_android_white_24dp')} />
       </View>
       <TextInput underlineColorAndroid='#fff'
-      style={{flex: 0.9}}
+      style={styles.input}
       autoCorrect={false}
       onChangeText={(user) => this.setState({user})}
       value={this.state.user}
       placeholder={this.state.register?'11位中国大陆手机号':'手机号或aadps.net账户'}
+      placeholderTextColor='#888'
       />
       </View>
       {namefield}
@@ -482,24 +485,25 @@ class User extends React.Component {
       resizeMode={Image.resizeMode.cover}
       source={require('image!ic_vpn_key_white_24dp')} />
       </View>
-      <TextInput
-      style={{flex: 0.9}}
+      <TextInput underlineColorAndroid='#fff'
+      style={styles.input}
       autoCorrect={false}
       secureTextEntry={true}
       onChangeText={(passwd) => this.setState({passwd})}
       value={this.state.passwd}
       placeholder={'密码'}
+      placeholderTextColor='#888'
       />
       </View>
       <View style={{flexDirection: 'row', width: Dimensions.get('window').width, top: Dimensions.get('window').height-160, position: "absolute", }}>
       <TouchableHighlight style={{flex: 0.5, margin: 12, height: 40, borderRadius: 5}} onPress={()=>{this.state.register?this.register():this.login();}}>
-      <View style={[styles.button, {backgroundColor: "#888"}]}>
+      <View style={[styles.button, {backgroundColor: "#009688"}]}>
       <Text style={{alignSelf: 'center', color: '#fff'}}>{this.state.register?'注册':'登录'}</Text>
       </View>
       </TouchableHighlight>
       <TouchableHighlight style={{flex: 0.5, margin: 12, height: 40, borderRadius: 5}} onPress={()=>{this.setState({register:!this.state.register})}}>
-      <View style={[styles.button, { backgroundColor: "#f9f9f9"}]}>
-      <Text style={{alignSelf: 'center'}}>{this.state.register?'已有账户，登录':'注册新账户'}</Text>
+      <View style={[styles.button, {borderWidth: 1, backgroundColor: "#f0f0f0"}]}>
+      <Text style={{alignSelf: 'center', color: '#888'}}>{this.state.register?'已有账户，登录':'注册新账户'}</Text>
       </View>
       </TouchableHighlight>
       </View>
@@ -598,9 +602,12 @@ var styles = StyleSheet.create({
   button:{
     height: 40,
     justifyContent: 'center',
-    borderWidth: 1,
     borderRadius: 5,
     borderColor: '#888',
+  },
+  input:{
+    flex: 0.9,
+    color: '#333',
   },
 });
 

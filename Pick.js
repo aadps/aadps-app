@@ -43,7 +43,7 @@ class Pick extends React.Component {
         if(this.props.isPerm)myDb.setFav(array, parseInt(new Date().getTime() / 1000));
       }}>
       <View style={[styles.item, picked?styles.itemPicked:{}]}>
-      <Text style={picked?styles.textPicked:{}}>{data.name}</Text>
+      <Text style={picked?{color: '#fff'}:{color: '#888'}}>{data.name}</Text>
       </View>
       </TouchableWithoutFeedback>
     )
@@ -75,7 +75,7 @@ class Pick extends React.Component {
       for(var i = 0; i < this.state.data.length; i++)
         sections.push(this.renderSection(this.state.data[i]));
       return (
-        <ScrollView>
+        <ScrollView style={{backgroundColor: '#f0f0f0',}}>
         {sections}
         </ScrollView>
       )
@@ -130,16 +130,14 @@ var styles = StyleSheet.create({
     borderColor: '#888',
   },
   itemPicked: {
-    borderColor: '#fff',
+    borderColor: '#f0f0f0',
     backgroundColor: '#8bc34a',
-  },
-  textPicked: {
-    color: '#fff',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f0f0f0',
   },
   message: {
     fontSize: 20,
@@ -150,5 +148,6 @@ var styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     margin: 10,
+    color: '#333',
   },
 });
