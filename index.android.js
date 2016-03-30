@@ -539,15 +539,18 @@ var styles = StyleSheet.create({
   },
   menuName: {
     fontSize: 20,
-    left: 108,
+    fontWeight: 'bold',
+    left: 104,
     top: 50,
     position: 'absolute',
+    color: '#fff',
   },
   menuCell: {
     fontSize: 14,
-    left: 108,
+    left: 104,
     top: 80,
     position: 'absolute',
+    color: '#fff',
   },
   menuItem: {
     height: 48,
@@ -561,7 +564,7 @@ var styles = StyleSheet.create({
     height: 24,
   },
   menuText: {
-    left: 44,
+    left: 40,
     fontSize: 16,
     color: '#333',
   },
