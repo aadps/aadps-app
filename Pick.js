@@ -113,7 +113,7 @@ var styles = StyleSheet.create({
   heading: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1b5e20',
+    color: '#333',
   },
   itemContainer: {
     flexDirection: 'row',
