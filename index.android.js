@@ -23,6 +23,7 @@ var Db = require('./Db');
 var myDb = new Db();
 var Nav = require('./Nav');
 var Pick = require('./Pick');
+var News = require('./News');
 var Dimensions = require('Dimensions');
 var Linking = require('Linking');
 
@@ -334,7 +335,8 @@ class Main extends React.Component {
     var mainView=<View />;
     switch (this.state.view) {
       case 0: mainView = <Nav data={cardData} />; break;
-      case 1: syncFav(); mainView = <Pick data={list} picked={fav} isPerm={true} ref="myPick"/>; break;
+      case 1: syncFav(); mainView = <Pick data={list} picked={fav} isPerm={true} ref="myPick" />; break;
+      case 2: mainView = <News />; break;
       defualt: break;
     }
 
