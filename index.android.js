@@ -15,7 +15,6 @@ var {
   Navigator,
   BackAndroid,
   TextInput,
-  StatusBar,
   ToastAndroid,
 } = React;
 
@@ -27,8 +26,7 @@ var News = require('./News');
 var Dimensions = require('Dimensions');
 var Linking = require('Linking');
 
-var toolbarHeight = 56;
-var drawerWidth = Dimensions.get('window').width-toolbarHeight;
+var drawerWidth = Dimensions.get('window').width - 56;
 
 var _navigator, _main;
 
@@ -168,7 +166,6 @@ class aadps extends React.Component{
       case 'filter':
         return (
           <View style={{flexDirection: "column", flex: 1, }}>
-          <View style={{height: 24, elevation: 4, backgroundColor: '#8bc34a'}} />
           <ToolbarAndroid
           navIcon={require('image!ic_arrow_back_white_24dp')}
           onIconClicked={() => {
@@ -346,11 +343,7 @@ class Main extends React.Component {
       ref={(drawer) => { this.drawer = drawer; }}
       drawerPosition={DrawerLayoutAndroid.positions.Left}
       renderNavigationView={() => navigationView}>
-
       <Image style={{width: 0, height: 0,}} source={require('image!ic_filter_list_white_24dp')} />
-      <StatusBar backgroundColor="rgba(52,52,52,0.4)" translucent={true} />
-
-      <View style={{height: 24, elevation: 4, backgroundColor: viewProp[this.state.view].color}}/>
       <ToolbarAndroid
       navIcon={require('image!ic_menu_white_24dp')}
       onIconClicked={() => this.drawer.openDrawer()}
@@ -455,7 +448,7 @@ class User extends React.Component {
 
     return (
       <View style={{flexDirection: "column", flex: 1, backgroundColor: '#f0f0f0'}}>
-      <View style={{height: 24, elevation: 4, backgroundColor: '#888'}} />
+
       <ToolbarAndroid
       navIcon={require('image!ic_arrow_back_white_24dp')}
       onIconClicked={() => {_navigator.pop()} }
@@ -529,7 +522,7 @@ var styles = StyleSheet.create({
     flex: 1,
   },
   menuHead: {
-    height: 130,
+    height: 104,
     width: drawerWidth,
   },
   menuAvatar: {
@@ -537,20 +530,20 @@ var styles = StyleSheet.create({
     height: 72,
     borderRadius: 36,
     marginLeft: 16,
-    marginTop: 40,
+    marginTop: 16,
   },
   menuName: {
     fontSize: 20,
     fontWeight: 'bold',
     left: 104,
-    top: 50,
+    top: 30,
     position: 'absolute',
     color: '#fff',
   },
   menuCell: {
     fontSize: 14,
     left: 104,
-    top: 80,
+    top: 56,
     position: 'absolute',
     color: '#fff',
   },
@@ -579,7 +572,7 @@ var styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   toolbar: {
-    height: toolbarHeight,
+    height: 56,
     elevation: 4,
   },
   pageStyle: {

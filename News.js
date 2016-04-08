@@ -8,7 +8,7 @@ var {
   Image,
   View,
   ListView,
-  TouchableNativeFeedback,
+  TouchableHighlight,
 } = React;
 
 var Linking = require('Linking');
@@ -77,9 +77,9 @@ class News extends React.Component {
 
   renderNews(news) {
     return (
-      <TouchableNativeFeedback
-      onPress={()=>{Linking.openURL(news.link.replace('https', 'http'))}}
-      background={TouchableNativeFeedback.Ripple('#ccc')}>
+      <TouchableHighlight
+      activeOpacity={0.935}
+      onPress={()=>{Linking.openURL(news.link.replace('https', 'http'))}}>
       <View style={styles.container}>
       <Image
       source={{uri: news.thumb}}
@@ -91,7 +91,7 @@ class News extends React.Component {
       <Text style={styles.date}>{news.date}</Text>
       </View>
       </View>
-      </TouchableNativeFeedback>
+      </TouchableHighlight>
     );
   }
 }
