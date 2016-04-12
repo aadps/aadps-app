@@ -46,13 +46,12 @@ public class MainActivity extends ReactActivity {
             resource.getIdentifier("notification_text", "id", pkgName));
     cBuilder.setNotificationFlags(Notification.FLAG_AUTO_CANCEL);
     cBuilder.setNotificationDefaults(Notification.DEFAULT_VIBRATE);
-    cBuilder.setStatusbarIcon(this.getApplicationInfo().icon);
-    cBuilder.setLayoutDrawable(resource.getIdentifier(
-            "simple_notification_icon", "drawable", pkgName));
+    cBuilder.setStatusbarIcon(resource.getIdentifier(
+            "status", "drawable", pkgName));
     cBuilder.setNotificationSound(Uri.withAppendedPath(
             Audio.Media.INTERNAL_CONTENT_URI, "6").toString());
     // 推送高级设置，通知栏样式设置为下面的ID
-    PushManager.setNotificationBuilder(this, 1, cBuilder);
+    PushManager.setDefaultNotificationBuilder(this, cBuilder);
   }
 
     /**
