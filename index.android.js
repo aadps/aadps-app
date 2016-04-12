@@ -33,19 +33,19 @@ var _navigator, _main;
 const viewProp = [{
   title: '我的大学',
   color: '#ffc107',
-  fabIcon: 'image!ic_search_white_24dp',
+  actions: [],
 },{
   title: '院校筛选',
   color: '#8bc34a',
-  fabIcon: 'image!ic_filter_list_white_24dp',
+  actions: [{title: '筛选', icon: require('image!ic_filter_list_white_24dp'), show: 'always'}],
 },{
   title: '留学资讯',
   color: '#f44336',
-  fabIcon: 'image!ic_description_white_24dp',
+  actions: [],
 },{
   title: '即时聊天',
   color: '#2196f3',
-  fabIcon: 'image!ic_chat_white_24dp',
+  actions: [],
 }];
 var list = [{name: '字母A', ids: [1791, 3665, 3675]},
   {name: '字母B', ids: [1560, 1641, 1647, 1737, 1977, 2198, 2227, 2233, 2242, 3580]},
@@ -216,19 +216,9 @@ class Main extends React.Component {
     });
   }
 
-  onPressFab() {
+  onActionSelected(pos) {
     switch(this.state.view){
-      case 0: myDb.getFav().then(result => {
-        if(result)fav = result[0].fav;
-        else fav = [];
-        myDb.filter(filterFav).then(result => {
-          buildPick(list, result);
-          this.setState({view:1});
-        });
-      });
-      break;
-      case 1: _navigator.push({id: 'filter'}); break;
-      case 2: break;
+      case 1: if (pos === 0)_navigator.push({id: 'filter'}); break;
       default: break;
     }
   }
@@ -343,19 +333,19 @@ class Main extends React.Component {
       ref={(drawer) => { this.drawer = drawer; }}
       drawerPosition={DrawerLayoutAndroid.positions.Left}
       renderNavigationView={() => navigationView}>
-      <Image style={{width: 0, height: 0,}} source={require('image!ic_filter_list_white_24dp')} />
+
       <ToolbarAndroid
       navIcon={require('image!ic_menu_white_24dp')}
       onIconClicked={() => this.drawer.openDrawer()}
       style={[styles.toolbar,{backgroundColor: viewProp[this.state.view].color}]}
       title={viewProp[this.state.view].title}
-      titleColor='#ffffff'></ToolbarAndroid>
+      titleColor='#ffffff'
+      actions={viewProp[this.state.view].actions}
+      onActionSelected={(pos)=>this.onActionSelected(pos)}
+      ></ToolbarAndroid>
+
       {mainView}
-      <TouchableHighlight style={styles.fab} onPress={()=>{this.onPressFab()}}>
-      <View style={[styles.fabView,{backgroundColor: viewProp[this.state.view].color}]}>
-      <Image style={styles.fabIcon} source={require(viewProp[this.state.view].fabIcon)} />
-      </View>
-      </TouchableHighlight>
+
       </DrawerLayoutAndroid>
     );
   }
@@ -578,24 +568,6 @@ var styles = StyleSheet.create({
   pageStyle: {
     alignItems: 'center',
     padding: 20,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
-    elevation: 6,
-    borderRadius: 28,
-  },
-  fabView: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  fabIcon: {
-    width: 24,
-    height: 24,
   },
   button:{
     height: 40,

@@ -82,7 +82,7 @@ class Pick extends React.Component {
     }else return(
       <View style={styles.container}>
       <Text style={styles.message}>空空如也呢( ´・ω・` )</Text>
-      <Text style={styles.hint}>点击右下角按钮调整一下范围吧</Text>
+      <Text style={styles.hint}>重新调整一下筛选范围吧</Text>
       </View>
     )
   }
