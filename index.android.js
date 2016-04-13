@@ -94,6 +94,7 @@ var pickData = [];
 
 var filterFav = [1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 21, 22, 23, 24];
 var fav = [];
+var view = 0;
 
 function buildPick(list, filterResult) {
   if(!filterResult)return false;
@@ -148,6 +149,7 @@ function syncFav(callback) {
 
 class aadps extends React.Component{
   render() {
+    if(this.props.view != undefined)view = this.props.view;
     return (
         <Navigator
           style={styles.container}
@@ -160,7 +162,7 @@ class aadps extends React.Component{
     _navigator = navigator;
     switch (route.id) {
       case 'main':
-        return (<Main navigator = {navigator} />);
+        return (<Main navigator = {navigator} view = {view} />);
       case 'user':
         return (<User navigator = {navigator} />);
       case 'filter':
@@ -192,7 +194,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 0,
+      view: this.props.view,
       profile: nullProfile,
     };
 

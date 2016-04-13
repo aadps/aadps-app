@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -136,19 +137,21 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
             JSONObject customJson = null;
             try {
                 customJson = new JSONObject(customContentString);
-                String myvalue = null;
-                if (!customJson.isNull("mykey")) {
-                    myvalue = customJson.getString("mykey");
+                String view = null;
+                if (!customJson.isNull("view")) {
+                    view = customJson.getString("view");
+                    Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Bundle b = new Bundle();
+                    b.putInt("view", Integer.parseInt(view)); //Your id
+                    intent.putExtras(b);
+                    context.getApplicationContext().startActivity(intent);
                 }
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-
-        Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.getApplicationContext().startActivity(intent);
     }
 
     /**
