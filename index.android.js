@@ -327,7 +327,7 @@ class Main extends React.Component {
       case 0: mainView = <Nav data={cardData} />; break;
       case 1: syncFav(); mainView = <Pick data={list} picked={fav} isPerm={true} ref="myPick" />; break;
       case 2: mainView = <News />; break;
-      case 3: mainView = <Chat />; break;
+      case 3: mainView = <Chat chan={0}/>; break;
       defualt: break;
     }
 

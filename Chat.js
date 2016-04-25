@@ -12,6 +12,8 @@ import React, {
   PixelRatio,
 } from 'react-native';
 
+var Db = require('./Db');
+var myDb = new Db();
 var GiftedMessenger = require('react-native-gifted-messenger');
 
 
@@ -22,73 +24,57 @@ if (Platform.OS === 'android') {
 
 
 class Chat extends Component {
+  getChat() {
+    fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: 'getchat=&user='+this._user+'&passwd='+this._passwd+'&chan='+this.props.chan+'&id='+this._id
+    })
+    .then((response) => response.json())
+    .then((message) => {
+      if(message.length>0){
+        for(var i in message){
+          var t = message[i]["date"].split(/[- :]/);
+          message[i]["date"] = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+        }
+        this.handleReceive(message);
+        if(this._messages.length != 0)this._id = this._messages[this._messages.length-1].uniqueId;
+      }
+    }).catch((error) => {});
+  }
 
   constructor(props) {
     super(props);
 
     this._isMounted = false;
-    this._messages = this.getInitialMessages();
+    this._messages = [];
+    this._user = '';
+    this._passwd = '';
+    this._id = 0;
+    myDb.getUser().then(user => {
+      this._user = user[0].user;
+      this._passwd = user[0].passwd;
+      this.getChat();
+    });
 
     this.state = {
       messages: this._messages,
       isLoadingEarlierMessages: false,
-      typingMessage: '',
-      allLoaded: false,
     };
 
   }
 
+
+
   componentDidMount() {
     this._isMounted = true;
-
-    setTimeout(() => {
-      this.setState({
-        typingMessage: 'React-Bot is typing a message...',
-      });
-    }, 1000); // simulating network
-
-    setTimeout(() => {
-      this.setState({
-        typingMessage: '',
-      });
-    }, 3000); // simulating network
-
-
-    setTimeout(() => {
-      this.handleReceive({
-        text: 'Hello Awesome Developer',
-        name: 'React-Bot',
-        image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
-        position: 'left',
-        date: new Date(),
-        uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
-      });
-    }, 3300); // simulating network
+    setInterval(() => {this.getChat()}, 5000);
   }
 
   componentWillUnmount() {
     this._isMounted = false;
-  }
-
-  getInitialMessages() {
-    return [
-      {
-        text: 'Are you building a chat app?',
-        name: 'React-Bot',
-        image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
-        position: 'left',
-        date: new Date(2016, 3, 14, 13, 0),
-        uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
-      },
-      {
-        text: "你好吗？",
-        name: 'Awesome Developer',
-        image: null,
-        position: 'right',
-        date: new Date(2016, 3, 14, 13, 1),
-        uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
-      },
-    ];
   }
 
   setMessageStatus(uniqueId, status) {
@@ -125,56 +111,22 @@ class Chat extends Component {
     // Your logic here
     // Send message.text to your server
 
-    message.uniqueId = Math.round(Math.random() * 10000); // simulating server-side unique id generation
-    this.setMessages(this._messages.concat(message));
-
-    // mark the sent message as Seen
-    setTimeout(() => {
-      this.setMessageStatus(message.uniqueId, 'Seen'); // here you can replace 'Seen' by any string you want
-    }, 1000);
+    fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: 'setchat=&user='+this._user+'&passwd='+this._passwd+'&chan='+this.props.chan+'&text='+message.text
+    })
+    .then(() => {this.getChat()})
+    .catch((error) => {
+      message.uniqueId = -Math.round(Math.random() * 10000);
+      this.setMessages(this._messages.concat(message));
+      this.setMessageStatus(message.uniqueId, 'ErrorButton');
+    });
 
     // if you couldn't send the message to your server :
     // this.setMessageStatus(message.uniqueId, 'ErrorButton');
-  }
-
-  onLoadEarlierMessages() {
-
-    // display a loader until you retrieve the messages from your server
-    this.setState({
-      isLoadingEarlierMessages: true,
-    });
-
-    // Your logic here
-    // Eg: Retrieve old messages from your server
-
-    // IMPORTANT
-    // Oldest messages have to be at the begining of the array
-    var earlierMessages = [
-      {
-        text: 'React Native enables you to build world-class application experiences on native platforms using a consistent developer experience based on JavaScript and React. https://github.com/facebook/react-native',
-        name: 'React-Bot',
-        image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
-        position: 'left',
-        date: new Date(2016, 0, 1, 20, 0),
-        uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
-      }, {
-        text: 'This is a touchable phone number 0606060606 parsed by taskrabbit/react-native-parsed-text',
-        name: 'Awesome Developer',
-        image: null,
-        position: 'right',
-        date: new Date(2016, 0, 2, 12, 0),
-        uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
-      },
-    ];
-
-    setTimeout(() => {
-      this.setMessages(earlierMessages.concat(this._messages)); // prepend the earlier messages to your list
-      this.setState({
-        isLoadingEarlierMessages: false, // hide the loader
-        allLoaded: true, // hide the `Load earlier messages` button
-      });
-    }, 1000); // simulating network
-
   }
 
   handleReceive(message = {}) {
@@ -188,7 +140,23 @@ class Chat extends Component {
     // re-send the failed message
 
     // remove the status
-    this.setMessageStatus(message.uniqueId, '');
+    fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: 'setchat=&user='+this._user+'&passwd='+this._passwd+'&chan='+this.props.chan+'&text='+message.text
+    })
+    .then(() => {
+      for(var i = this._messages.length - 1; i >= 0; i--){
+        if(this._messages[i].uniqueId == message.uniqueId){
+          this._messages.splice(i, 1);
+          this.setState({messages: this._messages});
+          break;
+        }
+      }
+      this.getChat();
+    });
   }
 
   // will be triggered when the Image of a row is touched
@@ -230,14 +198,12 @@ class Chat extends Component {
             backgroundColor: '#2196f3',
           },
         }}
-
+        dateLocale={'zh-cn'}
         autoFocus={false}
         messages={this.state.messages}
         handleSend={this.handleSend.bind(this)}
         onErrorButtonPress={this.onErrorButtonPress.bind(this)}
         maxHeight={Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT}
-
-        onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
 
         senderName='Awesome Developer'
         senderImage={null}
@@ -245,7 +211,9 @@ class Chat extends Component {
         placeholder={'输入聊天内容'}
         sendButtonText={'发送'}
 
-        typingMessage={this.state.typingMessage}
+        parseText={true}
+        handlePhonePress={this.handlePhonePress}
+        handleUrlPress={this.handleUrlPress}
       />
     );
   }
@@ -254,16 +222,9 @@ class Chat extends Component {
     Linking.openURL(url);
   }
 
-  // TODO
-  // make this compatible with Android
   handlePhonePress(phone) {
-
+    Linking.openURL('tel:' + phone);
   }
-
-  handleEmailPress(email) {
-
-  }
-
 }
 
 
