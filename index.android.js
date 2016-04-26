@@ -100,7 +100,7 @@ var view = 0;
 function buildPick(list, filterResult) {
   if(!filterResult)return false;
   var cnames={};
-  for(var i = 0; i< filterResult.length; i++){
+  for(var i = 0; i < filterResult.length; i++){
     cnames[filterResult[i].id]=filterResult[i].cname;
   }
   for(var i = 0; i < list.length; i++){
@@ -121,14 +121,14 @@ function syncFav(callback) {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: 'syncfav=&user=' + user[0].user + '&passwd=' + user[0].passwd
-          + '&fav=' + JSON.stringify(dbFav[0].fav) + '&time=' + dbFav[0].time
+        body: 'syncfav=&user=' + user.user + '&passwd=' + user.passwd
+          + '&fav=' + JSON.stringify(dbFav.fav) + '&time=' + dbFav.time
       })
       .then((response) => response.json())
       .then((result) => {
-        if(result.time > dbFav[0].time){
+        if(result.time > dbFav.time){
           fav = JSON.parse(result.fav);
-          myDb.setFav(fav,result.time);
+          myDb.setFav(fav, result.time);
         }
       });
       else fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
@@ -136,13 +136,13 @@ function syncFav(callback) {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: 'syncfav=&user=' + user[0].user + '&passwd=' + user[0].passwd
+        body: 'syncfav=&user=' + user.user + '&passwd=' + user.passwd
           + '&fav=[]&time=0'
       })
       .then((response) => response.json())
       .then((result) => {
         fav = JSON.parse(result.fav);
-        myDb.setFav(fav,result.time);
+        myDb.setFav(fav, result.time);
       });
     });
   });
@@ -201,16 +201,18 @@ class Main extends React.Component {
 
     _main = this;
 
-    syncFav();
-    myDb.getFav().then(result => {
-      if(result){
-        fav = result[0].fav;
-        myDb.getCardData(fav).then(result => {
-          cardData = result;
-          this.forceUpdate();
-        });
-      }
-    });
+    if(myDb._ready){
+      syncFav();
+      myDb.getFav().then(dbFav => {
+        if(dbFav){
+          myDb.getCardData(dbFav.fav).then(result => {
+            if(result)cardData = result;
+            else cardData = [];
+            this.forceUpdate();
+          });
+        }
+      });
+    }
   }
 
   logout() {
@@ -233,7 +235,7 @@ class Main extends React.Component {
   render() {
 
     myDb.getUser().then(user => {
-      if(user && this.state.profile[2] != user[0].profile[2])this.setState({profile: user[0].profile});
+      if(user && this.state.profile[2] != user.profile[2])this.setState({profile: user.profile});
       else if(!user && this.isLoggedIn())this.setState({profile: nullProfile});
     });
     var navigationView = (
@@ -248,8 +250,8 @@ class Main extends React.Component {
       <View style={styles.menuSpace}></View>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{
         this.drawer.closeDrawer();
-        myDb.getFav().then(result => {
-          if(result)fav = result[0].fav;
+        myDb.getFav().then(dbFav => {
+          if(dbFav)fav = dbFav.fav;
           else fav = [];
           myDb.getCardData(fav).then(result => {
             if(result)cardData = result;
@@ -267,11 +269,11 @@ class Main extends React.Component {
       </TouchableHighlight>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{
         this.drawer.closeDrawer();
-        myDb.getFav().then(result => {
-          if(result)fav = result[0].fav;
+        myDb.getFav().then(dbFav => {
+          if(dbFav)fav = dbFav.fav;
           else fav = [];
           myDb.filter(filterFav).then(result => {
-            buildPick(list, result)
+            buildPick(list, result);
             this.setState({view:1});
           });
         });
@@ -324,10 +326,10 @@ class Main extends React.Component {
 
     var mainView=<View />;
     switch (this.state.view) {
-      case 0: mainView = <Nav data={cardData} />; break;
-      case 1: syncFav(); mainView = <Pick data={list} picked={fav} isPerm={true} ref="myPick" />; break;
+      case 0: mainView = <Nav db={myDb} data={cardData} />; break;
+      case 1: syncFav(); mainView = <Pick db={myDb} data={list} picked={fav} isPerm={true} ref="myPick" />; break;
       case 2: mainView = <News />; break;
-      case 3: mainView = <Chat chan={0}/>; break;
+      case 3: mainView = <Chat db={myDb} chan={0}/>; break;
       defualt: break;
     }
 
@@ -384,6 +386,7 @@ class User extends React.Component {
       else ToastAndroid.show('手机号或密码错误，请重试！', ToastAndroid.SHORT);
     })
     .catch((error) => {
+      console.warn(error);
       ToastAndroid.show('网络错误，请重试！', ToastAndroid.SHORT);
     });
   }

@@ -14,8 +14,6 @@ var {
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
-var Db = require('./Db');
-var myDb = new Db();
 var Dimensions = require('Dimensions');
 var ProgressBar = require('ProgressBarAndroid');
 var Linking = require('Linking');
@@ -40,8 +38,7 @@ class Card extends React.Component {
     var array = this.props.fav;
     var index = array.indexOf(this.props.data.id);
     array.splice(index, 1);
-
-    myDb.setFav(array, parseInt(new Date().getTime() / 1000));
+    this.props.db.setFav(array, parseInt(new Date().getTime() / 1000));
   }
 
   onExpand() {
@@ -132,12 +129,17 @@ class Card extends React.Component {
 }
 
 class Nav extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.db.loadColleges();
+  }
+
   render() {
     if(this.props.data && this.props.data.length > 0){
       var cards = [], fav = [];
       for(var i = 0; i < this.props.data.length; i++)fav.push(this.props.data[i].id);
       for(var i = 0; i < this.props.data.length; i++)
-        cards.push(<Card key={i} data={this.props.data[i]} fav={fav} onChange={this.onChange} />);
+        cards.push(<Card db={this.props.db} key={i} data={this.props.data[i]} fav={fav} onChange={this.onChange} />);
       return (
         <ScrollView style={{backgroundColor: '#f0f0f0',}}>
         {cards}

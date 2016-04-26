@@ -12,8 +12,6 @@ import React, {
   PixelRatio,
 } from 'react-native';
 
-var Db = require('./Db');
-var myDb = new Db();
 var GiftedMessenger = require('react-native-gifted-messenger');
 
 
@@ -53,9 +51,9 @@ class Chat extends Component {
     this._user = '';
     this._passwd = '';
     this._id = 0;
-    myDb.getUser().then(user => {
-      this._user = user[0].user;
-      this._passwd = user[0].passwd;
+    this.props.db.getUser().then(user => {
+      this._user = user.user;
+      this._passwd = user.passwd;
       this.getChat();
     });
 

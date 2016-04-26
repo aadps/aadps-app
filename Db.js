@@ -1,81 +1,115 @@
-var Store = require('react-native-store');
+var SQLite = require('react-native-sqlite-storage');
+SQLite.enablePromise(true);
+
+// Options Table
+//
+// 1: Ver
+// 2: User
+// 3: Fav
 
 class Db {
   constructor() {
-    this.user = Store.model('user');
-    this.college = Store.model('college');
-    this.fav = Store.model('fav');
-
-    this.college.find({
-      where: {
-        ver: {gte: ver}
-      }
-    }).then(result => {
-      if(!result)this.load();
+    this._ready = true;
+    SQLite.openDatabase('aadps.db', '1.0', 'AADPS App Database', 200000).then((DB) => {
+      this._db = DB;
+      this._db.executeSql('SELECT * FROM options', [], () => {}, () => {this._ready = false; this.initialize();});
     });
   }
 
-  async load() { // Load college statistics into the app database
-    await this.college.remove({});
-    await this.college.add({ver: ver});
-    for(var i in data){
-      await this.college.add(data[i]);
-    }
+  initialize() {
+    this._db.executeSql('CREATE TABLE IF NOT EXISTS options (id INT, data TEXT, PRIMARY KEY(id))').then(() => {this._ready = true});
+    this._db.executeSql('CREATE TABLE IF NOT EXISTS colleges (id INT,' +
+      'type VARCHAR, geo INT, comp INT, size INT, name VARCHAR, cname VARCHAR,' +
+      'type2 VARCHAR, city VARCHAR, setting VARCHAR, PRIMARY KEY(id))');
+    this._db.executeSql('CREATE INDEX IF NOT EXISTS collidx on colleges (geo, comp, size)');
+    for(var i = 1; i < 4; i++)this._db.executeSql('INSERT INTO options VALUES (?, "")', [i]);
+    this.loadColleges();
   }
 
-  async setUser(user, passwd, profile) {
-    await this.user.remove({});
-    await this.user.add({user: user, passwd: passwd, profile: profile});
+  loadColleges() {
+    this._db.executeSql('SELECT data FROM options where id = 1')
+    .then(([result]) => {
+      if(result.rows.item(0).data != ver){
+        this._db.executeSql('UPDATE options SET data = "' + ver + '" WHERE id = 1');
+        this._db.executeSql('DELETE FROM colleges');
+        for(var i in data)this._db.executeSql('INSERT INTO colleges VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [data[i].id, data[i].type, data[i].geo, data[i].comp, data[i].size,
+        data[i].name, data[i].cname, data[i].type2, data[i].city, data[i].setting]);
+      }
+    });
+  }
+
+  setUser(user, passwd, profile) {
+    return this._db.executeSql("UPDATE options SET data = '" +
+    JSON.stringify({user: user, passwd: passwd, profile: profile})
+    + "' WHERE id = 2");
   }
 
   getUser() { // myDb.getUser().then(result => { ... });
-    return this.user.find({});
+    return this._db.executeSql('SELECT data FROM options WHERE id = 2')
+    .then(([result])=> {
+      if(result.rows.item(0).data)return JSON.parse(result.rows.item(0).data);
+      else return null;
+    });
   }
 
   eraseUser() {
-    return this.user.remove({});
+    return this._db.executeSql('UPDATE options SET data = "" WHERE id = 2');
   }
 
-  async setFav(fav, time) {
-    await this.fav.remove({});
-    await this.fav.add({fav: fav, time: time});
+  setFav(fav, time) {
+    return this._db.executeSql("UPDATE options SET data = '" +
+    JSON.stringify({fav: fav, time: time})
+    + "' WHERE id = 3");
   }
 
   getFav() {
-    return this.fav.find({});
+    return this._db.executeSql('SELECT data FROM options WHERE id = 3')
+    .then(([result])=> {
+      if(result.rows.item(0).data)return JSON.parse(result.rows.item(0).data);
+      else return null;
+    });
   }
 
   getCardData(fav) {
-    var id = [];
-    for(var i in fav)id.push({id: fav[i]});
-    return this.college.find({where: {or: id}});
+    return this._db.executeSql('SELECT * FROM colleges WHERE id IN (' +
+    fav.join(',') + ')')
+    .then(([result])=> {
+      if(result.rows.item(0)){
+        colleges = [];
+        for(var i = 0; i < result.rows.length; i++)colleges.push(result.rows.item(i));
+        return colleges;
+      }
+      else return null;
+    });
   }
 
   filter(data) { // myDb.filter([6, 11, 21]).then(result => { ... });
     var geo = [], comp = [], size = [];
 
     for(var i in data){
-      if(parseInt(data[i] / 10) == 0)geo.push({geo: data[i] % 10});
-      else if(parseInt(data[i] / 10) == 1)comp.push({comp: data[i] % 10});
-      else if(parseInt(data[i] / 10) == 2)size.push({size: data[i] % 10});
+      if(parseInt(data[i] / 10) == 0)geo.push(data[i] % 10);
+      else if(parseInt(data[i] / 10) == 1)comp.push(data[i] % 10);
+      else if(parseInt(data[i] / 10) == 2)size.push(data[i] % 10);
     }
 
-    return this.college.find({
-      fields: {id: true, cname: true},
-      where: {
-        and: [
-          {or: geo},
-          {or: comp},
-          {or: size}
-        ]
+    return this._db.executeSql('SELECT id, cname FROM colleges WHERE geo IN (' +
+  geo.join(',') + ') AND comp IN (' + comp.join(',') + ') AND size IN (' +
+  size.join(',') + ')')
+    .then(([result])=> {
+      if(result.rows.item(0)){
+        colleges = [];
+        for(var i = 0; i < result.rows.length; i++)colleges.push(result.rows.item(i));
+        return colleges;
       }
+      else return null;
     });
   }
 }
 
 module.exports = Db;
 
-var ver = 7;
+var ver = 1;
 var data = [
   {
     "id": 177,
