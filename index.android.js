@@ -148,6 +148,22 @@ function syncFav(callback) {
   });
 }
 
+function regChat(){
+  myDb.getUser().then(user => {
+    if(user)myDb.getChan().then(chan => {
+      if(chan){
+        fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: 'regchat=&type=android&user='+user.user+'&passwd='+user.passwd+'&chan='+chan
+        })
+      }
+    });
+  });
+}
+
 class aadps extends React.Component{
   render() {
     if(this.props.view != undefined)view = this.props.view;
@@ -269,6 +285,7 @@ class Main extends React.Component {
       </TouchableHighlight>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{
         this.drawer.closeDrawer();
+        syncFav();
         myDb.getFav().then(dbFav => {
           if(dbFav)fav = dbFav.fav;
           else fav = [];
@@ -293,7 +310,7 @@ class Main extends React.Component {
       <Text style={[styles.menuText, {color: this.state.view==2?'#f44336':'#000000'}]}>留学资讯</Text>
       </View>
       </TouchableHighlight>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.setState({view:3});this.drawer.closeDrawer();}}>
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{regChat();this.setState({view:3});this.drawer.closeDrawer();}}>
       <View style={[styles.menuItem,{backgroundColor: this.state.view==3?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#2196f3'}]}
       resizeMode={Image.resizeMode.stretch}
@@ -327,7 +344,7 @@ class Main extends React.Component {
     var mainView=<View />;
     switch (this.state.view) {
       case 0: mainView = <Nav db={myDb} data={cardData} />; break;
-      case 1: syncFav(); mainView = <Pick db={myDb} data={list} picked={fav} isPerm={true} ref="myPick" />; break;
+      case 1: mainView = <Pick db={myDb} data={list} picked={fav} isPerm={true} ref="myPick" />; break;
       case 2: mainView = <News />; break;
       case 3: mainView = <Chat db={myDb} chan={0}/>; break;
       defualt: break;

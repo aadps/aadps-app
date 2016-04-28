@@ -6,6 +6,7 @@ SQLite.enablePromise(true);
 // 1: Ver
 // 2: User
 // 3: Fav
+// 4: Chan
 
 class Db {
   constructor() {
@@ -102,6 +103,14 @@ class Db {
         for(var i = 0; i < result.rows.length; i++)colleges.push(result.rows.item(i));
         return colleges;
       }
+      else return null;
+    });
+  }
+
+  getChan() {
+    return this._db.executeSql('SELECT data FROM options WHERE id = 4')
+    .then(([result])=> {
+      if(result.rows.item(0).data)return result.rows.item(0).data;
       else return null;
     });
   }

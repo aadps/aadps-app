@@ -93,7 +93,7 @@ class Card extends React.Component {
 
     if(this.state.closed)card = <View />;
     else card = <View>
-    <Image style={styles.photo} resizeMode={Image.resizeMode.cover} source={{uri: 'http://aadps.qiniudn.com/wp-content/uploads/2016/02/' + this.props.data.id + '.jpg'}} />
+    <Image style={styles.photo} resizeMode={Image.resizeMode.cover} source={{uri: 'http://aadps.net/wp-content/uploads/2016/02/' + this.props.data.id + '.jpg'}} />
     <View style={styles.textArea}>
     <View style={styles.background} />
 

@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.Cursor;
 
 import com.baidu.android.pushservice.PushMessageReceiver;
 
@@ -61,23 +63,18 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
      *            向服务端发起的请求id。在追查问题时有用；
      * @return none
      */
-    @Override
-    public void onBind(Context context, int errorCode, String appid,
-            String userId, String channelId, String requestId) {
-        String responseString = "onBind errorCode=" + errorCode + " appid="
-                + appid + " userId=" + userId + " channelId=" + channelId
-                + " requestId=" + requestId;
-        Log.d(TAG, responseString);
+     @Override
+     public void onBind(Context context, int errorCode, String appid,
+     String userId, String channelId, String requestId) {
+       if(channelId != null){
+         SQLiteDatabase aadpsDb = SQLiteDatabase.openOrCreateDatabase("/data/data/net.aadps/databases/aadps.db", null);
+         aadpsDb.execSQL("DELETE FROM options WHERE id = 4");
+         aadpsDb.execSQL("INSERT INTO options VALUES(4, \"" + channelId + "\")");
+         aadpsDb.close();
+       }
+     }
 
-        if (errorCode == 0) {
-            // 绑定成功
-            Log.d(TAG, "绑定成功");
-        }
-        // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, responseString);
-    }
-
-    /**
+     /**
      * 接收透传消息的函数。
      *
      * @param context
@@ -87,31 +84,13 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
      * @param customContentString
      *            自定义内容,为空或者json字符串
      */
-    @Override
-    public void onMessage(Context context, String message,
-            String customContentString) {
-        String messageString = "透传消息 message=\"" + message
-                + "\" customContentString=" + customContentString;
-        Log.d(TAG, messageString);
-
-        // 自定义内容获取方式，mykey和myvalue对应透传消息推送时自定义内容中设置的键和值
-        if (!TextUtils.isEmpty(customContentString)) {
-            JSONObject customJson = null;
-            try {
-                customJson = new JSONObject(customContentString);
-                String myvalue = null;
-                if (!customJson.isNull("mykey")) {
-                    myvalue = customJson.getString("mykey");
-                }
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-        // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, messageString);
-    }
+     @Override
+     public void onMessage(Context context, String message,
+     String customContentString) {
+       String messageString = "透传消息 message=\"" + message
+       + "\" customContentString=" + customContentString;
+       Log.d(TAG, messageString);
+     }
 
     /**
      * 接收通知点击的函数。
@@ -175,24 +154,6 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
                 + "\" description=\"" + description + "\" customContent="
                 + customContentString;
         Log.d(TAG, notifyString);
-
-        // 自定义内容获取方式，mykey和myvalue对应通知推送时自定义内容中设置的键和值
-        if (!TextUtils.isEmpty(customContentString)) {
-            JSONObject customJson = null;
-            try {
-                customJson = new JSONObject(customContentString);
-                String myvalue = null;
-                if (!customJson.isNull("mykey")) {
-                    myvalue = customJson.getString("mykey");
-                }
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        // 你可以參考 onNotificationClicked中的提示从自定义内容获取具体值
-        updateContent(context, notifyString);
     }
 
     /**
@@ -216,9 +177,6 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
                 + " sucessTags=" + sucessTags + " failTags=" + failTags
                 + " requestId=" + requestId;
         Log.d(TAG, responseString);
-
-        // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, responseString);
     }
 
     /**
@@ -242,9 +200,6 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
                 + " sucessTags=" + sucessTags + " failTags=" + failTags
                 + " requestId=" + requestId;
         Log.d(TAG, responseString);
-
-        // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, responseString);
     }
 
     /**
@@ -265,9 +220,6 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
         String responseString = "onListTags errorCode=" + errorCode + " tags="
                 + tags;
         Log.d(TAG, responseString);
-
-        // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, responseString);
     }
 
     /**
@@ -290,12 +242,5 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
             // 解绑定成功
             Log.d(TAG, "解绑成功");
         }
-        // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, responseString);
     }
-
-    private void updateContent(Context context, String content) {
-
-    }
-
 }
