@@ -8,7 +8,7 @@ var {
   ScrollView,
   WebView,
   TouchableHighlight,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   UIManager,
 } = React;
 
@@ -103,17 +103,17 @@ class Card extends React.Component {
 
     <View style={styles.iconBar}>
 
-    <TouchableOpacity activeOpacity={0.935} onPress={()=>this.onExpand()}>
+    <TouchableWithoutFeedback onPress={()=>this.onExpand()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
     source={this.state.expanded?require('image!ic_expand_less_white_24dp'):require('image!ic_expand_more_white_24dp')} />
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
 
-    <TouchableOpacity activeOpacity={0.935} onPress={()=>this.onClose()}>
+    <TouchableWithoutFeedback onPress={()=>this.onClose()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
     source={require('image!ic_close_white_24dp')} />
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
 
     </View>
     </View>
