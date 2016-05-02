@@ -20,6 +20,7 @@ var {
 
 var Db = require('./Db');
 var myDb = new Db();
+var User = require('./User');
 var Nav = require('./Nav');
 var Pick = require('./Pick');
 var News = require('./News');
@@ -29,7 +30,7 @@ var Linking = require('Linking');
 
 var drawerWidth = Dimensions.get('window').width - 56;
 
-var _navigator, _main;
+var _main;
 
 const viewProp = [{
   title: '我的大学',
@@ -113,7 +114,7 @@ function buildPick(list, filterResult) {
   return true;
 }
 
-function syncFav(callback) {
+function syncFav() {
   myDb.getUser().then(user => {
     if(user)myDb.getFav().then(dbFav => {
       if(dbFav)fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
@@ -176,19 +177,18 @@ class aadps extends React.Component{
   }
 
   navigatorRenderScene(route, navigator) {
-    _navigator = navigator;
     switch (route.id) {
       case 'main':
-        return (<Main navigator = {navigator} view = {view} />);
+        return (<Main nav = {navigator} view = {view} />);
       case 'user':
-        return (<User navigator = {navigator} />);
+        return (<User nav = {navigator} db = {myDb} syncFav = {syncFav}/>);
       case 'filter':
         return (
           <View style={{flexDirection: "column", flex: 1, }}>
           <ToolbarAndroid
           navIcon={require('image!ic_arrow_back_white_24dp')}
           onIconClicked={() => {
-            _navigator.pop();
+            navigator.pop();
             myDb.filter(filterFav).then(result => {
               if(buildPick(list, result))_main.refs.myPick.set(list);
               else _main.refs.myPick.set([]);
@@ -239,7 +239,7 @@ class Main extends React.Component {
 
   onActionSelected(pos) {
     switch(this.state.view){
-      case 1: if (pos === 0)_navigator.push({id: 'filter'}); break;
+      case 1: if (pos === 0)this.props.nav.push({id: 'filter'}); break;
       default: break;
     }
   }
@@ -332,7 +332,7 @@ class Main extends React.Component {
       <Text style={styles.menuText}>关于AADPS</Text>
       </View></TouchableHighlight>
       <View style={styles.menuSeparator}></View>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.isLoggedIn()?this.logout():_navigator.push({id: 'user'});}}><View style={styles.menuItem}>
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.isLoggedIn()?this.logout():this.props.nav.push({id: 'user'});}}><View style={styles.menuItem}>
       <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
       resizeMode={Image.resizeMode.stretch}
       source={!this.isLoggedIn()?require('image!ic_person_white_24dp'):require('image!ic_person_outline_white_24dp')} />
@@ -371,154 +371,6 @@ class Main extends React.Component {
 
       </DrawerLayoutAndroid>
     );
-  }
-}
-
-class User extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      register: true,
-      user: '',
-      passwd: '',
-      nick: '',
-    };
-  }
-
-  login() {
-    fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: 'profile=&user='+this.state.user+'&passwd='+this.state.passwd
-    })
-    .then((response) => response.json())
-    .then((profile) => {
-      if(profile.length>0) {
-        myDb.setUser(this.state.user, this.state.passwd, profile)
-        .then(()=>{syncFav()});
-        _navigator.pop();
-      }
-      else ToastAndroid.show('手机号或密码错误，请重试！', ToastAndroid.SHORT);
-    })
-    .catch((error) => {
-      console.warn(error);
-      ToastAndroid.show('网络错误，请重试！', ToastAndroid.SHORT);
-    });
-  }
-
-  validateCell(number) {
-    return number.match(/(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/);
-  }
-
-  register() {
-    if(!this.validateCell(this.state.user)){
-      ToastAndroid.show('请输入手机号！', ToastAndroid.SHORT);
-      return;
-    }
-    fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: 'register=&type=android&user='+this.state.user+'&passwd='+this.state.passwd+'&nick='+this.state.nick
-    })
-    .then((response) => response.json())
-    .then((profile) => {
-      if(profile.length>0) {
-        myDb.setUser(this.state.user, this.state.passwd, profile);
-        ToastAndroid.show('帐号也可以用来登录网站aadps.net并同步选校数据！', ToastAndroid.LONG);
-        _navigator.pop();
-      }
-      else ToastAndroid.show('该用户已注册，请直接登录！', ToastAndroid.SHORT);
-    })
-    .catch((error) => {
-      ToastAndroid.show('网络错误，请重试！', ToastAndroid.SHORT);
-    });
-  }
-
-  render() {
-    var namefield=<View></View>;
-    if (this.state.register)namefield =
-    <View style={{backgroundColor: '#fff', flexDirection: 'row', height: 40, alignSelf: "stretch"}}>
-
-    <View style={{flex: 0.1, alignItems: 'center', justifyContent: 'center'}}>
-    <Image style={{width: 24, height: 24, tintColor: '#888'}}
-    resizeMode={Image.resizeMode.cover}
-    source={require('image!ic_person_white_24dp')} />
-    </View>
-
-    <TextInput underlineColorAndroid='#fff'
-    style={styles.input}
-    autoCorrect={false}
-    onChangeText={(nick) => this.setState({nick})}
-    value={this.state.nick}
-    placeholder={'昵称'}
-    placeholderTextColor='#888'
-    />
-
-    </View>;
-
-    return (
-      <View style={{flexDirection: "column", flex: 1, backgroundColor: '#f0f0f0'}}>
-
-      <ToolbarAndroid
-      navIcon={require('image!ic_arrow_back_white_24dp')}
-      onIconClicked={() => {_navigator.pop()} }
-      style={[styles.toolbar,{backgroundColor: '#888'}]}
-      title={this.state.register?'注册':'登录'}
-      titleColor='#ffffff'>
-      </ToolbarAndroid>
-      <View style={{ flex: 1,}} >
-      <Image style={{alignSelf: 'center', margin: 16,}} source={require('./image/logoa.png')} />
-      <View style={{backgroundColor: '#fff', flexDirection: 'row', height: 40, alignSelf: "stretch",}}>
-      <View style={{flex: 0.1, alignItems: 'center', justifyContent: 'center'}}>
-      <Image style={{width: 24, height: 24, tintColor: '#888'}}
-      resizeMode={Image.resizeMode.cover}
-      source={require('image!ic_phone_android_white_24dp')} />
-      </View>
-      <TextInput underlineColorAndroid='#fff'
-      style={styles.input}
-      autoCorrect={false}
-      onChangeText={(user) => this.setState({user})}
-      value={this.state.user}
-      placeholder={this.state.register?'11位中国大陆手机号':'手机号或aadps.net账户'}
-      placeholderTextColor='#888'
-      />
-      </View>
-      {namefield}
-      <View style={{backgroundColor: '#fff', flexDirection: 'row', height: 40, alignSelf: "stretch"}}>
-      <View style={{flex: 0.1, alignItems: 'center', justifyContent: 'center'}}>
-      <Image style={{width: 24, height: 24, tintColor: '#888'}}
-      resizeMode={Image.resizeMode.cover}
-      source={require('image!ic_vpn_key_white_24dp')} />
-      </View>
-      <TextInput underlineColorAndroid='#fff'
-      style={styles.input}
-      autoCorrect={false}
-      secureTextEntry={true}
-      onChangeText={(passwd) => this.setState({passwd})}
-      value={this.state.passwd}
-      placeholder={'密码'}
-      placeholderTextColor='#888'
-      />
-      </View>
-      <View style={{flexDirection: 'row', width: Dimensions.get('window').width, top: Dimensions.get('window').height-160, position: "absolute", }}>
-      <TouchableHighlight style={{flex: 0.5, margin: 12, height: 40, borderRadius: 5}} onPress={()=>{this.state.register?this.register():this.login();}}>
-      <View style={[styles.button, {backgroundColor: "#009688"}]}>
-      <Text style={{alignSelf: 'center', color: '#fff'}}>{this.state.register?'注册':'登录'}</Text>
-      </View>
-      </TouchableHighlight>
-      <TouchableHighlight style={{flex: 0.5, margin: 12, height: 40, borderRadius: 5}} onPress={()=>{this.setState({register:!this.state.register})}}>
-      <View style={[styles.button, {borderWidth: 1, backgroundColor: "#f0f0f0"}]}>
-      <Text style={{alignSelf: 'center', color: '#888'}}>{this.state.register?'已有账户，登录':'注册新账户'}</Text>
-      </View>
-      </TouchableHighlight>
-      </View>
-      </View>
-      </View>
-    )
   }
 }
 
@@ -592,16 +444,6 @@ var styles = StyleSheet.create({
   pageStyle: {
     alignItems: 'center',
     padding: 20,
-  },
-  button:{
-    height: 40,
-    justifyContent: 'center',
-    borderRadius: 5,
-    borderColor: '#888',
-  },
-  input:{
-    flex: 0.9,
-    color: '#333',
   },
 });
 
