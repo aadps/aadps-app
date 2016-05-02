@@ -10,15 +10,14 @@ SQLite.enablePromise(true);
 
 class Db {
   constructor() {
-    this._ready = true;
     SQLite.openDatabase('aadps.db', '1.0', 'AADPS App Database', 200000).then((DB) => {
       this._db = DB;
-      this._db.executeSql('SELECT * FROM options', [], () => {}, () => {this._ready = false; this.initialize();});
+      this._db.executeSql('SELECT * FROM options', [], () => {}, () => {this.initialize();});
     });
   }
 
   initialize() {
-    this._db.executeSql('CREATE TABLE IF NOT EXISTS options (id INT, data TEXT, PRIMARY KEY(id))').then(() => {this._ready = true});
+    this._db.executeSql('CREATE TABLE IF NOT EXISTS options (id INT, data TEXT, PRIMARY KEY(id))').then(() => {});
     this._db.executeSql('CREATE TABLE IF NOT EXISTS colleges (id INT,' +
       'type VARCHAR, geo INT, comp INT, size INT, name VARCHAR, cname VARCHAR,' +
       'type2 VARCHAR, city VARCHAR, setting VARCHAR, PRIMARY KEY(id))');
@@ -51,7 +50,8 @@ class Db {
     .then(([result])=> {
       if(result.rows.item(0).data)return JSON.parse(result.rows.item(0).data);
       else return null;
-    });
+    })
+    .catch(function(e) {});
   }
 
   eraseUser() {
@@ -69,7 +69,8 @@ class Db {
     .then(([result])=> {
       if(result.rows.item(0).data)return JSON.parse(result.rows.item(0).data);
       else return null;
-    });
+    })
+    .catch(function(e) {});
   }
 
   getCardData(fav) {
@@ -112,7 +113,8 @@ class Db {
     .then(([result])=> {
       if(result.rows.item(0).data)return result.rows.item(0).data;
       else return null;
-    });
+    })
+    .catch(function(e) {});
   }
 }
 

@@ -216,19 +216,18 @@ class Main extends React.Component {
     };
 
     _main = this;
+    
+    syncFav();
+    myDb.getFav().then(dbFav => {
+      if(dbFav){
+        myDb.getCardData(dbFav.fav).then(result => {
+          if(result)cardData = result;
+          else cardData = [];
+          this.forceUpdate();
+        });
+      }
+    });
 
-    if(myDb._ready){
-      syncFav();
-      myDb.getFav().then(dbFav => {
-        if(dbFav){
-          myDb.getCardData(dbFav.fav).then(result => {
-            if(result)cardData = result;
-            else cardData = [];
-            this.forceUpdate();
-          });
-        }
-      });
-    }
   }
 
   logout() {
