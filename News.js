@@ -67,7 +67,7 @@ class News extends React.Component {
   renderLoadingView() {
     return (
       <View style={styles.container}>
-      <Text style={styles.title}>
+      <Text style={styles.alert}>
       资讯载入中...
       </Text>
       </View>
@@ -117,6 +117,11 @@ var styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 4,
     textAlign: 'left',
+    color: '#333',
+  },
+  alert: {
+    fontSize: 20,
+    textAlign: 'center',
     color: '#333',
   },
   author: {

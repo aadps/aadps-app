@@ -38,7 +38,8 @@ class Db {
         [data[i].id, data[i].type, data[i].geo, data[i].comp, data[i].size,
         data[i].name, data[i].cname, data[i].type2, data[i].city, data[i].setting]);
       }
-    });
+    })
+    .catch(function(e) {});
   }
 
   setUser(user, passwd, profile) {
@@ -135,7 +136,7 @@ class Db {
         }
       }
 
-      for(var i =0; i < newChan.length; i++)if(!newChan[i].flag)awaitthis._db.executeSql('INSERT INTO channels VALUES ("' + newChan[i].id + '", "'
+      for(var i =0; i < newChan.length; i++)if(!newChan[i].flag)await this._db.executeSql('INSERT INTO channels VALUES ("' + newChan[i].id + '", "'
       + newChan[i].name + '", "' + newChan[i].thumb + '", "' + newChan[i].msg + '", "'
       + newChan[i].date + '", ' + newChan[i].isNew + ')');
     }

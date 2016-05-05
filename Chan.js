@@ -81,7 +81,7 @@ class Chan extends React.Component {
   renderLoadingView() {
     return (
       <View style={styles.container}>
-      <Text style={styles.title}>
+      <Text style={styles.alert}>
       请先注册或登录吧( ´・ω・` )
       </Text>
       </View>
@@ -132,6 +132,11 @@ var styles = StyleSheet.create({
   msg: {
     textAlign: 'left',
     color: '#888',
+  },
+  alert: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#333',
   },
   thumbnail: {
     width: 60,

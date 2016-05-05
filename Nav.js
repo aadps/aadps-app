@@ -149,7 +149,7 @@ class Nav extends React.Component {
       )
     }else return(
       <View style={styles.container}>
-      <Text style={styles.message}>空空如也呢( ´・ω・` )</Text>
+      <Text style={styles.alert}>空空如也呢( ´・ω・` )</Text>
       <Text style={styles.hint}>点击左上角菜单去登录或选校吧</Text>
       </View>
     )
@@ -238,7 +238,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f0f0f0',
   },
-  message: {
+  alert: {
     fontSize: 20,
     textAlign: 'center',
     color: '#333',
