@@ -251,7 +251,7 @@ class Main extends React.Component {
   }
 
   logout() {
-    myDb.eraseUser().then(() => {
+    myDb.erase().then(() => {
       this.forceUpdate();
     });
   }

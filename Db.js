@@ -6,7 +6,7 @@ SQLite.enablePromise(true);
 // 1: Ver
 // 2: User
 // 3: Fav
-// 4: Chan
+// 4: PushChan
 
 class Db {
   constructor() {
@@ -22,6 +22,8 @@ class Db {
       'type VARCHAR, geo INT, comp INT, size INT, name VARCHAR, cname VARCHAR,' +
       'type2 VARCHAR, city VARCHAR, setting VARCHAR, PRIMARY KEY(id))');
     this._db.executeSql('CREATE INDEX IF NOT EXISTS collidx on colleges (geo, comp, size)');
+    this._db.executeSql('CREATE TABLE IF NOT EXISTS channels (id INT,' +
+      'name VARCHAR, thumb VARCHAR, msg VARCHAR, date VARCHAR, isNew INT, PRIMARY KEY(id))');
     for(var i = 1; i < 4; i++)this._db.executeSql('INSERT INTO options VALUES (?, "")', [i]);
     this.loadColleges();
   }
@@ -54,7 +56,8 @@ class Db {
     .catch(function(e) {});
   }
 
-  eraseUser() {
+  erase() {
+    this._db.executeSql('DELETE FROM channels');
     return this._db.executeSql('UPDATE options SET data = "" WHERE id = 2');
   }
 
@@ -78,7 +81,7 @@ class Db {
     fav.join(',') + ')')
     .then(([result])=> {
       if(result.rows.item(0)){
-        colleges = [];
+        var colleges = [];
         for(var i = 0; i < result.rows.length; i++)colleges.push(result.rows.item(i));
         return colleges;
       }
@@ -100,7 +103,7 @@ class Db {
   size.join(',') + ')')
     .then(([result])=> {
       if(result.rows.item(0)){
-        colleges = [];
+        var colleges = [];
         for(var i = 0; i < result.rows.length; i++)colleges.push(result.rows.item(i));
         return colleges;
       }
@@ -108,13 +111,47 @@ class Db {
     });
   }
 
-  getChan() {
+  getPushChan() {
     return this._db.executeSql('SELECT data FROM options WHERE id = 4')
     .then(([result])=> {
       if(result.rows.item(0).data)return result.rows.item(0).data;
       else return null;
     })
     .catch(function(e) {});
+  }
+
+  async getChan(newChan) {
+    if(newChan){
+      let result = await this._db.executeSql('SELECT * FROM channels')
+
+      for(var i = 0; i < result[0].rows.length; i++){
+        for(var j = 0; j < newChan.length; j++){
+          if(result[0].rows.item(i).id == newChan[j].id){
+            newChan[j].flag = true;
+            if(result[0].rows.item(i).date < newChan[j].date)
+            await this._db.executeSql('UPDATE channels SET isNew = '+ newChan[j].isNew +', msg="' + newChan[j].msg + '", date="'
+            + newChan[j].date + '" WHERE id =' + newChan[j].id);
+          }
+        }
+      }
+
+      for(var i =0; i < newChan.length; i++)if(!newChan[i].flag)awaitthis._db.executeSql('INSERT INTO channels VALUES ("' + newChan[i].id + '", "'
+      + newChan[i].name + '", "' + newChan[i].thumb + '", "' + newChan[i].msg + '", "'
+      + newChan[i].date + '", ' + newChan[i].isNew + ')');
+    }
+    return this._db.executeSql('SELECT * FROM channels ORDER BY date DESC')
+    .then(([result])=> {
+      if(result.rows.item(0)){
+        var channels = [];
+        for(var i = 0; i < result.rows.length; i++)channels.push(result.rows.item(i));
+        return channels;
+      }
+      else return null;
+    });
+  }
+
+  setChanOld(id) {
+    this._db.executeSql('UPDATE channels SET isNew = 0 WHERE id =' + id);
   }
 }
 

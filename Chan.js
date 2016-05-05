@@ -21,14 +21,18 @@ class Chan extends React.Component {
       loaded: false,
       chan: [],
     };
-  }
-
-  componentDidMount() {
     this.fetchData();
   }
 
-  fetchData() {
+  componentDidMount() {
+    this._intId = setInterval(() => {this.fetchData()}, 5000);
+  }
 
+  componentWillUnmount() {
+    clearInterval(this._intId);
+  }
+
+  fetchData() {
     this.props.db.getUser().then(user => {
       if(user)fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
         method: 'POST',
@@ -39,13 +43,25 @@ class Chan extends React.Component {
       })
       .then((response) => response.json())
       .then((responseData) => {
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData),
-          loaded: true,
-          news: responseData,
+        this.props.db.getChan(responseData)
+        .then(channels => {
+          if(channels)this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(channels),
+            loaded: true,
+            news: channels,
+          });
         });
       })
-      .done();
+      .catch( e => {
+        this.props.db.getChan(null)
+        .then(channels => {
+          if(channels)this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(channels),
+            loaded: true,
+            news: channels,
+          });
+        });
+      });
     });
   }
 
@@ -77,14 +93,14 @@ class Chan extends React.Component {
     return (
       <TouchableHighlight
       activeOpacity={0.935}
-      onPress={()=>{this.props.nav.push({id: 'chat', chan: chan.id, name: chan.name})}}>
+      onPress={()=>{this.props.db.setChanOld(chan.id);this.props.nav.push({id: 'chat', chan: chan.id, name: chan.name});}}>
       <View style={styles.container}>
       <Image
       source={{uri: chan.thumb}}
       style={styles.thumbnail}
       />
       <View style={styles.rightContainer}>
-      <Text style={styles.title}>{chan.name}</Text>
+      <Text style={[styles.title, chan.isNew?{color: '#2196f3',}:{color: '#333',}]}>{chan.name}</Text>
       <Text style={styles.msg}>{chan.msg}</Text>
       </View>
       </View>
@@ -113,7 +129,6 @@ var styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 4,
     textAlign: 'left',
-    color: '#333',
   },
   msg: {
     textAlign: 'left',
