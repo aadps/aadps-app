@@ -11,9 +11,7 @@ var {
   TouchableHighlight,
 } = React;
 
-var Linking = require('Linking');
-
-class News extends React.Component {
+class Chan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,8 +19,7 @@ class News extends React.Component {
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
       loaded: false,
-      page: 0,
-      news: [],
+      chan: [],
     };
   }
 
@@ -31,23 +28,25 @@ class News extends React.Component {
   }
 
   fetchData() {
-    fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: 'news=&page='+this.state.page
-    })
-    .then((response) => response.json())
-    .then((responseData) => {
-      var expandedNews = this.state.news.concat(responseData);
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(expandedNews),
-        loaded: true,
-        news: expandedNews,
-      });
-    })
-    .done();
+
+    this.props.db.getUser().then(user => {
+      if(user)fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: 'getchan=&user=' + user.user + '&passwd=' + user.passwd
+      })
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(responseData),
+          loaded: true,
+          news: responseData,
+        });
+      })
+      .done();
+    });
   }
 
   render() {
@@ -58,9 +57,8 @@ class News extends React.Component {
     return (
       <ListView
       dataSource={this.state.dataSource}
-      renderRow={this.renderNews}
+      renderRow={(chan)=>{return this.renderNews(chan)}}
       style={styles.listView}
-      onEndReached={()=>{this.setState({page: this.state.page+1});this.fetchData();}}
       />
     );
   }
@@ -69,28 +67,25 @@ class News extends React.Component {
     return (
       <View style={styles.container}>
       <Text style={styles.title}>
-      资讯载入中...
+      请先注册或登录吧( ´・ω・` )
       </Text>
       </View>
     );
   }
 
-  renderNews(news) {
+  renderNews(chan) {
     return (
       <TouchableHighlight
       activeOpacity={0.935}
-      onPress={()=>{Linking.openURL(news.link.replace('https', 'http'))}}>
+      onPress={()=>{this.props.nav.push({id: 'chat', chan: chan.id, name: chan.name})}}>
       <View style={styles.container}>
       <Image
-      source={{uri: news.thumb}}
+      source={{uri: chan.thumb}}
       style={styles.thumbnail}
       />
       <View style={styles.rightContainer}>
-      <Text style={styles.title}>{news.title.replace(/(\(.+\))/g, '')}</Text>
-      <View style={{flexDirection: 'row'}}>
-      <Text style={styles.author}>{news.author}</Text>
-      <Text style={styles.date}>{news.date}</Text>
-      </View>
+      <Text style={styles.title}>{chan.name}</Text>
+      <Text style={styles.msg}>{chan.msg}</Text>
       </View>
       </View>
       </TouchableHighlight>
@@ -98,7 +93,7 @@ class News extends React.Component {
   }
 }
 
-module.exports = News;
+module.exports = Chan;
 
 var styles = StyleSheet.create({
   container: {
@@ -120,18 +115,14 @@ var styles = StyleSheet.create({
     textAlign: 'left',
     color: '#333',
   },
-  author: {
-    textAlign: 'left',
-    color: '#f44336',
-    marginRight: 4,
-  },
-  date: {
+  msg: {
     textAlign: 'left',
     color: '#888',
   },
   thumbnail: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     margin: 10,
   },
   listView: {

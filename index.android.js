@@ -25,9 +25,10 @@ var Nav = require('./Nav');
 var Pick = require('./Pick');
 var News = require('./News');
 var Chat = require('./Chat');
+var Chan = require('./Chan');
 var Dimensions = require('Dimensions');
 var Linking = require('Linking');
-
+var _navigator = null;
 var drawerWidth = Dimensions.get('window').width - 56;
 
 var _main;
@@ -169,14 +170,16 @@ class aadps extends React.Component{
   render() {
     if(this.props.view != undefined)view = this.props.view;
     return (
-        <Navigator
-          style={styles.container}
-          initialRoute={{id: 'main'}}
-          renderScene={this.navigatorRenderScene}/>
+      <Navigator
+      style={styles.container}
+      initialRoute={{id: 'main'}}
+      renderScene={this.navigatorRenderScene}/>
     );
   }
 
   navigatorRenderScene(route, navigator) {
+    _navigator = navigator;
+
     switch (route.id) {
       case 'main':
         return (<Main nav = {navigator} view = {view} />);
@@ -203,6 +206,23 @@ class aadps extends React.Component{
 
           </View>
         );
+      case 'chat':
+        return (
+          <View style={{flexDirection: "column", flex: 1, }}>
+          <ToolbarAndroid
+          navIcon={require('image!ic_arrow_back_white_24dp')}
+          onIconClicked={() => {
+            navigator.pop();
+          }}
+          style={[styles.toolbar,{backgroundColor: '#2196f3'}]}
+          title={route.name}
+          titleColor='#fff'>
+          </ToolbarAndroid>
+
+          <Chat db = {myDb} chan ={route.chan} />
+
+          </View>
+        );
     }
   }
 }
@@ -216,7 +236,7 @@ class Main extends React.Component {
     };
 
     _main = this;
-    
+
     syncFav();
     myDb.getFav().then(dbFav => {
       if(dbFav){
@@ -345,7 +365,7 @@ class Main extends React.Component {
       case 0: mainView = <Nav db={myDb} data={cardData} />; break;
       case 1: mainView = <Pick db={myDb} data={list} picked={fav} isPerm={true} ref="myPick" />; break;
       case 2: mainView = <News />; break;
-      case 3: mainView = <Chat db={myDb} chan={0}/>; break;
+      case 3: mainView = <Chan db={myDb}  nav = {this.props.nav}/>; break;
       defualt: break;
     }
 
@@ -374,6 +394,9 @@ class Main extends React.Component {
 }
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
+  if(_navigator == null){
+    return false;
+  }
   if (_navigator.getCurrentRoutes().length === 1  ) {
      return false;
   }

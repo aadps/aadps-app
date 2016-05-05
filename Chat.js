@@ -51,6 +51,7 @@ class Chat extends Component {
     this._user = '';
     this._passwd = '';
     this._id = 0;
+    this._intId = null;
     this.props.db.getUser().then(user => {
       this._user = user.user;
       this._passwd = user.passwd;
@@ -64,15 +65,14 @@ class Chat extends Component {
 
   }
 
-
-
   componentDidMount() {
     this._isMounted = true;
-    setInterval(() => {this.getChat()}, 5000);
+    this._intId = setInterval(() => {this.getChat()}, 5000);
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+    clearInterval(this._intId);
   }
 
   setMessageStatus(uniqueId, status) {
@@ -108,7 +108,6 @@ class Chat extends Component {
 
     // Your logic here
     // Send message.text to your server
-
     fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
       method: 'POST',
       headers: {
@@ -185,7 +184,7 @@ class Chat extends Component {
           textInputContainer: {
             height: 44,
             borderTopWidth: 1 / PixelRatio.get(),
-            borderColor: '#b2b2b2',
+            borderColor: '#bbb',
             flexDirection: 'row',
             paddingLeft: 10,
             paddingRight: 10,
@@ -224,6 +223,5 @@ class Chat extends Component {
     Linking.openURL('tel:' + phone);
   }
 }
-
 
 module.exports = Chat;
