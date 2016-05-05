@@ -1,6 +1,7 @@
-var React = require('react-native');
+'use strict';
 
-var {
+import React, { Component } from 'react';
+import {
   StyleSheet,
   Text,
   Image,
@@ -10,7 +11,7 @@ var {
   TouchableHighlight,
   TouchableWithoutFeedback,
   UIManager,
-} = React;
+} from 'react-native';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 

@@ -1,15 +1,14 @@
 'use strict';
 
-var React = require('react-native');
-
-var {
+import React, { Component } from 'react';
+import {
   StyleSheet,
   Text,
   Image,
   View,
   ListView,
   TouchableHighlight,
-} = React;
+} from 'react-native';
 
 var Linking = require('Linking');
 

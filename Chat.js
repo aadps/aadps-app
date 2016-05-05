@@ -1,6 +1,7 @@
 'use strict';
 
-import React, {
+import React, { Component } from 'react';
+import {
   Linking,
   Platform,
   ActionSheetIOS,
@@ -8,7 +9,6 @@ import React, {
   View,
   Text,
   Navigator,
-  Component,
   PixelRatio,
 } from 'react-native';
 

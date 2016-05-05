@@ -1,8 +1,7 @@
 'use strict';
 
-var React = require('react-native');
-
-var {
+import React, { Component } from 'react';
+import {
   AppRegistry,
   StyleSheet,
   Text,
@@ -16,7 +15,7 @@ var {
   BackAndroid,
   TextInput,
   ToastAndroid,
-} = React;
+} from 'react-native';
 
 var Db = require('./Db');
 var myDb = new Db();

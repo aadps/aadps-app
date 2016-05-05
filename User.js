@@ -1,6 +1,7 @@
-var React = require('react-native');
+'use strict';
 
-var {
+import React, { Component } from 'react';
+import {
   StyleSheet,
   Text,
   Image,
@@ -9,7 +10,7 @@ var {
   ToolbarAndroid,
   TouchableHighlight,
   PixelRatio,
-} = React;
+} from 'react-native';
 
 var Dimensions = require('Dimensions');
 
