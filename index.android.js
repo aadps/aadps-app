@@ -151,7 +151,7 @@ function syncFav() {
 
 function regChat(){
   myDb.getUser().then(user => {
-    if(user)myDb.getChan().then(chan => {
+    if(user)myDb.getPushChan().then(chan => {
       if(chan){
         fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
           method: 'POST',

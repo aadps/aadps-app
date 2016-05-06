@@ -80,10 +80,9 @@ class Chan extends React.Component {
 
   renderLoadingView() {
     return (
-      <View style={styles.container}>
-      <Text style={styles.alert}>
-      请先注册或登录吧( ´・ω・` )
-      </Text>
+      <View style={[styles.container, {flexDirection: 'column'}]}>
+      <Text style={styles.alert}>好像不大对？( ´・ω・` )</Text>
+      <Text style={styles.hint}>在线并登录来向老师们咨询留学问题吧</Text>
       </View>
     );
   }
@@ -146,5 +145,11 @@ var styles = StyleSheet.create({
   },
   listView: {
     backgroundColor: '#f0f0f0',
+  },
+  hint: {
+    fontSize: 16,
+    textAlign: 'center',
+    margin: 10,
+    color: '#333',
   },
 });

@@ -9,6 +9,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   UIManager,
+  PixelRatio,
 } from 'react-native';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -121,7 +122,7 @@ var styles = StyleSheet.create({
   },
   item: {
     borderRadius: 12,
-    borderWidth: 1,
+    borderWidth: 1 / PixelRatio.get(),
     padding: 2,
     paddingLeft: 8,
     paddingRight: 8,
