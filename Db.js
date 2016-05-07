@@ -7,6 +7,7 @@ SQLite.enablePromise(true);
 // 2: User
 // 3: Fav
 // 4: PushChan
+// 5: PushView
 
 class Db {
   constructor() {
@@ -24,7 +25,7 @@ class Db {
     this._db.executeSql('CREATE INDEX IF NOT EXISTS collidx on colleges (geo, comp, size)');
     this._db.executeSql('CREATE TABLE IF NOT EXISTS channels (id INT,' +
       'name VARCHAR, thumb VARCHAR, msg VARCHAR, date VARCHAR, isNew INT, PRIMARY KEY(id))');
-    for(var i = 1; i < 4; i++)this._db.executeSql('INSERT INTO options VALUES (?, "")', [i]);
+    for(var i = 1; i < 6; i++)this._db.executeSql('INSERT INTO options VALUES (?, "")', [i]);
     this.loadColleges();
   }
 
@@ -116,6 +117,18 @@ class Db {
     return this._db.executeSql('SELECT data FROM options WHERE id = 4')
     .then(([result])=> {
       if(result.rows.item(0).data)return result.rows.item(0).data;
+      else return null;
+    })
+    .catch(function(e) {});
+  }
+
+  getPushView() {
+    return this._db.executeSql('SELECT data FROM options WHERE id = 5')
+    .then(([result])=> {
+      if(result.rows.item(0).data){
+        this._db.executeSql('UPDATE options SET data = "" WHERE id = 5')
+        return parseInt(result.rows.item(0).data);
+      }
       else return null;
     })
     .catch(function(e) {});

@@ -230,7 +230,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: this.props.view,
+      view: 0,
       profile: nullProfile,
     };
 
@@ -247,6 +247,22 @@ class Main extends React.Component {
       }
     });
 
+  }
+
+  componentDidMount() {
+    this._intId = setInterval(() => {this.fetchView()}, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._intId);
+  }
+
+  fetchView() {
+    myDb.getPushView().then(view => {
+      if(view){
+        this.setState({view: view});
+      }
+    });
   }
 
   logout() {

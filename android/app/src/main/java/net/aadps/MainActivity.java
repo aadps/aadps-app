@@ -22,12 +22,6 @@ import java.util.List;
 
 public class MainActivity extends ReactActivity {
   @Override
-  protected Bundle getLaunchOptions() {
-    Bundle opts = getIntent().getExtras();
-    return opts;
-  }
-
-  @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     // Push: 以apikey的方式登录，一般放在主Activity的onCreate中。
@@ -87,13 +81,5 @@ public class MainActivity extends ReactActivity {
             new SQLitePluginPackage(this),   // register SQLite Plugin here
             new MainReactPackage()
         );
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-      super.onNewIntent(intent);
-      finish();
-      startActivity(intent);
-
     }
 }

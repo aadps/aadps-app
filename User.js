@@ -186,7 +186,7 @@ var styles = StyleSheet.create({
     borderColor: '#888',
   },
   input: {
-    flex: 0.9,
+    flex: 0.85,
     color: '#333',
   },
   container: {
@@ -198,7 +198,7 @@ var styles = StyleSheet.create({
     borderColor: '#bbb',
   },
   iconBox: {
-    flex: 0.1,
+    flex: 0.15,
     alignItems: 'center',
     justifyContent: 'center'
   },
