@@ -50,7 +50,7 @@ class Pick extends React.Component {
   }
 
   renderSection(data) {
-    if(data.data.length > 0){
+    if(data.data && data.data.length > 0){
       var items = [];
       for(var i = 0; i < data.data.length; i++)
         items.push(this.renderItem(data.data[i]));

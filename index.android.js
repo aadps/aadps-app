@@ -39,7 +39,8 @@ const viewProp = [{
 },{
   title: '院校筛选',
   color: '#8bc34a',
-  actions: [{title: '筛选', icon: require('image!ic_filter_list_white_24dp'), show: 'always'}],
+  actions: [{title: '筛选', icon: require('image!ic_filter_list_white_24dp'), show: 'always'},
+  {title: '排序', icon: require('image!ic_swap_vert_white_24dp'), show: 'always'}],
 },{
   title: '留学资讯',
   color: '#f44336',
@@ -49,31 +50,73 @@ const viewProp = [{
   color: '#2196f3',
   actions: [],
 }];
-var list = [{name: '字母A', ids: [1791, 3665, 3675]},
-  {name: '字母B', ids: [1560, 1641, 1647, 1737, 1977, 2198, 2227, 2233, 2242, 3580]},
-  {name: '字母C', ids: [177, 925, 928, 930, 1554, 1985, 2110, 2192,
-  2194, 2238, 3531, 3533, 3535, 3537, 3539, 3541, 3543, 3547, 3549, 3559, 3561,
-  3673]},
-  {name: '字母D', ids: [1404, 1407, 2116, 3667, 3679, 3681]},
+var lists = [
+  [{name: '拼音A', ids: [3675, 1791, 933, 3644]},
+  {name: '拼音B', ids: [3580, 2242, 2233, 1977, 1617, 3685, 2198, 232, 1718, 1801,
+  1737, 1641, 1647, 1560, 2227]},
+  {name: '拼音D', ids: [1407, 2116, 3679, 3681, 1724, 3661, 3567, 1404, 1739]},
+  {name: '拼音E', ids: [3569, 3689, 3687]},
+  {name: '拼音F', ids: [1563, 1745, 3669, 1606, 3663, 3563]},
+  {name: '拼音G', ids: [928, 3575]},
+  {name: '拼音H', ids: [937, 1988, 2118, 2130, 1733, 2126]},
+  {name: '拼音J', ids: [3531, 3533, 3541, 1554, 3537, 3539, 3535, 3547, 3543, 3549]},
+  {name: '拼音K', ids: [1985, 925, 3559, 3683, 930, 3561, 2192, 2194, 3673, 2238,
+  2110, 3577]},
+  {name: '拼音L', ids: [1574, 2240, 1714, 3571, 947, 3636]},
+  {name: '拼音M', ids: [1397, 2202, 1756, 3677, 3565, 2244, 3665, 943, 3642, 1806,
+  3640]},
+  {name: '拼音N', ids: [1760, 1610, 3648, 945]},
+  {name: '拼音O', ids: [2229]},
+  {name: '拼音P', ids: [1750, 1762, 3638, 1387]},
+  {name: '拼音Q', ids: [1593, 1768]},
+  {name: '拼音S', ids: [3582, 3573, 1576, 2246, 3650, 2196, 2206, 1399, 1796]},
+  {name: '拼音T', ids: [3671, 1612, 3667]},
+  {name: '拼音W', ids: [2112, 1981, 1651, 1789, 952, 205, 2132, 3652]},
+  {name: '拼音X', ids: [1557, 2248, 1770]},
+  {name: '拼音Y', ids: [1391, 241, 3646]},
+  {name: '拼音Z', ids: [177, 3634, 1131]}],
+  [{name: '字母A', ids: [3675, 3665, 1791]},
+  {name: '字母B', ids: [3580, 2233, 2198, 1641, 1737, 1977, 1647, 1560, 2227, 2242]},
+  {name: '字母C', ids: [3531, 3533, 1554, 3535, 3537, 3539, 3541, 3543,
+  3547, 3549, 1985, 925, 3559, 177, 2110, 2192, 2194, 3673, 2238, 928, 3561,
+  930]},
+  {name: '字母D', ids: [1407, 2116, 3667, 3679, 3681, 1404]},
   {name: '字母E', ids: [933]},
   {name: '字母F', ids: [1745, 3563]},
-  {name: '字母G', ids: [1593, 1768, 3575, 3634]},
-  {name: '字母H', ids: [937, 1988, 2118, 2130, 2246]},
-  {name: '字母I', ids: [241, 3644, 3646]},
-  {name: '字母K', ids: [3577, 3683]},
+  {name: '字母G', ids: [1768, 1593, 3634, 1131, 3575]},
+  {name: '字母H', ids: [2130, 937, 2118, 1988, 2246]},
+  {name: '字母I', ids: [241, 3646, 3644]},
+  {name: '字母K', ids: [3683, 3577]},
   {name: '字母L', ids: [1714]},
-  {name: '字母M', ids: [943, 1397, 1756, 1760, 1806, 2202, 2244, 3565, 3640, 3642,
-  3648, 3677]},
-  {name: '字母N', ids: [945, 1557, 1576, 1617, 3567, 3685]},
-  {name: '字母O', ids: [2229, 3569, 3687, 3689]},
-  {name: '字母P', ids: [232, 1387, 1718, 1750, 1762, 1801, 3638]},
-  {name: '字母R', ids: [947, 1574, 2240, 3571, 3636]},
-  {name: '字母S', ids: [1399, 1610, 1770, 1796, 2196, 2206, 2248, 3650]},
-  {name: '字母T', ids: [1612, 1724, 1739, 3582, 3661, 3671]},
-  {name: '字母V', ids: [1563, 1606, 2112, 3663, 3669]},
-  {name: '字母W', ids: [205, 952, 1651, 1733, 1789, 1981, 2126, 2132, 3573, 3652
-  ]},
-  {name: '字母Y', ids: [1391]}];
+  {name: '字母M', ids: [2202, 1756, 3677, 1397, 3565, 3648, 943, 3642, 1806, 3640,
+  2244]},
+  {name: '字母N', ids: [945, 1617, 3685, 3567, 1557, 1576]},
+  {name: '字母O', ids: [2229, 3569, 3689, 3687]},
+  {name: '字母P', ids: [232, 1718, 1750, 1762, 1801, 1387, 3638]},
+  {name: '字母R', ids: [3571, 1574, 2240, 947, 3636]},
+  {name: '字母S', ids: [2206, 2248, 2196, 1610, 1760, 1399, 3650, 1796, 1770]},
+  {name: '字母T', ids: [3661, 1724, 3582, 1612, 1739, 3671]},
+  {name: '字母V', ids: [1563, 2112, 3669, 1606, 3663]},
+  {name: '字母W', ids: [205, 1733, 2126, 3573, 1981, 2132, 1651, 1789, 952, 3652]},
+  {name: '字母Y', ids: [1391]}],
+  [{name: 'A指数90+', ids: [1399, 937, 1387, 928, 1391, 1397, 1554, 1801, 1981,
+  1407, 2118, 177]},
+  {name: 'A指数85+', ids: [232, 1560, 1789, 2110, 1404, 1563, 1796, 930, 1574,
+  1985, 2233, 1557, 1791, 2196, 3531]},
+  {name: 'A指数80+', ids: [925, 1806, 2112, 933, 2227, 3575, 943, 2132, 2192,
+  2194, 2198, 2202, 3537, 1606, 1610, 945, 1576, 1612, 1617, 1988, 2229, 2242]},
+  {name: 'A指数75+', ids: [1641, 2126, 2238, 2244, 1131, 1977, 2130, 3573, 947,
+  2240, 3543, 3580, 205, 2248, 3547, 241, 1651, 2116, 3533, 3577]},
+  {name: 'A指数70+', ids: [2206, 3535, 3559, 952, 1737, 1718, 2246, 3582, 1593,
+  1647, 3638]},
+  {name: 'A指数60+', ids: [1739, 3571, 1733, 1745, 3569, 1714, 3565, 3640, 3567,
+  1750, 1770, 3563, 1756, 1768]},
+  {name: 'A指数50+', ids: [3636, 3652, 1762, 3549, 1724, 3634, 3661, 3646, 3650,
+  1760, 3677, 3541, 3642, 3667, 3561, 3663, 3673]},
+  {name: 'A指数49-', ids: [3644, 3648, 3685, 3665, 3679, 3669, 3671, 3675, 3681,
+  3683, 3687, 3539, 3689]}]
+  ];
+var order = 0;
 const nullProfile = ['', '请注册或登录', ''];
 
 var cardData = [];
@@ -98,8 +141,9 @@ var filterFav = [1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 21, 22, 23, 24];
 var fav = [];
 var view = 0;
 
-function buildPick(list, filterResult) {
-  if(!filterResult)return false;
+function buildPick(filterResult) {
+  var list = lists[order%3];
+  if(!filterResult)return [];
   var cnames={};
   for(var i = 0; i < filterResult.length; i++){
     cnames[filterResult[i].id]=filterResult[i].cname;
@@ -111,7 +155,7 @@ function buildPick(list, filterResult) {
     }
     list[i].data=data;
   }
-  return true;
+  return list;
 }
 
 function syncFav() {
@@ -192,8 +236,7 @@ class aadps extends React.Component{
           onIconClicked={() => {
             navigator.pop();
             myDb.filter(filterFav).then(result => {
-              if(buildPick(list, result))_main.refs.myPick.set(list);
-              else _main.refs.myPick.set([]);
+              _main.refs.myPick.set(buildPick(result));
             });
           }}
           style={[styles.toolbar,{backgroundColor: '#8bc34a'}]}
@@ -273,7 +316,14 @@ class Main extends React.Component {
 
   onActionSelected(pos) {
     switch(this.state.view){
-      case 1: if (pos === 0)this.props.nav.push({id: 'filter'}); break;
+      case 1: if(pos === 0)this.props.nav.push({id: 'filter'})
+              else if(pos === 1){
+                order++;
+                myDb.filter(filterFav).then(result => {
+                  _main.refs.myPick.set(buildPick(result));
+                });
+              }
+      break;
       default: break;
     }
   }
@@ -324,8 +374,8 @@ class Main extends React.Component {
           if(dbFav)fav = dbFav.fav;
           else fav = [];
           myDb.filter(filterFav).then(result => {
-            buildPick(list, result);
             this.setState({view:1});
+            _main.refs.myPick.set(buildPick(result));
           });
         });
       }}>
@@ -378,7 +428,7 @@ class Main extends React.Component {
     var mainView=<View />;
     switch (this.state.view) {
       case 0: mainView = <Nav db={myDb} data={cardData} />; break;
-      case 1: mainView = <Pick db={myDb} data={list} picked={fav} isPerm={true} ref="myPick" />; break;
+      case 1: mainView = <Pick db={myDb} data={lists[order%3]} picked={fav} isPerm={true} ref="myPick" />; break;
       case 2: mainView = <News />; break;
       case 3: mainView = <Chan db={myDb}  nav = {this.props.nav}/>; break;
       defualt: break;
