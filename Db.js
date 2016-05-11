@@ -21,7 +21,8 @@ class Db {
     this._db.executeSql('CREATE TABLE IF NOT EXISTS options (id INT, data TEXT, PRIMARY KEY(id))').then(() => {});
     this._db.executeSql('CREATE TABLE IF NOT EXISTS colleges (id INT,' +
       'type VARCHAR, geo INT, comp INT, size INT, name VARCHAR, cname VARCHAR,' +
-      'type2 VARCHAR, city VARCHAR, setting VARCHAR, PRIMARY KEY(id))');
+      'type2 VARCHAR, city VARCHAR, setting VARCHAR, ceeb INT, ranking INT,' +
+      'comment VARCHAR, order1 INT, order2 INT, order3 INT, guide INT, PRIMARY KEY(id))');
     this._db.executeSql('CREATE INDEX IF NOT EXISTS collidx on colleges (geo, comp, size)');
     this._db.executeSql('CREATE TABLE IF NOT EXISTS channels (id INT,' +
       'name VARCHAR, thumb VARCHAR, msg VARCHAR, date VARCHAR, isNew INT, PRIMARY KEY(id))');
@@ -35,9 +36,12 @@ class Db {
       if(result.rows.item(0).data != ver){
         this._db.executeSql('UPDATE options SET data = "' + ver + '" WHERE id = 1');
         this._db.executeSql('DELETE FROM colleges');
-        for(var i in data)this._db.executeSql('INSERT INTO colleges VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        for(var i in data)this._db.executeSql('INSERT INTO colleges VALUES ' +
+        '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [data[i].id, data[i].type, data[i].geo, data[i].comp, data[i].size,
-        data[i].name, data[i].cname, data[i].type2, data[i].city, data[i].setting]);
+        data[i].name, data[i].cname, data[i].type2, data[i].city, data[i].setting,
+        data[i].ceeb, data[i].ranking, data[i].comment, data[i].order1, data[i].order2,
+        data[i].order3, data[i].guide]);
       }
     })
     .catch(function(e) {});
@@ -78,9 +82,16 @@ class Db {
     .catch(function(e) {});
   }
 
-  getCardData(fav) {
+  getCardData(fav, order) {
+    var orderby = '';
+    switch(order){
+      case 0: orderby = 'ORDER BY order1 asc'; break;
+      case 1: orderby = 'ORDER BY order2 asc'; break;
+      case 2: orderby = 'ORDER BY order3 asc'; break;
+      default: break;
+    }
     return this._db.executeSql('SELECT * FROM colleges WHERE id IN (' +
-    fav.join(',') + ')')
+    fav.join(',') + ') ' + orderby)
     .then(([result])=> {
       if(result.rows.item(0)){
         var colleges = [];
@@ -183,7 +194,14 @@ var data = [
     "cname": "芝大",
     "type2": "综合",
     "city": "Chicago, IL",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 1832,
+    "ranking": 90,
+    "comment": "过渡宣传",
+    "order1": 122,
+    "order2": 27,
+    "order3": 12,
+    "guide": 5494
   },
   {
     "id": 205,
@@ -195,7 +213,14 @@ var data = [
     "cname": "维克森林",
     "type2": "综合",
     "city": "Winston-Salem, NC",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5885,
+    "ranking": 76,
+    "comment": "",
+    "order1": 113,
+    "order2": 114,
+    "order3": 64,
+    "guide": 0
   },
   {
     "id": 232,
@@ -207,7 +232,14 @@ var data = [
     "cname": "宾大",
     "type2": "综合",
     "city": "Philadelphia, PA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 2926,
+    "ranking": 89,
+    "comment": "",
+    "order1": 12,
+    "order2": 82,
+    "order3": 13,
+    "guide": 0
   },
   {
     "id": 241,
@@ -219,7 +251,14 @@ var data = [
     "cname": "伊利诺伊香槟",
     "type2": "综合",
     "city": "Champaign, IL",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 1836,
+    "ranking": 75,
+    "comment": "",
+    "order1": 120,
+    "order2": 55,
+    "order3": 66,
+    "guide": 5176
   },
   {
     "id": 925,
@@ -231,7 +270,14 @@ var data = [
     "cname": "卡耐基梅隆",
     "type2": "综合",
     "city": "Pittsburgh, PA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 2074,
+    "ranking": 84,
+    "comment": "",
+    "order1": 57,
+    "order2": 25,
+    "order3": 28,
+    "guide": 5448
   },
   {
     "id": 928,
@@ -243,7 +289,14 @@ var data = [
     "cname": "哥大",
     "type2": "综合",
     "city": "New York, NY",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 2116,
+    "ranking": 95,
+    "comment": "",
+    "order1": 38,
+    "order2": 33,
+    "order3": 4,
+    "guide": 0
   },
   {
     "id": 930,
@@ -255,7 +308,14 @@ var data = [
     "cname": "康奈尔",
     "type2": "综合",
     "city": "Ithaca, NY",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 2098,
+    "ranking": 86,
+    "comment": "",
+    "order1": 60,
+    "order2": 35,
+    "order3": 21,
+    "guide": 5352
   },
   {
     "id": 933,
@@ -267,7 +327,14 @@ var data = [
     "cname": "埃默里",
     "type2": "综合",
     "city": "Atlanta, GA",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 5187,
+    "ranking": 83,
+    "comment": "",
+    "order1": 3,
+    "order2": 42,
+    "order3": 32,
+    "guide": 5397
   },
   {
     "id": 937,
@@ -279,7 +346,14 @@ var data = [
     "cname": "哈佛",
     "type2": "综合",
     "city": "Cambridge, MA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 3434,
+    "ranking": 99,
+    "comment": "",
+    "order1": 40,
+    "order2": 51,
+    "order3": 2,
+    "guide": 0
   },
   {
     "id": 943,
@@ -291,7 +365,14 @@ var data = [
     "cname": "密歇根",
     "type2": "综合",
     "city": "Ann Arbor, MI",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 1839,
+    "ranking": 82,
+    "comment": "",
+    "order1": 81,
+    "order2": 67,
+    "order3": 34,
+    "guide": 4663
   },
   {
     "id": 945,
@@ -303,7 +384,14 @@ var data = [
     "cname": "纽大",
     "type2": "综合",
     "city": "New York, NY",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 2562,
+    "ranking": 80,
+    "comment": "",
+    "order1": 88,
+    "order2": 72,
+    "order3": 47,
+    "guide": 0
   },
   {
     "id": 947,
@@ -315,7 +403,14 @@ var data = [
     "cname": "罗彻斯特",
     "type2": "综合",
     "city": "Rochester, NY",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 2928,
+    "ranking": 77,
+    "comment": "",
+    "order1": 72,
+    "order2": 92,
+    "order3": 59,
+    "guide": 0
   },
   {
     "id": 952,
@@ -327,7 +422,14 @@ var data = [
     "cname": "威斯康星",
     "type2": "综合",
     "city": "Madison, WI",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 1846,
+    "ranking": 73,
+    "comment": "",
+    "order1": 112,
+    "order2": 122,
+    "order3": 73,
+    "guide": 5055
   },
   {
     "id": 1131,
@@ -339,7 +441,14 @@ var data = [
     "cname": "佐治亚理工",
     "type2": "综合",
     "city": "Atlanta, GA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 5248,
+    "ranking": 78,
+    "comment": "标化要求高",
+    "order1": 124,
+    "order2": 48,
+    "order3": 56,
+    "guide": 5267
   },
   {
     "id": 1387,
@@ -351,7 +460,14 @@ var data = [
     "cname": "普林斯顿",
     "type2": "综合",
     "city": "Princeton, NJ",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 2672,
+    "ranking": 97,
+    "comment": "",
+    "order1": 93,
+    "order2": 87,
+    "order3": 3,
+    "guide": 0
   },
   {
     "id": 1391,
@@ -363,7 +479,14 @@ var data = [
     "cname": "耶鲁",
     "type2": "综合",
     "city": "New Haven, CT",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 3987,
+    "ranking": 94,
+    "comment": "",
+    "order1": 119,
+    "order2": 124,
+    "order3": 5,
+    "guide": 0
   },
   {
     "id": 1397,
@@ -375,7 +498,14 @@ var data = [
     "cname": "麻省理工",
     "type2": "综合",
     "city": "Cambridge, MA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 3514,
+    "ranking": 93,
+    "comment": "",
+    "order1": 74,
+    "order2": 64,
+    "order3": 6,
+    "guide": 0
   },
   {
     "id": 1399,
@@ -387,7 +517,14 @@ var data = [
     "cname": "斯坦福",
     "type2": "综合",
     "city": "Stanford, CA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 4704,
+    "ranking": 100,
+    "comment": "",
+    "order1": 103,
+    "order2": 99,
+    "order3": 1,
+    "guide": 0
   },
   {
     "id": 1404,
@@ -399,7 +536,14 @@ var data = [
     "cname": "杜克",
     "type2": "综合",
     "city": "Durham, NC",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5156,
+    "ranking": 88,
+    "comment": "",
+    "order1": 27,
+    "order2": 41,
+    "order3": 17,
+    "guide": 0
   },
   {
     "id": 1407,
@@ -411,7 +555,14 @@ var data = [
     "cname": "达特茅斯",
     "type2": "综合",
     "city": "Hanover, NH",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 3351,
+    "ranking": 91,
+    "comment": "",
+    "order1": 20,
+    "order2": 36,
+    "order3": 10,
+    "guide": 0
   },
   {
     "id": 1554,
@@ -423,7 +574,14 @@ var data = [
     "cname": "加州理工",
     "type2": "综合",
     "city": "Pasadena, CA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 4034,
+    "ranking": 92,
+    "comment": "",
+    "order1": 49,
+    "order2": 16,
+    "order3": 8,
+    "guide": 0
   },
   {
     "id": 1557,
@@ -435,7 +593,14 @@ var data = [
     "cname": "西北",
     "type2": "综合",
     "city": "Evanston, IL",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 1565,
+    "ranking": 85,
+    "comment": "",
+    "order1": 116,
+    "order2": 76,
+    "order3": 24,
+    "guide": 0
   },
   {
     "id": 1560,
@@ -447,7 +612,14 @@ var data = [
     "cname": "布朗",
     "type2": "综合",
     "city": "Providence, RI",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 3094,
+    "ranking": 89,
+    "comment": "",
+    "order1": 18,
+    "order2": 11,
+    "order3": 14,
+    "guide": 5526
   },
   {
     "id": 1563,
@@ -459,7 +631,14 @@ var data = [
     "cname": "范德堡",
     "type2": "综合",
     "city": "Nashville, TN",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 1871,
+    "ranking": 87,
+    "comment": "",
+    "order1": 32,
+    "order2": 109,
+    "order3": 18,
+    "guide": 0
   },
   {
     "id": 1574,
@@ -471,7 +650,14 @@ var data = [
     "cname": "莱斯",
     "type2": "综合",
     "city": "Houston, TX",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 6609,
+    "ranking": 86,
+    "comment": "",
+    "order1": 68,
+    "order2": 90,
+    "order3": 23,
+    "guide": 0
   },
   {
     "id": 1576,
@@ -483,7 +669,14 @@ var data = [
     "cname": "圣母",
     "type2": "综合",
     "city": "Notre Dame, IN",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 1841,
+    "ranking": 80,
+    "comment": "要求四年财产证明",
+    "order1": 98,
+    "order2": 77,
+    "order3": 44,
+    "guide": 0
   },
   {
     "id": 1593,
@@ -495,7 +688,14 @@ var data = [
     "cname": "乔治城",
     "type2": "综合",
     "city": "Washington, DC",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 5244,
+    "ranking": 71,
+    "comment": "",
+    "order1": 94,
+    "order2": 46,
+    "order3": 78,
+    "guide": 0
   },
   {
     "id": 1606,
@@ -507,7 +707,14 @@ var data = [
     "cname": "弗吉尼亚大学",
     "type2": "综合",
     "city": "Charlottesville, VA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5820,
+    "ranking": 81,
+    "comment": "",
+    "order1": 35,
+    "order2": 112,
+    "order3": 42,
+    "guide": 0
   },
   {
     "id": 1610,
@@ -519,7 +726,14 @@ var data = [
     "cname": "南加大",
     "type2": "综合",
     "city": "Los Angeles, CA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 4852,
+    "ranking": 81,
+    "comment": "",
+    "order1": 86,
+    "order2": 97,
+    "order3": 41,
+    "guide": 4666
   },
   {
     "id": 1612,
@@ -531,7 +745,14 @@ var data = [
     "cname": "塔夫茨",
     "type2": "综合",
     "city": "Medford, MA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 3901,
+    "ranking": 80,
+    "comment": "",
+    "order1": 106,
+    "order2": 106,
+    "order3": 48,
+    "guide": 0
   },
   {
     "id": 1617,
@@ -543,7 +764,14 @@ var data = [
     "cname": "北卡教堂山",
     "type2": "综合",
     "city": "Chapel Hill, NC",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5816,
+    "ranking": 80,
+    "comment": "",
+    "order1": 9,
+    "order2": 73,
+    "order3": 49,
+    "guide": 0
   },
   {
     "id": 1641,
@@ -555,7 +783,14 @@ var data = [
     "cname": "波士顿学院",
     "type2": "综合",
     "city": "Chestnut Hill, MA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 3083,
+    "ranking": 79,
+    "comment": "",
+    "order1": 16,
+    "order2": 7,
+    "order3": 50,
+    "guide": 0
   },
   {
     "id": 1647,
@@ -567,7 +802,14 @@ var data = [
     "cname": "布兰戴斯",
     "type2": "综合",
     "city": "Waltham, MA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 3092,
+    "ranking": 70,
+    "comment": "入学强制进入语言项目",
+    "order1": 17,
+    "order2": 10,
+    "order3": 80,
+    "guide": 5426
   },
   {
     "id": 1651,
@@ -579,7 +821,14 @@ var data = [
     "cname": "威廉玛丽",
     "type2": "综合",
     "city": "Williamsburg, VA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5115,
+    "ranking": 75,
+    "comment": "",
+    "order1": 110,
+    "order2": 120,
+    "order3": 68,
+    "guide": 0
   },
   {
     "id": 1714,
@@ -591,7 +840,14 @@ var data = [
     "cname": "利哈伊",
     "type2": "综合",
     "city": "Bethlehem, PA",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 2365,
+    "ranking": 67,
+    "comment": "",
+    "order1": 70,
+    "order2": 60,
+    "order3": 86,
+    "guide": 0
   },
   {
     "id": 1718,
@@ -603,7 +859,14 @@ var data = [
     "cname": "宾州州立",
     "type2": "综合",
     "city": "University Park, PA",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 2660,
+    "ranking": 72,
+    "comment": "",
+    "order1": 13,
+    "order2": 83,
+    "order3": 75,
+    "guide": 0
   },
   {
     "id": 1724,
@@ -615,7 +878,14 @@ var data = [
     "cname": "德州奥斯汀",
     "type2": "综合",
     "city": "Austin, TX",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 6882,
+    "ranking": 57,
+    "comment": "国际学生录取率低",
+    "order1": 24,
+    "order2": 104,
+    "order3": 100,
+    "guide": 0
   },
   {
     "id": 1733,
@@ -627,7 +897,14 @@ var data = [
     "cname": "华大西雅图",
     "type2": "综合",
     "city": "Seattle, WA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 4854,
+    "ranking": 68,
+    "comment": "",
+    "order1": 44,
+    "order2": 115,
+    "order3": 84,
+    "guide": 0
   },
   {
     "id": 1737,
@@ -639,7 +916,14 @@ var data = [
     "cname": "波士顿大学",
     "type2": "综合",
     "city": "Boston, MA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 3087,
+    "ranking": 73,
+    "comment": "",
+    "order1": 15,
+    "order2": 8,
+    "order3": 74,
+    "guide": 4645
   },
   {
     "id": 1739,
@@ -651,7 +935,14 @@ var data = [
     "cname": "杜兰",
     "type2": "综合",
     "city": "New Orleans, LA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 6832,
+    "ranking": 69,
+    "comment": "",
+    "order1": 28,
+    "order2": 107,
+    "order3": 82,
+    "guide": 0
   },
   {
     "id": 1745,
@@ -663,7 +954,14 @@ var data = [
     "cname": "佛罗里达",
     "type2": "综合",
     "city": "Gainesville, FL",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5812,
+    "ranking": 68,
+    "comment": "",
+    "order1": 33,
+    "order2": 43,
+    "order3": 85,
+    "guide": 0
   },
   {
     "id": 1750,
@@ -675,7 +973,14 @@ var data = [
     "cname": "佩珀代因",
     "type2": "综合",
     "city": "Malibu, CA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 4630,
+    "ranking": 63,
+    "comment": "",
+    "order1": 90,
+    "order2": 84,
+    "order3": 90,
+    "guide": 0
   },
   {
     "id": 1756,
@@ -687,7 +992,14 @@ var data = [
     "cname": "马里兰",
     "type2": "综合",
     "city": "College Park, MD",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5814,
+    "ranking": 60,
+    "comment": "",
+    "order1": 76,
+    "order2": 62,
+    "order3": 94,
+    "guide": 0
   },
   {
     "id": 1760,
@@ -699,7 +1011,14 @@ var data = [
     "cname": "南方卫理公会",
     "type2": "综合",
     "city": "Dallas, TX",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 6660,
+    "ranking": 53,
+    "comment": "",
+    "order1": 85,
+    "order2": 98,
+    "order3": 105,
+    "guide": 0
   },
   {
     "id": 1762,
@@ -711,7 +1030,14 @@ var data = [
     "cname": "匹兹堡",
     "type2": "综合",
     "city": "Pittsburgh, PA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 2927,
+    "ranking": 58,
+    "comment": "",
+    "order1": 91,
+    "order2": 85,
+    "order3": 97,
+    "guide": 0
   },
   {
     "id": 1768,
@@ -723,7 +1049,14 @@ var data = [
     "cname": "乔治华盛顿",
     "type2": "综合",
     "city": "Washington, DC",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 5246,
+    "ranking": 60,
+    "comment": "",
+    "order1": 95,
+    "order2": 45,
+    "order3": 93,
+    "guide": 0
   },
   {
     "id": 1770,
@@ -735,7 +1068,14 @@ var data = [
     "cname": "雪城",
     "type2": "综合",
     "city": "Syracuse, NY",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 2823,
+    "ranking": 62,
+    "comment": "",
+    "order1": 118,
+    "order2": 102,
+    "order3": 91,
+    "guide": 0
   },
   {
     "id": 1789,
@@ -747,7 +1087,14 @@ var data = [
     "cname": "威廉姆斯",
     "type2": "文理",
     "city": "Williamstown, MA",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 3965,
+    "ranking": 89,
+    "comment": "国际学生录取率低",
+    "order1": 111,
+    "order2": 121,
+    "order3": 15,
+    "guide": 0
   },
   {
     "id": 1791,
@@ -759,7 +1106,14 @@ var data = [
     "cname": "阿默斯特",
     "type2": "文理",
     "city": "Amherst, MA",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 3003,
+    "ranking": 85,
+    "comment": "国际学生录取率低",
+    "order1": 2,
+    "order2": 3,
+    "order3": 25,
+    "guide": 0
   },
   {
     "id": 1796,
@@ -771,7 +1125,14 @@ var data = [
     "cname": "斯沃斯莫尔",
     "type2": "文理",
     "city": "Swarthmore, PA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 2821,
+    "ranking": 87,
+    "comment": "",
+    "order1": 104,
+    "order2": 101,
+    "order3": 19,
+    "guide": 0
   },
   {
     "id": 1801,
@@ -783,7 +1144,14 @@ var data = [
     "cname": "波莫纳",
     "type2": "文理",
     "city": "Claremont, CA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 4607,
+    "ranking": 92,
+    "comment": "",
+    "order1": 14,
+    "order2": 86,
+    "order3": 9,
+    "guide": 0
   },
   {
     "id": 1806,
@@ -795,7 +1163,14 @@ var data = [
     "cname": "明德",
     "type2": "文理",
     "city": "Middlebury, VT",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 3526,
+    "ranking": 84,
+    "comment": "",
+    "order1": 83,
+    "order2": 69,
+    "order3": 30,
+    "guide": 0
   },
   {
     "id": 1977,
@@ -807,7 +1182,14 @@ var data = [
     "cname": "鲍登",
     "type2": "文理",
     "city": "Brunswick, ME",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 3089,
+    "ranking": 78,
+    "comment": "",
+    "order1": 8,
+    "order2": 9,
+    "order3": 55,
+    "guide": 4651
   },
   {
     "id": 1981,
@@ -819,7 +1201,14 @@ var data = [
     "cname": "威尔斯利",
     "type2": "文理",
     "city": "Wellesley, MA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 3957,
+    "ranking": 92,
+    "comment": "",
+    "order1": 109,
+    "order2": 118,
+    "order3": 7,
+    "guide": 0
   },
   {
     "id": 1985,
@@ -831,7 +1220,14 @@ var data = [
     "cname": "卡尔顿",
     "type2": "文理",
     "city": "Northfield, MN",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 6081,
+    "ranking": 86,
+    "comment": "",
+    "order1": 56,
+    "order2": 24,
+    "order3": 22,
+    "guide": 0
   },
   {
     "id": 1988,
@@ -843,7 +1239,14 @@ var data = [
     "cname": "哈弗福德",
     "type2": "文理",
     "city": "Haverford, PA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 2289,
+    "ranking": 80,
+    "comment": "",
+    "order1": 41,
+    "order2": 53,
+    "order3": 46,
+    "guide": 0
   },
   {
     "id": 2110,
@@ -855,7 +1258,14 @@ var data = [
     "cname": "克莱蒙特",
     "type2": "文理",
     "city": "Claremont, CA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 4054,
+    "ranking": 89,
+    "comment": "",
+    "order1": 66,
+    "order2": 28,
+    "order3": 16,
+    "guide": 0
   },
   {
     "id": 2112,
@@ -867,7 +1277,14 @@ var data = [
     "cname": "瓦萨",
     "type2": "文理",
     "city": "Poughkeepsie, NY",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 2956,
+    "ranking": 84,
+    "comment": "",
+    "order1": 108,
+    "order2": 110,
+    "order3": 29,
+    "guide": 0
   },
   {
     "id": 2116,
@@ -879,7 +1296,14 @@ var data = [
     "cname": "戴维森",
     "type2": "文理",
     "city": "Davidson, NC",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5150,
+    "ranking": 75,
+    "comment": "",
+    "order1": 21,
+    "order2": 37,
+    "order3": 69,
+    "guide": 0
   },
   {
     "id": 2118,
@@ -891,7 +1315,14 @@ var data = [
     "cname": "哈维姆德",
     "type2": "文理",
     "city": "Claremont, CA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 4341,
+    "ranking": 91,
+    "comment": "",
+    "order1": 42,
+    "order2": 52,
+    "order3": 11,
+    "guide": 0
   },
   {
     "id": 2126,
@@ -903,7 +1334,14 @@ var data = [
     "cname": "华盛顿与李",
     "type2": "文理",
     "city": "Lexington, VA",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 5887,
+    "ranking": 79,
+    "comment": "",
+    "order1": 45,
+    "order2": 116,
+    "order3": 53,
+    "guide": 0
   },
   {
     "id": 2130,
@@ -915,7 +1353,14 @@ var data = [
     "cname": "汉密尔顿",
     "type2": "文理",
     "city": "Clinton, NY",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 2286,
+    "ranking": 78,
+    "comment": "",
+    "order1": 43,
+    "order2": 50,
+    "order3": 54,
+    "guide": 0
   },
   {
     "id": 2132,
@@ -927,7 +1372,14 @@ var data = [
     "cname": "卫斯理安",
     "type2": "文理",
     "city": "Middletown, CT",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 3959,
+    "ranking": 82,
+    "comment": "",
+    "order1": 114,
+    "order2": 119,
+    "order3": 38,
+    "guide": 0
   },
   {
     "id": 2192,
@@ -939,7 +1391,14 @@ var data = [
     "cname": "科尔比",
     "type2": "文理",
     "city": "Waterville, ME",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 3280,
+    "ranking": 82,
+    "comment": "",
+    "order1": 62,
+    "order2": 29,
+    "order3": 37,
+    "guide": 0
   },
   {
     "id": 2194,
@@ -951,7 +1410,14 @@ var data = [
     "cname": "科尔盖特",
     "type2": "文理",
     "city": "Hamilton, NY",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 2086,
+    "ranking": 82,
+    "comment": "",
+    "order1": 63,
+    "order2": 30,
+    "order3": 35,
+    "guide": 0
   },
   {
     "id": 2196,
@@ -963,7 +1429,14 @@ var data = [
     "cname": "史密斯",
     "type2": "文理",
     "city": "Northampton, MA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 3762,
+    "ranking": 85,
+    "comment": "",
+    "order1": 101,
+    "order2": 96,
+    "order3": 26,
+    "guide": 0
   },
   {
     "id": 2198,
@@ -975,7 +1448,14 @@ var data = [
     "cname": "贝茨",
     "type2": "文理",
     "city": "Lewiston, ME",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 3076,
+    "ranking": 82,
+    "comment": "",
+    "order1": 11,
+    "order2": 6,
+    "order3": 36,
+    "guide": 4648
   },
   {
     "id": 2202,
@@ -987,7 +1467,14 @@ var data = [
     "cname": "马卡莱斯特",
     "type2": "文理",
     "city": "St. Paul, MN",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 6390,
+    "ranking": 82,
+    "comment": "",
+    "order1": 75,
+    "order2": 61,
+    "order3": 40,
+    "guide": 0
   },
   {
     "id": 2206,
@@ -999,7 +1486,14 @@ var data = [
     "cname": "斯克利普斯",
     "type2": "文理",
     "city": "Claremont, CA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 4693,
+    "ranking": 74,
+    "comment": "",
+    "order1": 102,
+    "order2": 94,
+    "order3": 71,
+    "guide": 0
   },
   {
     "id": 2227,
@@ -1011,7 +1505,14 @@ var data = [
     "cname": "布林茅尔",
     "type2": "文理",
     "city": "Bryn Mawr, PA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 2049,
+    "ranking": 83,
+    "comment": "",
+    "order1": 19,
+    "order2": 12,
+    "order3": 31,
+    "guide": 4641
   },
   {
     "id": 2229,
@@ -1023,7 +1524,14 @@ var data = [
     "cname": "欧柏林",
     "type2": "文理",
     "city": "Oberlin, OH",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 1587,
+    "ranking": 80,
+    "comment": "",
+    "order1": 89,
+    "order2": 78,
+    "order3": 43,
+    "guide": 0
   },
   {
     "id": 2233,
@@ -1035,7 +1543,14 @@ var data = [
     "cname": "巴纳德",
     "type2": "文理",
     "city": "New York, NY",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 2038,
+    "ranking": 86,
+    "comment": "",
+    "order1": 7,
+    "order2": 5,
+    "order3": 20,
+    "guide": 4637
   },
   {
     "id": 2238,
@@ -1047,7 +1562,14 @@ var data = [
     "cname": "科罗拉多学院",
     "type2": "文理",
     "city": "Colorado Springs, CO",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 4072,
+    "ranking": 79,
+    "comment": "",
+    "order1": 65,
+    "order2": 32,
+    "order3": 52,
+    "guide": 0
   },
   {
     "id": 2240,
@@ -1059,7 +1581,14 @@ var data = [
     "cname": "里士满",
     "type2": "文理",
     "city": "Richmond, VA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5569,
+    "ranking": 77,
+    "comment": "",
+    "order1": 69,
+    "order2": 91,
+    "order3": 61,
+    "guide": 0
   },
   {
     "id": 2242,
@@ -1071,7 +1600,14 @@ var data = [
     "cname": "巴克内尔",
     "type2": "文理",
     "city": "Lewisburg, PA",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 2050,
+    "ranking": 80,
+    "comment": "",
+    "order1": 6,
+    "order2": 13,
+    "order3": 45,
+    "guide": 4633
   },
   {
     "id": 2244,
@@ -1083,7 +1619,14 @@ var data = [
     "cname": "曼荷莲",
     "type2": "文理",
     "city": "South Hadley, MA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 3529,
+    "ranking": 79,
+    "comment": "",
+    "order1": 79,
+    "order2": 71,
+    "order3": 51,
+    "guide": 0
   },
   {
     "id": 2246,
@@ -1095,7 +1638,14 @@ var data = [
     "cname": "圣十字",
     "type2": "文理",
     "city": "Worcester, MA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 3282,
+    "ranking": 72,
+    "comment": "",
+    "order1": 99,
+    "order2": 54,
+    "order3": 76,
+    "guide": 0
   },
   {
     "id": 2248,
@@ -1107,7 +1657,14 @@ var data = [
     "cname": "西沃恩",
     "type2": "文理",
     "city": "Sewanee, TN",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 1842,
+    "ranking": 76,
+    "comment": "",
+    "order1": 117,
+    "order2": 95,
+    "order3": 62,
+    "guide": 0
   },
   {
     "id": 3531,
@@ -1119,7 +1676,14 @@ var data = [
     "cname": "加州伯克利",
     "type2": "综合",
     "city": "Berkeley, CA",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 4833,
+    "ranking": 85,
+    "comment": "",
+    "order1": 46,
+    "order2": 14,
+    "order3": 27,
+    "guide": 4654
   },
   {
     "id": 3533,
@@ -1131,7 +1695,14 @@ var data = [
     "cname": "加州戴维斯",
     "type2": "综合",
     "city": "Davis, CA",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 4834,
+    "ranking": 75,
+    "comment": "",
+    "order1": 47,
+    "order2": 15,
+    "order3": 67,
+    "guide": 0
   },
   {
     "id": 3535,
@@ -1143,7 +1714,14 @@ var data = [
     "cname": "加州欧文",
     "type2": "综合",
     "city": "Irvine, CA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 4859,
+    "ranking": 74,
+    "comment": "",
+    "order1": 52,
+    "order2": 17,
+    "order3": 72,
+    "guide": 0
   },
   {
     "id": 3537,
@@ -1155,7 +1733,14 @@ var data = [
     "cname": "加州洛杉矶",
     "type2": "综合",
     "city": "Los Angeles, CA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 4837,
+    "ranking": 82,
+    "comment": "",
+    "order1": 50,
+    "order2": 18,
+    "order3": 39,
+    "guide": 4660
   },
   {
     "id": 3539,
@@ -1167,7 +1752,14 @@ var data = [
     "cname": "加州默塞德",
     "type2": "综合",
     "city": "Merced, CA",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 4129,
+    "ranking": 42,
+    "comment": "",
+    "order1": 51,
+    "order2": 19,
+    "order3": 123,
+    "guide": 0
   },
   {
     "id": 3541,
@@ -1179,7 +1771,14 @@ var data = [
     "cname": "加州河滨",
     "type2": "综合",
     "city": "Riverside, CA",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 4839,
+    "ranking": 52,
+    "comment": "",
+    "order1": 48,
+    "order2": 20,
+    "order3": 107,
+    "guide": 0
   },
   {
     "id": 3543,
@@ -1191,7 +1790,14 @@ var data = [
     "cname": "加州圣地亚哥",
     "type2": "综合",
     "city": "La Jolla, CA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 4849,
+    "ranking": 77,
+    "comment": "",
+    "order1": 54,
+    "order2": 21,
+    "order3": 60,
+    "guide": 4657
   },
   {
     "id": 3547,
@@ -1203,7 +1809,14 @@ var data = [
     "cname": "加州圣芭芭拉",
     "type2": "综合",
     "city": "Santa Barbara, CA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 4835,
+    "ranking": 76,
+    "comment": "",
+    "order1": 53,
+    "order2": 22,
+    "order3": 63,
+    "guide": 0
   },
   {
     "id": 3549,
@@ -1215,7 +1828,14 @@ var data = [
     "cname": "加州圣克鲁兹",
     "type2": "综合",
     "city": "Santa Cruz, CA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 4860,
+    "ranking": 58,
+    "comment": "",
+    "order1": 55,
+    "order2": 23,
+    "order3": 98,
+    "guide": 0
   },
   {
     "id": 3559,
@@ -1227,7 +1847,14 @@ var data = [
     "cname": "凯斯西储",
     "type2": "综合",
     "city": "Cleveland, OH",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 1105,
+    "ranking": 74,
+    "comment": "",
+    "order1": 58,
+    "order2": 26,
+    "order3": 70,
+    "guide": 0
   },
   {
     "id": 3561,
@@ -1239,7 +1866,14 @@ var data = [
     "cname": "康涅狄格大学",
     "type2": "综合",
     "city": "Storrs, CT",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 3915,
+    "ranking": 51,
+    "comment": "",
+    "order1": 61,
+    "order2": 34,
+    "order3": 109,
+    "guide": 0
   },
   {
     "id": 3563,
@@ -1251,7 +1885,14 @@ var data = [
     "cname": "福特汉姆",
     "type2": "综合",
     "city": "New York, NY",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 2259,
+    "ranking": 61,
+    "comment": "",
+    "order1": 37,
+    "order2": 44,
+    "order3": 92,
+    "guide": 5163
   },
   {
     "id": 3565,
@@ -1263,7 +1904,14 @@ var data = [
     "cname": "迈阿密大学",
     "type2": "综合",
     "city": "Coral Gables, FL",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5815,
+    "ranking": 66,
+    "comment": "",
+    "order1": 78,
+    "order2": 65,
+    "order3": 87,
+    "guide": 0
   },
   {
     "id": 3567,
@@ -1275,7 +1923,14 @@ var data = [
     "cname": "东北",
     "type2": "综合",
     "city": "Boston, MA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 3667,
+    "ranking": 64,
+    "comment": "",
+    "order1": 26,
+    "order2": 75,
+    "order3": 89,
+    "guide": 0
   },
   {
     "id": 3569,
@@ -1287,7 +1942,14 @@ var data = [
     "cname": "俄亥俄州立",
     "type2": "综合",
     "city": "Columbus, OH",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 1592,
+    "ranking": 68,
+    "comment": "",
+    "order1": 29,
+    "order2": 79,
+    "order3": 83,
+    "guide": 0
   },
   {
     "id": 3571,
@@ -1299,7 +1961,14 @@ var data = [
     "cname": "伦斯勒理工",
     "type2": "综合",
     "city": "Troy, NY",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 2757,
+    "ranking": 69,
+    "comment": "",
+    "order1": 71,
+    "order2": 89,
+    "order3": 81,
+    "guide": 0
   },
   {
     "id": 3573,
@@ -1311,7 +1980,14 @@ var data = [
     "cname": "圣路易斯华大",
     "type2": "综合",
     "city": "St. Louis, MO",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 6929,
+    "ranking": 78,
+    "comment": "",
+    "order1": 97,
+    "order2": 117,
+    "order3": 57,
+    "guide": 0
   },
   {
     "id": 3575,
@@ -1323,7 +1999,14 @@ var data = [
     "cname": "格林内尔",
     "type2": "文理",
     "city": "Grinnell, IA",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 6252,
+    "ranking": 83,
+    "comment": "",
+    "order1": 39,
+    "order2": 49,
+    "order3": 33,
+    "guide": 0
   },
   {
     "id": 3577,
@@ -1335,7 +2018,14 @@ var data = [
     "cname": "肯尼恩",
     "type2": "文理",
     "city": "Gambier, OH",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 1370,
+    "ranking": 75,
+    "comment": "",
+    "order1": 67,
+    "order2": 59,
+    "order3": 65,
+    "guide": 0
   },
   {
     "id": 3580,
@@ -1347,7 +2037,14 @@ var data = [
     "cname": "巴德",
     "type2": "文理",
     "city": "Annandale-On-Hudson, NY",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 2037,
+    "ranking": 77,
+    "comment": "",
+    "order1": 5,
+    "order2": 4,
+    "order3": 58,
+    "guide": 0
   },
   {
     "id": 3582,
@@ -1359,7 +2056,14 @@ var data = [
     "cname": "三一",
     "type2": "文理",
     "city": "Hartford, CT",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 3899,
+    "ranking": 72,
+    "comment": "",
+    "order1": 96,
+    "order2": 105,
+    "order3": 77,
+    "guide": 0
   },
   {
     "id": 3634,
@@ -1371,7 +2075,14 @@ var data = [
     "cname": "佐治亚大学",
     "type2": "综合",
     "city": "Athens, GA",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 5813,
+    "ranking": 57,
+    "comment": "",
+    "order1": 123,
+    "order2": 47,
+    "order3": 99,
+    "guide": 0
   },
   {
     "id": 3636,
@@ -1383,7 +2094,14 @@ var data = [
     "cname": "罗格斯",
     "type2": "综合",
     "city": "Newark, NJ",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 2765,
+    "ranking": 59,
+    "comment": "",
+    "order1": 73,
+    "order2": 93,
+    "order3": 95,
+    "guide": 5647
   },
   {
     "id": 3638,
@@ -1395,7 +2113,14 @@ var data = [
     "cname": "普渡",
     "type2": "综合",
     "city": "West Lafayette, IN",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 1631,
+    "ranking": 70,
+    "comment": "",
+    "order1": 92,
+    "order2": 88,
+    "order3": 79,
+    "guide": 0
   },
   {
     "id": 3640,
@@ -1407,7 +2132,14 @@ var data = [
     "cname": "明尼苏达双城",
     "type2": "综合",
     "city": "Minneapolis, MN",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 6874,
+    "ranking": 65,
+    "comment": "",
+    "order1": 84,
+    "order2": 70,
+    "order3": 88,
+    "guide": 0
   },
   {
     "id": 3642,
@@ -1419,7 +2151,14 @@ var data = [
     "cname": "密歇根州立",
     "type2": "综合",
     "city": "East Lansing, MI",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 1465,
+    "ranking": 52,
+    "comment": "",
+    "order1": 82,
+    "order2": 68,
+    "order3": 106,
+    "guide": 0
   },
   {
     "id": 3644,
@@ -1431,7 +2170,14 @@ var data = [
     "cname": "爱荷华",
     "type2": "综合",
     "city": "Iowa City, IA",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 6681,
+    "ranking": 49,
+    "comment": "",
+    "order1": 4,
+    "order2": 57,
+    "order3": 112,
+    "guide": 0
   },
   {
     "id": 3646,
@@ -1443,7 +2189,14 @@ var data = [
     "cname": "印地安那",
     "type2": "综合",
     "city": "Bloomington, IN",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 1324,
+    "ranking": 55,
+    "comment": "",
+    "order1": 121,
+    "order2": 56,
+    "order3": 102,
+    "guide": 0
   },
   {
     "id": 3648,
@@ -1455,7 +2208,14 @@ var data = [
     "cname": "牛津迈阿密",
     "type2": "综合",
     "city": "Oxford, OH",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 1463,
+    "ranking": 48,
+    "comment": "",
+    "order1": 87,
+    "order2": 66,
+    "order3": 113,
+    "guide": 0
   },
   {
     "id": 3650,
@@ -1467,7 +2227,14 @@ var data = [
     "cname": "石溪",
     "type2": "综合",
     "city": "Stony Brook, NY",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 2548,
+    "ranking": 54,
+    "comment": "",
+    "order1": 100,
+    "order2": 100,
+    "order3": 103,
+    "guide": 0
   },
   {
     "id": 3652,
@@ -1479,7 +2246,14 @@ var data = [
     "cname": "伍斯特理工",
     "type2": "综合",
     "city": "Worcester, MA",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 3969,
+    "ranking": 59,
+    "comment": "",
+    "order1": 115,
+    "order2": 123,
+    "order3": 96,
+    "guide": 0
   },
   {
     "id": 3661,
@@ -1491,7 +2265,14 @@ var data = [
     "cname": "德州农工",
     "type2": "综合",
     "city": "College Station, TX",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 6003,
+    "ranking": 56,
+    "comment": "",
+    "order1": 25,
+    "order2": 103,
+    "order3": 101,
+    "guide": 0
   },
   {
     "id": 3663,
@@ -1503,7 +2284,14 @@ var data = [
     "cname": "弗吉尼亚理工",
     "type2": "综合",
     "city": "Blacksburg, VA",
-    "setting": "乡村"
+    "setting": "乡村",
+    "ceeb": 5859,
+    "ranking": 51,
+    "comment": "",
+    "order1": 36,
+    "order2": 113,
+    "order3": 110,
+    "guide": 0
   },
   {
     "id": 3665,
@@ -1515,7 +2303,14 @@ var data = [
     "cname": "美国大学",
     "type2": "综合",
     "city": "Washington, DC",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5007,
+    "ranking": 47,
+    "comment": "",
+    "order1": 80,
+    "order2": 2,
+    "order3": 116,
+    "guide": 0
   },
   {
     "id": 3667,
@@ -1527,7 +2322,14 @@ var data = [
     "cname": "特拉华",
     "type2": "综合",
     "city": "Newark, DE",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 5811,
+    "ranking": 52,
+    "comment": "",
+    "order1": 107,
+    "order2": 38,
+    "order3": 108,
+    "guide": 0
   },
   {
     "id": 3669,
@@ -1539,7 +2341,14 @@ var data = [
     "cname": "佛蒙特",
     "type2": "综合",
     "city": "Burlington, VT",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 3920,
+    "ranking": 46,
+    "comment": "",
+    "order1": 34,
+    "order2": 111,
+    "order3": 117,
+    "guide": 0
   },
   {
     "id": 3671,
@@ -1551,7 +2360,14 @@ var data = [
     "cname": "塔尔萨",
     "type2": "综合",
     "city": "Tulsa, OK",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 6883,
+    "ranking": 46,
+    "comment": "",
+    "order1": 105,
+    "order2": 108,
+    "order3": 118,
+    "guide": 0
   },
   {
     "id": 3673,
@@ -1563,7 +2379,14 @@ var data = [
     "cname": "科罗拉多大学",
     "type2": "综合",
     "city": "Boulder, CO",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 4841,
+    "ranking": 50,
+    "comment": "",
+    "order1": 64,
+    "order2": 31,
+    "order3": 111,
+    "guide": 0
   },
   {
     "id": 3675,
@@ -1575,7 +2398,14 @@ var data = [
     "cname": "阿拉巴马",
     "type2": "综合",
     "city": "Tuscaloosa, AL",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 1830,
+    "ranking": 45,
+    "comment": "",
+    "order1": 1,
+    "order2": 1,
+    "order3": 119,
+    "guide": 0
   },
   {
     "id": 3677,
@@ -1587,7 +2417,14 @@ var data = [
     "cname": "马萨诸塞",
     "type2": "综合",
     "city": "Amherst, MA",
-    "setting": "市郊"
+    "setting": "市郊",
+    "ceeb": 3917,
+    "ranking": 53,
+    "comment": "",
+    "order1": 77,
+    "order2": 63,
+    "order3": 104,
+    "guide": 0
   },
   {
     "id": 3679,
@@ -1599,7 +2436,14 @@ var data = [
     "cname": "丹佛",
     "type2": "综合",
     "city": "Denver, CO",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 4842,
+    "ranking": 47,
+    "comment": "",
+    "order1": 22,
+    "order2": 39,
+    "order3": 115,
+    "guide": 0
   },
   {
     "id": 3681,
@@ -1611,7 +2455,14 @@ var data = [
     "cname": "德雷塞尔",
     "type2": "综合",
     "city": "Philadelphia, PA",
-    "setting": "都市"
+    "setting": "都市",
+    "ceeb": 2194,
+    "ranking": 44,
+    "comment": "",
+    "order1": 23,
+    "order2": 40,
+    "order3": 120,
+    "guide": 0
   },
   {
     "id": 3683,
@@ -1623,7 +2474,14 @@ var data = [
     "cname": "堪萨斯",
     "type2": "综合",
     "city": "Lawrence, KS",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 6871,
+    "ranking": 43,
+    "comment": "",
+    "order1": 59,
+    "order2": 58,
+    "order3": 122,
+    "guide": 0
   },
   {
     "id": 3685,
@@ -1635,7 +2493,14 @@ var data = [
     "cname": "北卡州立",
     "type2": "综合",
     "city": "Raleigh, NC",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 5496,
+    "ranking": 48,
+    "comment": "",
+    "order1": 10,
+    "order2": 74,
+    "order3": 114,
+    "guide": 0
   },
   {
     "id": 3687,
@@ -1647,7 +2512,14 @@ var data = [
     "cname": "俄勒冈",
     "type2": "综合",
     "city": "Eugene, OR",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 4846,
+    "ranking": 43,
+    "comment": "",
+    "order1": 31,
+    "order2": 81,
+    "order3": 121,
+    "guide": 0
   },
   {
     "id": 3689,
@@ -1659,6 +2531,13 @@ var data = [
     "cname": "俄克拉荷马",
     "type2": "综合",
     "city": "Norman, OK",
-    "setting": "城镇"
+    "setting": "城镇",
+    "ceeb": 6879,
+    "ranking": 41,
+    "comment": "",
+    "order1": 30,
+    "order2": 80,
+    "order3": 124,
+    "guide": 0
   }
 ];

@@ -35,7 +35,7 @@ var _main;
 const viewProp = [{
   title: '我的大学',
   color: '#ffc107',
-  actions: [],
+  actions: [{title: '排序', icon: require('image!ic_swap_vert_white_24dp'), show: 'always'}],
 },{
   title: '院校筛选',
   color: '#8bc34a',
@@ -282,7 +282,7 @@ class Main extends React.Component {
     syncFav();
     myDb.getFav().then(dbFav => {
       if(dbFav){
-        myDb.getCardData(dbFav.fav).then(result => {
+        myDb.getCardData(dbFav.fav, order%3).then(result => {
           if(result)cardData = result;
           else cardData = [];
           this.forceUpdate();
@@ -316,6 +316,19 @@ class Main extends React.Component {
 
   onActionSelected(pos) {
     switch(this.state.view){
+      case 0: if(pos === 0){
+        order++;
+        myDb.getFav().then(dbFav => {
+          if(dbFav){
+            myDb.getCardData(dbFav.fav, order%3).then(result => {
+              if(result)cardData = result;
+              else cardData = [];
+              this.forceUpdate();
+            });
+          }
+        });
+      }
+      break;
       case 1: if(pos === 0)this.props.nav.push({id: 'filter'})
               else if(pos === 1){
                 order++;
@@ -353,7 +366,7 @@ class Main extends React.Component {
         myDb.getFav().then(dbFav => {
           if(dbFav)fav = dbFav.fav;
           else fav = [];
-          myDb.getCardData(fav).then(result => {
+          myDb.getCardData(fav, order%3).then(result => {
             if(result)cardData = result;
             else cardData = [];
             this.setState({view:0});

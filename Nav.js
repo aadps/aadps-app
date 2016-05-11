@@ -11,6 +11,7 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   UIManager,
+  Alert,
 } from 'react-native';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -49,7 +50,14 @@ class Card extends React.Component {
   }
 
   render() {
-    var content, card;
+    var content, card, guide;
+    if(this.props.data.guide){
+      guide = <TouchableHighlight  activeOpacity={0.935} onPress={() => {Linking.openURL('http://aadps.net/2016/' + this.props.data.guide + '.html')}}>
+        <View style={styles.link}>
+        <Text style={styles.linkText}>院校指南</Text>
+        </View>
+        </TouchableHighlight>;
+    }else guide = <View />;
     if(this.state.expanded){
       content =       <WebView style={[styles.stat, {height: this.state.height - 154}]}
             source={{uri: 'http://aadps.net/wp-content/themes/aadps/stat.php?id=' + this.props.data.id}}
@@ -70,12 +78,16 @@ class Card extends React.Component {
 
     <View style={{position: 'absolute', left: windowWidth / 2 - 7,}}>
     <Text style={styles.line1}>A指数</Text>
-    <Text style={styles.line2}>99</Text>
+    <TouchableWithoutFeedback onPress={() => {if(this.props.data.comment)Alert.alert('降权理由', this.props.data.comment)}}>
+    <View>
+    <Text style={[styles.line2, {color: this.props.data.comment?'#f00':'#333'}]}>{this.props.data.ranking}</Text>
+    </View>
+    </TouchableWithoutFeedback>
     </View>
 
     <View style={{position: 'absolute', left: windowWidth / 2 + 65,}}>
     <Text style={styles.line1}>CEEB</Text>
-    <Text style={styles.line2}>1234</Text>
+    <Text style={styles.line2}>{this.props.data.ceeb}</Text>
     </View>
 
     </View>
@@ -87,6 +99,8 @@ class Card extends React.Component {
     <Text style={styles.linkText}>文书题目</Text>
     </View>
     </TouchableHighlight>
+
+    {guide}
 
     </View>
 
