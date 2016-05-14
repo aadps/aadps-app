@@ -14,7 +14,6 @@ import {
   Navigator,
   BackAndroid,
   TextInput,
-  ToastAndroid,
 } from 'react-native';
 
 var Db = require('./Db');
