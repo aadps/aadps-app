@@ -199,7 +199,7 @@ function regChat(){
           headers: {
             "Content-Type": "application/x-www-form-urlencoded"
           },
-          body: 'regchat=&type=android&user='+user.user+'&passwd='+user.passwd+'&chan='+chan
+          body: 'regchat=&type=ios&user='+user.user+'&passwd='+user.passwd+'&chan='+chan
         }).catch(function(e) {});
       }
     });

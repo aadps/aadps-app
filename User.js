@@ -10,6 +10,8 @@ import {
   ToolbarAndroid,
   TouchableHighlight,
   PixelRatio,
+  Alert,
+  Platform,
 } from 'react-native';
 
 var Dimensions = require('Dimensions');
@@ -40,11 +42,11 @@ class User extends React.Component {
         .then(()=>{this.props.syncFav()});
         this.props.nav.pop();
       }
-      else ToastAndroid.show('手机号或密码错误，请重试！', ToastAndroid.SHORT);
+      else Alert.alert('登录失败', '手机号或密码错误');
     })
     .catch((error) => {
       console.warn(error);
-      ToastAndroid.show('网络错误，请重试！', ToastAndroid.SHORT);
+      Alert.alert('登录失败', '网络错误');
     });
   }
 
@@ -54,7 +56,7 @@ class User extends React.Component {
 
   register() {
     if(!this.validateCell(this.state.user)){
-      ToastAndroid.show('请输入手机号！', ToastAndroid.SHORT);
+      Alert.alert('注册失败', '请输入正确的手机号');
       return;
     }
     fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
@@ -62,19 +64,18 @@ class User extends React.Component {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
-      body: 'register=&type=android&user='+this.state.user+'&passwd='+this.state.passwd+'&nick='+this.state.nick
+      body: 'register=&type='+ (Platform.OS === 'android'? 'android' : 'ios')+'&user='+this.state.user+'&passwd='+this.state.passwd+'&nick='+this.state.nick
     })
     .then((response) => response.json())
     .then((profile) => {
       if(profile.length>0) {
         this.props.db.setUser(this.state.user, this.state.passwd, profile);
-        ToastAndroid.show('帐号也可以用来登录网站aadps.net并同步选校数据！', ToastAndroid.LONG);
         this.props.nav.pop();
       }
-      else ToastAndroid.show('该用户已注册，请直接登录！', ToastAndroid.SHORT);
+      else Alert.alert('注册失败', '用户已注册');
     })
     .catch((error) => {
-      ToastAndroid.show('网络错误，请重试！', ToastAndroid.SHORT);
+      Alert.alert('注册失败', '网络错误');
     });
   }
 

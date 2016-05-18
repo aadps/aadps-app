@@ -17,7 +17,6 @@ import {
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
 var Dimensions = require('Dimensions');
-var ProgressBar = require('ProgressBarAndroid');
 var Linking = require('Linking');
 var LayoutAnimation = require('LayoutAnimation');
 
