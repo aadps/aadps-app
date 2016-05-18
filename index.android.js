@@ -224,7 +224,7 @@ class aadps extends React.Component{
 
     switch (route.id) {
       case 'main':
-        return (<Main nav = {navigator} view = {view} />);
+        return (<Main nav = {navigator} />);
       case 'user':
         return (<User nav = {navigator} db = {myDb} syncFav = {syncFav}/>);
       case 'filter':

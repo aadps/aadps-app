@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   UIManager,
   Alert,
+  Platform,
 } from 'react-native';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -120,13 +121,14 @@ class Card extends React.Component {
     <TouchableWithoutFeedback onPress={()=>this.onExpand()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
-    source={this.state.expanded?require('image!ic_expand_less_white_24dp'):require('image!ic_expand_more_white_24dp')} />
+    source={Platform.os === 'android'?(this.state.expanded?require('image!ic_expand_less_white_24dp'):require('image!ic_expand_more_white_24dp')):
+      (this.state.expanded?require('./image/ic_expand_less_white_24dp.png'):require('./image/ic_expand_more_white_24dp.png'))} />
     </TouchableWithoutFeedback>
 
     <TouchableWithoutFeedback onPress={()=>this.onClose()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
-    source={require('image!ic_close_white_24dp')} />
+    source={Platform.os === 'android'?require('image!ic_close_white_24dp'):require('./image/ic_close_white_24dp.png')} />
     </TouchableWithoutFeedback>
 
     </View>
@@ -155,16 +157,25 @@ class Nav extends React.Component {
       for(var i = 0; i < this.props.data.length; i++)
         cards.push(<Card db={this.props.db} key={i} data={this.props.data[i]} fav={fav} onChange={this.onChange} />);
       return (
-        <ScrollView style={{backgroundColor: '#f0f0f0',}}>
+        <ScrollView style={styles.container}>
         {cards}
         <View style={{height: 8}} />
         </ScrollView>
       )
-    }else return(
-      <View style={styles.container}>
+    }
+    else if(Platform.os === 'android')return(
+      <ScrollView style={styles.container}>
+      <View style={{height: 200}} />
       <Text style={styles.alert}>空空如也呢( ´・ω・` )</Text>
       <Text style={styles.hint}>点击左上角菜单去登录或选校吧</Text>
-      </View>
+      </ScrollView>
+    )
+    else return(
+      <ScrollView style={styles.container}>
+      <View style={{height: 200}} />
+      <Text style={styles.alert}>空空如也呢( ´・ω・` )</Text>
+      <Text style={styles.hint}>在院校筛选里添加一些学校吧</Text>
+      </ScrollView>
     )
   }
 }
@@ -208,15 +219,16 @@ var styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   textArea: {
-    height: 60,
+    height: 52,
     width: cardWidth,
-    top: 80,
+    top: 88,
     position: 'absolute',
+    backgroundColor: 'transparent',
   },
   background: {
     backgroundColor: "#444",
     opacity: 0.5,
-    height: 60,
+    height: 52,
     width: cardWidth,
     top: 0,
     position: 'absolute',
@@ -246,9 +258,6 @@ var styles = StyleSheet.create({
     marginTop: 8,
   },
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#f0f0f0',
   },
   alert: {

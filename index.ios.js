@@ -9,7 +9,7 @@ import {
   View,
   ScrollView,
   TouchableHighlight,
-  Navigator,
+  NavigatorIOS,
   TextInput,
   TabBarIOS,
   PixelRatio,
@@ -210,10 +210,11 @@ class aadps extends React.Component{
   render() {
     if(this.props.view != undefined)view = this.props.view;
     return (
-      <Navigator
+      <NavigatorIOS
       style={styles.container}
-      initialRoute={{id: 'main'}}
-      renderScene={this.navigatorRenderScene}/>
+      initialRoute={{component: Main,
+        title: 'AADPS',
+        passProps: { myProp: 'foo' }}}/>
     );
   }
 
@@ -352,13 +353,7 @@ class Main extends React.Component {
       case 3: mainView=<Chan db={myDb}  nav = {this.props.nav}/>; break;
       defualt: break;
     }
-    return (<View style={{flex: 1}} >
-    <View style={styles.status} />
-    <View style={styles.toolbar}>
-    <Text>工具栏</Text>
-    </View>
-    {mainView}
-    </View>);
+    return mainView;
   }
 
   render() {
@@ -461,15 +456,8 @@ class Main extends React.Component {
 
 
 var styles = StyleSheet.create({
-  status: {
-    height: 20,
-    backgroundColor: '#f7f7f7',
-  },
-  toolbar: {
-    height: 44,
-    backgroundColor: '#f7f7f7',
-    borderColor: '#888',
-    borderBottomWidth: 1 / PixelRatio.get(),
+  container: {
+    flex: 1,
   },
   pageStyle: {
     alignItems: 'center',
