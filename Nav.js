@@ -189,7 +189,7 @@ var styles = StyleSheet.create({
   iconBar: {
     position: 'absolute',
     right: 12,
-    top: 12,
+    top: 8,
     flexDirection: 'row',
   },
   icon: {

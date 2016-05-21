@@ -111,7 +111,7 @@ class User extends React.Component {
       titleColor='#ffffff'>
       </ToolbarAndroid>
       <View style={{flex: 1,}} >
-      <View style={{height: 44,}} />
+      <View style={{height: 52,}} />
       {namefield}
       <View style={styles.container}>
       <View style={styles.iconBox}>
@@ -148,7 +148,7 @@ class User extends React.Component {
       placeholderTextColor='#888'
       />
       </View>
-      <View style={{borderTopWidth: 1 / PixelRatio.get(), borderColor: '#ccc', height: 44,}} />
+      <View style={{borderTopWidth: 1 / PixelRatio.get(), borderColor: '#ccc', height: 36,}} />
       <View style={styles.buttonRow}>
       <TouchableHighlight style={styles.buttonBox} onPress={()=>{this.state.register?this.register():this.login();}}>
       <View style={[styles.button, {backgroundColor: "#009688"}]}>
@@ -180,8 +180,8 @@ var styles = StyleSheet.create({
   },
   buttonBox: {
     flex: 0.5,
-    margin: 12,
-    height: 40,
+    margin: 8,
+    height: 44,
     borderRadius: 5,
   },
   button: {
