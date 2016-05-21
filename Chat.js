@@ -15,10 +15,7 @@ import {
 var GiftedMessenger = require('react-native-gifted-messenger');
 
 
-var STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight;
-if (Platform.OS === 'android') {
-  var STATUS_BAR_HEIGHT = 24;
-}
+var STATUS_BAR_HEIGHT = 24;
 
 
 class Chat extends Component {
@@ -200,7 +197,7 @@ class Chat extends Component {
         messages={this.state.messages}
         handleSend={this.handleSend.bind(this)}
         onErrorButtonPress={this.onErrorButtonPress.bind(this)}
-        maxHeight={Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT}
+        maxHeight={Platform.OS === 'android'?Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT:Dimensions.get('window').height}
 
         senderName='Awesome Developer'
         senderImage={null}

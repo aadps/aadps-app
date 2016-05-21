@@ -8,7 +8,10 @@ import {
   View,
   ListView,
   TouchableHighlight,
+  Platform,
 } from 'react-native';
+
+var Chat = require('./Chat');
 
 class Chan extends React.Component {
   constructor(props) {
@@ -47,7 +50,7 @@ class Chan extends React.Component {
           if(channels)this.setState({
             dataSource: this.state.dataSource.cloneWithRows(channels),
             loaded: true,
-            news: channels,
+            chan: channels,
           });
         });
       })
@@ -57,7 +60,7 @@ class Chan extends React.Component {
           if(channels)this.setState({
             dataSource: this.state.dataSource.cloneWithRows(channels),
             loaded: true,
-            news: channels,
+            chan: channels,
           });
         });
       });
@@ -72,7 +75,7 @@ class Chan extends React.Component {
     return (
       <ListView
       dataSource={this.state.dataSource}
-      renderRow={(chan)=>{return this.renderNews(chan)}}
+      renderRow={(chan)=>{return this.renderChan(chan)}}
       style={styles.listView}
       />
     );
@@ -80,18 +83,33 @@ class Chan extends React.Component {
 
   renderLoadingView() {
     return (
-      <View style={[styles.container, {flexDirection: 'column'}]}>
-      <Text style={styles.alert}>好像不大对？( ´・ω・` )</Text>
-      <Text style={styles.hint}>在线并登录来向老师们咨询留学问题吧</Text>
-      </View>
+      <ListView
+      dataSource={(new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      })).cloneWithRows([{}])}
+      renderRow={() =>{return(
+        <View style={styles.listView}>
+        <View style={{height: 160}} />
+        <Text style={styles.alert}>好像不大对？( ´・ω・` )</Text>
+        <Text style={styles.hint}>在线并登录来向老师们咨询留学问题吧</Text>
+        </View>
+      )}}
+      style={styles.listView} />
     );
   }
 
-  renderNews(chan) {
+  renderChan(chan) {
     return (
       <TouchableHighlight
       activeOpacity={0.935}
-      onPress={()=>{this.props.db.setChanOld(chan.id);this.props.nav.push({id: 'chat', chan: chan.id, name: chan.name});}}>
+      onPress={()=>{
+        this.props.db.setChanOld(chan.id);
+        this.props.nav.push(Platform.OS === 'android'?{id: 'chat', chan: chan.id, name: chan.name}:{
+          component: Chat,
+          passProps: {chan: chan.id, db: this.props.db},
+          title: chan.name,
+          tintColor: '#2196f3'});
+        }}>
       <View style={styles.container}>
       <Image
       source={{uri: chan.thumb}}
@@ -117,7 +135,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#888',
     borderBottomWidth: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#fff',
   },
   rightContainer: {
     flex: 1,

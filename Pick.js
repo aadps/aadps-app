@@ -26,6 +26,10 @@ class Pick extends React.Component {
     };
   }
 
+  componentWillUnmount(){
+    if(this.props.callback)this.props.callback();
+  }
+
   renderItem(data) {
     var picked = this.props.picked.indexOf(data.id) >= 0;
     return (
@@ -128,6 +132,7 @@ var styles = StyleSheet.create({
     paddingRight: 8,
     margin: 6,
     borderColor: '#888',
+    backgroundColor: '#fff',
   },
   itemPicked: {
     borderColor: '#f0f0f0',

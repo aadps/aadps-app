@@ -80,15 +80,17 @@ class User extends React.Component {
   }
 
   render() {
-    var namefield=<View style={{height: 20,}} />;
+    var namefield=<View />;
     if (this.state.register)namefield =
     <View style={styles.container}>
     <View style={styles.iconBox}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.cover}
-    source={require('image!ic_person_white_24dp')} />
+    source={Platform.OS === 'android'?require('image!ic_person_white_24dp'):require('./image/ic_person_white_24dp.png')} />
     </View>
-    <TextInput underlineColorAndroid='#fff'
+    <TextInput
+    underlineColorAndroid='#fff'
+    selectionColor="#009688"
     style={styles.input}
     autoCorrect={false}
     onChangeText={(nick) => this.setState({nick})}
@@ -109,15 +111,17 @@ class User extends React.Component {
       titleColor='#ffffff'>
       </ToolbarAndroid>
       <View style={{flex: 1,}} >
-      <View style={{height: 20,}} />
+      <View style={{height: 44,}} />
       {namefield}
       <View style={styles.container}>
       <View style={styles.iconBox}>
       <Image style={styles.icon}
       resizeMode={Image.resizeMode.cover}
-      source={require('image!ic_phone_android_white_24dp')} />
+      source={Platform.OS === 'android'?require('image!ic_phone_android_white_24dp'):require('./image/ic_phone_android_white_24dp.png')} />
       </View>
-      <TextInput underlineColorAndroid='#fff'
+      <TextInput
+      underlineColorAndroid='#fff'
+      selectionColor="#009688"
       style={styles.input}
       autoCorrect={false}
       onChangeText={(user) => this.setState({user})}
@@ -130,9 +134,11 @@ class User extends React.Component {
       <View style={styles.iconBox}>
       <Image style={styles.icon}
       resizeMode={Image.resizeMode.cover}
-      source={require('image!ic_vpn_key_white_24dp')} />
+      source={Platform.OS === 'android'?require('image!ic_vpn_key_white_24dp'):require('./image/ic_vpn_key_white_24dp.png')} />
       </View>
-      <TextInput underlineColorAndroid='#fff'
+      <TextInput
+      underlineColorAndroid='#fff'
+      selectionColor="#009688"
       style={styles.input}
       autoCorrect={false}
       secureTextEntry={true}
@@ -142,7 +148,7 @@ class User extends React.Component {
       placeholderTextColor='#888'
       />
       </View>
-      <View style={{borderTopWidth: 1 / PixelRatio.get(), borderColor: '#bbb', height: 20,}} />
+      <View style={{borderTopWidth: 1 / PixelRatio.get(), borderColor: '#ccc', height: 44,}} />
       <View style={styles.buttonRow}>
       <TouchableHighlight style={styles.buttonBox} onPress={()=>{this.state.register?this.register():this.login();}}>
       <View style={[styles.button, {backgroundColor: "#009688"}]}>
@@ -171,8 +177,6 @@ var styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     width: Dimensions.get('window').width,
-    top: 150,
-    position: 'absolute',
   },
   buttonBox: {
     flex: 0.5,
@@ -181,7 +185,7 @@ var styles = StyleSheet.create({
     borderRadius: 5,
   },
   button: {
-    height: 40,
+    height: 44,
     justifyContent: 'center',
     borderRadius: 5,
     borderColor: '#888',
@@ -193,10 +197,10 @@ var styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     flexDirection: 'row',
-    height: 40,
+    height: 44,
     alignSelf: "stretch",
     borderTopWidth: 1 / PixelRatio.get(),
-    borderColor: '#bbb',
+    borderColor: '#ccc',
   },
   iconBox: {
     flex: 0.15,

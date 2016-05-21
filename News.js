@@ -7,6 +7,7 @@ import {
   Image,
   View,
   ListView,
+  ScrollView,
   TouchableHighlight,
 } from 'react-native';
 
@@ -66,11 +67,17 @@ class News extends React.Component {
 
   renderLoadingView() {
     return (
-      <View style={styles.container}>
-      <Text style={styles.alert}>
-      资讯载入中...
-      </Text>
-      </View>
+      <ListView
+      dataSource={(new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      })).cloneWithRows([{}])}
+      renderRow={() =>{return(
+        <View style={styles.listView}>
+        <View style={{height: 160}} />
+        <Text style={styles.alert}>资讯载入中...</Text>
+        </View>
+      )}}
+      style={styles.listView} />
     );
   }
 
@@ -107,7 +114,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#888',
     borderBottomWidth: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#fff',
   },
   rightContainer: {
     flex: 1,

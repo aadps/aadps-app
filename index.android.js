@@ -13,7 +13,6 @@ import {
   TouchableHighlight,
   Navigator,
   BackAndroid,
-  TextInput,
 } from 'react-native';
 
 var Db = require('./Db');
@@ -292,7 +291,7 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    this._intId = setInterval(() => {this.fetchView()}, 5000);
+    this._intId = setInterval(() => {this.fetchView()}, 3000);
   }
 
   componentWillUnmount() {

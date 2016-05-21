@@ -122,13 +122,13 @@ class Card extends React.Component {
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
     source={Platform.os === 'android'?(this.state.expanded?require('image!ic_expand_less_white_24dp'):require('image!ic_expand_more_white_24dp')):
-      (this.state.expanded?require('./image/ic_expand_less_white_24dp.png'):require('./image/ic_expand_more_white_24dp.png'))} />
+      (this.state.expanded?require('./image/ic_expand_less_white_24dp@3x.png'):require('./image/ic_expand_more_white_24dp@3x.png'))} />
     </TouchableWithoutFeedback>
 
     <TouchableWithoutFeedback onPress={()=>this.onClose()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
-    source={Platform.os === 'android'?require('image!ic_close_white_24dp'):require('./image/ic_close_white_24dp.png')} />
+    source={Platform.os === 'android'?require('image!ic_close_white_24dp'):require('./image/ic_close_white_24dp@3x.png')} />
     </TouchableWithoutFeedback>
 
     </View>
@@ -165,16 +165,16 @@ class Nav extends React.Component {
     }
     else if(Platform.os === 'android')return(
       <ScrollView style={styles.container}>
-      <View style={{height: 200}} />
+      <View style={{height: 160}} />
       <Text style={styles.alert}>空空如也呢( ´・ω・` )</Text>
       <Text style={styles.hint}>点击左上角菜单去登录或选校吧</Text>
       </ScrollView>
     )
     else return(
       <ScrollView style={styles.container}>
-      <View style={{height: 200}} />
+      <View style={{height: 160}} />
       <Text style={styles.alert}>空空如也呢( ´・ω・` )</Text>
-      <Text style={styles.hint}>在院校筛选里添加一些学校吧</Text>
+      <Text style={styles.hint}>从选校里添加一些学校吧</Text>
       </ScrollView>
     )
   }

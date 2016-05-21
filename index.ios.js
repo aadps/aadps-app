@@ -9,10 +9,11 @@ import {
   View,
   ScrollView,
   TouchableHighlight,
+  TouchableWithoutFeedback,
   NavigatorIOS,
-  TextInput,
   TabBarIOS,
   PixelRatio,
+  Alert,
 } from 'react-native';
 
 var Db = require('./Db');
@@ -21,31 +22,63 @@ var User = require('./User');
 var Nav = require('./Nav');
 var Pick = require('./Pick');
 var News = require('./News');
-var Chat = require('./Chat');
 var Chan = require('./Chan');
 var Dimensions = require('Dimensions');
 var Linking = require('Linking');
 var _navigator = null;
 
-var _main;
+var _main, _nav;
 
 const viewProp = [{
-  title: '我的大学',
   color: '#ffc107',
-  actions: [{title: '排序', icon: require('image!ic_swap_vert_white_24dp'), show: 'always'}],
+  action: [{name: '排序',
+  function: function(){
+    order++;
+    myDb.getFav().then(dbFav => {
+      if(dbFav){
+        myDb.getCardData(dbFav.fav, order%3).then(result => {
+          if(result)cardData = result;
+          else cardData = [];
+          _main.setState({popup: 0});
+        });
+      }
+    });
+  }
+}],
 },{
-  title: '院校筛选',
   color: '#8bc34a',
-  actions: [{title: '筛选', icon: require('image!ic_filter_list_white_24dp'), show: 'always'},
-  {title: '排序', icon: require('image!ic_swap_vert_white_24dp'), show: 'always'}],
+  action: [{name: '排序',
+  function: function(){
+    order++;
+    myDb.filter(filterFav).then(result => {
+      _main.setState({popup: 0});
+      setInterval(function(){_main.refs.myPick.set(buildPick(result))}, 200);
+    });
+  }
+}, {name: '筛选',
+function: function(){
+  _nav.push({
+    component: Pick,
+    passProps: {data:filterData, picked:filterFav, isPerm:false, callback: function(){
+      myDb.filter(filterFav).then(result => {
+        _main.refs.myPick.set(buildPick(result));
+      });
+    }},
+    title: '院校筛选',
+    tintColor: '#8bc34a',
+  });
+  _main.setState({popup: 0});
+}
+}],
 },{
-  title: '留学资讯',
   color: '#f44336',
-  actions: [],
+  action: [],
 },{
-  title: '即时聊天',
   color: '#2196f3',
-  actions: [],
+  action: [],
+},{
+  color: '#009688',
+  action: [],
 }];
 var lists = [
   [{name: '拼音A', ids: [3675, 1791, 933, 3644]},
@@ -114,7 +147,7 @@ var lists = [
   3683, 3687, 3539, 3689]}]
   ];
 var order = 0;
-const nullProfile = ['', '请注册或登录', ''];
+const nullProfile = ['', '点此注册登录', ''];
 
 var cardData = [];
 
@@ -207,63 +240,24 @@ function regChat(){
 }
 
 class aadps extends React.Component{
+
+  componentDidMount(){
+    _nav = this.refs.nav;
+  }
+
   render() {
     if(this.props.view != undefined)view = this.props.view;
     return (
       <NavigatorIOS
       style={styles.container}
-      initialRoute={{component: Main,
+      ref="nav"
+      initialRoute={{
+        component: Main,
         title: 'AADPS',
-        passProps: { myProp: 'foo' }}}/>
+        rightButtonIcon: require('./image/ic_add_white_24dp.png'),
+        tintColor: '#777',
+        onRightButtonPress: ()=>{_main.setState({popup: 1})}}} />
     );
-  }
-
-  navigatorRenderScene(route, navigator) {
-    _navigator = navigator;
-
-    switch (route.id) {
-      case 'main':
-        return (<Main nav = {navigator} view = {view} />);
-      case 'user':
-        return (<User nav = {navigator} db = {myDb} syncFav = {syncFav}/>);
-      case 'filter':
-        return (
-          <View style={{flexDirection: "column", flex: 1, }}>
-          <ToolbarAndroid
-          navIcon={require('image!ic_arrow_back_white_24dp')}
-          onIconClicked={() => {
-            navigator.pop();
-            myDb.filter(filterFav).then(result => {
-              _main.refs.myPick.set(buildPick(result));
-            });
-          }}
-          style={[styles.toolbar,{backgroundColor: '#8bc34a'}]}
-          title={'筛选器'}
-          titleColor='#fff'>
-          </ToolbarAndroid>
-
-          <Pick data={filterData} picked={filterFav} isPerm={false}/>
-
-          </View>
-        );
-      case 'chat':
-        return (
-          <View style={{flexDirection: "column", flex: 1, }}>
-          <ToolbarAndroid
-          navIcon={require('image!ic_arrow_back_white_24dp')}
-          onIconClicked={() => {
-            navigator.pop();
-          }}
-          style={[styles.toolbar,{backgroundColor: '#2196f3'}]}
-          title={route.name}
-          titleColor='#fff'>
-          </ToolbarAndroid>
-
-          <Chat db = {myDb} chan ={route.chan} />
-
-          </View>
-        );
-    }
   }
 }
 
@@ -274,6 +268,7 @@ class Main extends React.Component {
       view: 0,
       profile: nullProfile,
       color: viewProp[0].color,
+      popup: 0,
     };
 
     _main = this;
@@ -292,7 +287,7 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    this._intId = setInterval(() => {this.fetchView()}, 5000);
+    this._intId = setInterval(() => {this.fetchView()}, 3000);
   }
 
   componentWillUnmount() {
@@ -313,47 +308,82 @@ class Main extends React.Component {
     });
   }
 
-  onActionSelected(pos) {
-    switch(this.state.view){
-      case 0: if(pos === 0){
-        order++;
-        myDb.getFav().then(dbFav => {
-          if(dbFav){
-            myDb.getCardData(dbFav.fav, order%3).then(result => {
-              if(result)cardData = result;
-              else cardData = [];
-              this.forceUpdate();
-            });
-          }
-        });
-      }
-      break;
-      case 1: if(pos === 0)this.props.nav.push({id: 'filter'})
-              else if(pos === 1){
-                order++;
-                myDb.filter(filterFav).then(result => {
-                  _main.refs.myPick.set(buildPick(result));
-                });
-              }
-      break;
-      default: break;
-    }
-  }
-
   isLoggedIn() {
     return this.state.profile[2];
   }
 
   _renderContent(view) {
-    var mainView=<View />;
+    var mainView=<View />, buttons=[];
     switch (view) {
       case 0: mainView=<Nav db={myDb} data={cardData} />; break;
       case 1: mainView=<Pick db={myDb} data={lists[order%3]} picked={fav} isPerm={true} ref="myPick" />; break;
       case 2: mainView=<News />; break;
-      case 3: mainView=<Chan db={myDb}  nav = {this.props.nav}/>; break;
+      case 3: mainView=<Chan db={myDb}  nav = {_nav}/>; break;
+      case 4: mainView=(
+        <ScrollView style={styles.menu}>
+
+        <View style={styles.menuSpace}></View>
+        <TouchableHighlight onPress={()=>{this.isLoggedIn()?Alert.alert(
+            '确定注销当前帐号？',
+            '',
+            [
+              {text: 'OK', onPress: () => {this.logout()}},
+              {text: '取消', onPress: () => {}},
+            ]
+          ):_nav.push({
+          component: User,
+          passProps: {nav: _nav, db: myDb, syncFav: syncFav},
+          title: '登录',
+          tintColor: viewProp[4].color});}}>
+        <View style={styles.menuHead}>
+        <Image style={styles.menuAvatar} resizeMode={Image.resizeMode.cover} source={this.isLoggedIn()?{uri: this.state.profile[0]}:require('./image/nullavatar.gif')} />
+        <Text style={styles.menuName}>{this.state.profile[1]}</Text>
+        <Text style={styles.menuCell}>{this.state.profile[2]}</Text>
+        </View>
+        </TouchableHighlight>
+
+        <View style={styles.menuSpace}></View>
+        <View style={styles.menuGroup}>
+        <TouchableHighlight onPress={()=>{Linking.openURL('tel:4000223774')}}><View style={styles.menuItem}>
+        <Image style={[styles.menuIcon, {tintColor: viewProp[4].color}]}
+        resizeMode={Image.resizeMode.stretch}
+        source={require('./image/ic_call_white_24dp.png')} />
+        <Text style={styles.menuText}>电话咨询</Text>
+        </View></TouchableHighlight>
+
+        <View style={styles.menuLine}></View>
+
+        <TouchableHighlight onPress={()=>{Linking.openURL('http://aadps.net/about')}}><View style={styles.menuItem}>
+        <Image style={[styles.menuIcon, {tintColor: viewProp[4].color}]}
+        resizeMode={Image.resizeMode.stretch}
+        source={require('./image/ic_help_white_24dp.png')} />
+        <Text style={styles.menuText}>关于AADPS</Text>
+        </View></TouchableHighlight>
+        </View>
+
+        <View style={styles.menuSpaceF}></View>
+
+        </ScrollView>
+      );
       defualt: break;
     }
-    return mainView;
+    for(var i=0; this.state.popup && i<viewProp[view].action.length; i++ )
+      buttons.push(<TouchableHighlight onPress={viewProp[view].action[i].function} key={i}>
+            <View style={{backgroundColor: '#fff', padding: 12}}>
+            <Text style={{fontSize: 16}}>{viewProp[view].action[i].name}</Text>
+            </View>
+            </TouchableHighlight>);
+    return (
+      <View style={{flex: 1}}>
+      {mainView}
+      <TouchableWithoutFeedback onPress={()=>{this.setState({popup:0})}}>
+      <View style={{backgroundColor: '#333', opacity: 0.5, height: this.state.popup&&viewProp[this.state.view].action.length?Dimensions.get('window').height:0, width: Dimensions.get('window').width, top: 0, left: 0, position: 'absolute'}} />
+      </TouchableWithoutFeedback>
+      <View style={{shadowColor: '#000', shadowOffset: {height: 1, width: 3}, shadowRadius: 5, shadowOpacity: 0.8, borderRadius: 5, padding: this.state.popup&&viewProp[this.state.view].action.length?5:0, top: 66, opacity: 0.8, right: 6, width: 120, position: 'absolute'}}>
+      {buttons}
+      </View>
+      </View>
+    );
   }
 
   render() {
@@ -362,42 +392,13 @@ class Main extends React.Component {
       if(user && this.state.profile[2] != user.profile[2])this.setState({profile: user.profile});
       else if(!user && this.isLoggedIn())this.setState({profile: nullProfile});
     });
-    var navigationView = (
-      <ScrollView style={styles.menu}>
-
-      <Image style={styles.menuHead} resizeMode={Image.resizeMode.cover} source={require('./image/head.jpg')}>
-      <Image style={styles.menuAvatar} resizeMode={Image.resizeMode.cover} source={this.isLoggedIn()?{uri: this.state.profile[0]}:require('./image/nullavatar.gif')} />
-      <Text style={styles.menuName}>{this.state.profile[1]}</Text>
-      <Text style={styles.menuCell}>{this.state.profile[2]}</Text>
-      </Image>
-
-      <View style={styles.menuSpace}></View>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{Linking.openURL('tel:4000223774')}}><View style={styles.menuItem}>
-      <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
-      resizeMode={Image.resizeMode.stretch}
-      source={require('image!ic_call_white_24dp')} />
-      <Text style={styles.menuText}>电话咨询</Text>
-      </View></TouchableHighlight>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{Linking.openURL('http://aadps.net/about')}}><View style={styles.menuItem}>
-      <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
-      resizeMode={Image.resizeMode.stretch}
-      source={require('image!ic_help_white_24dp')} />
-      <Text style={styles.menuText}>关于AADPS</Text>
-      </View></TouchableHighlight>
-      <View style={styles.menuSeparator}></View>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.isLoggedIn()?this.logout():this.props.nav.push({id: 'user'});}}><View style={styles.menuItem}>
-      <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
-      resizeMode={Image.resizeMode.stretch}
-      source={!this.isLoggedIn()?require('image!ic_person_white_24dp'):require('image!ic_person_outline_white_24dp')} />
-      <Text style={styles.menuText}>{this.isLoggedIn()?'注销':'注册/登录'}</Text>
-      </View></TouchableHighlight>
-      </ScrollView>
-    );
 
     return (
       <TabBarIOS tintColor={this.state.color}>
         <TabBarIOS.Item
-          systemIcon="favorites"
+          icon={require('./image/ic_star_border_white_24dp.png')}
+          selectedIcon={require('./image/ic_star_white_24dp.png')}
+          title="大学"
           selected={this.state.view === 0}
           onPress={() => {
             myDb.getFav().then(dbFav => {
@@ -406,14 +407,15 @@ class Main extends React.Component {
               myDb.getCardData(fav, order%3).then(result => {
                 if(result)cardData = result;
                 else cardData = [];
-                this.setState({view:0, color: viewProp[0].color,});
+                this.setState({view:0, color: viewProp[0].color,  popup: 0,});
               });
             })
           }}>
           {this._renderContent(0)}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          systemIcon="search"
+          icon={require('./image/ic_search_white_24dp.png')}
+          title="选校"
           selected={this.state.view === 1}
           onPress={() => {
             syncFav();
@@ -421,7 +423,7 @@ class Main extends React.Component {
               if(dbFav)fav = dbFav.fav;
               else fav = [];
               myDb.filter(filterFav).then(result => {
-                this.setState({view:1, color: viewProp[1].color,});
+                this.setState({view:1, color: viewProp[1].color, popup: 0,});
                 _main.refs.myPick.set(buildPick(result));
               });
             });
@@ -429,25 +431,39 @@ class Main extends React.Component {
           {this._renderContent(1)}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          systemIcon="featured"
+          icon={require('./image/ic_description_white_24dp.png')}
+          title="资讯"
           selected={this.state.view === 2}
           onPress={() => {
             this.setState({
-              view: 2, color: viewProp[2].color,
+              view: 2, color: viewProp[2].color, popup: 0,
             });
           }}>
           {this._renderContent(2)}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          systemIcon="contacts"
+          icon={require('./image/ic_chat_white_24dp.png')}
+          title="聊天"
           selected={this.state.view === 3}
           onPress={() => {
             regChat();
             this.setState({
-              view: 3, color: viewProp[3].color,
+              view: 3, color: viewProp[3].color, popup: 0,
             });
           }}>
           {this._renderContent(3)}
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          icon={require('./image/ic_person_outline_white_24dp.png')}
+          selectedIcon={require('./image/person.png')}
+          title="我"
+          selected={this.state.view === 4}
+          onPress={() => {
+            this.setState({
+              view: 4, color: viewProp[4].color, popup: 0,
+            });
+          }}>
+          {this._renderContent(4)}
         </TabBarIOS.Item>
       </TabBarIOS>
     );
@@ -456,6 +472,76 @@ class Main extends React.Component {
 
 
 var styles = StyleSheet.create({
+  menu: {
+    backgroundColor: '#f0f0f0',
+    flex: 1,
+  },
+  menuHead: {
+    height: 80,
+    backgroundColor: '#fff',
+  },
+  menuAvatar: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    marginLeft: 12,
+    marginTop: 12,
+  },
+  menuName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    left: 96,
+    top: 22,
+    position: 'absolute',
+    color: '#333',
+  },
+  menuCell: {
+    fontSize: 14,
+    left: 96,
+    top: 48,
+    position: 'absolute',
+    color: '#333',
+  },
+  menuItem: {
+    height: 44,
+    paddingLeft: 20,
+    flexDirection:'row',
+    alignItems:'center',
+    backgroundColor: '#fff',
+  },
+  menuIcon: {
+    width: 24,
+    height: 24,
+  },
+  menuText: {
+    left: 20,
+    fontSize: 16,
+    color: '#333',
+  },
+  menuSpace: {
+    height: 44,
+    borderColor: '#ccc',
+    borderTopWidth: 1 / PixelRatio.get(),
+    borderBottomWidth: 1 / PixelRatio.get(),
+  },
+  menuGroup: {
+    backgroundColor: '#fff',
+  },
+  menuLine: {
+    borderColor: '#ccc',
+    borderTopWidth: 1 / PixelRatio.get(),
+    marginLeft: 64,
+  },
+  menuSpaceF: {
+    height: 44,
+    borderColor: '#ccc',
+    borderTopWidth: 1 / PixelRatio.get(),
+  },
+  menuSeparator: {
+    borderColor: '#888',
+    height: 8,
+    borderBottomWidth: 1,
+  },
   container: {
     flex: 1,
   },
