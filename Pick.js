@@ -84,10 +84,11 @@ class Pick extends React.Component {
         </ScrollView>
       )
     }else return(
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
+      <View style={{height: 160}} />
       <Text style={styles.alert}>空空如也呢( ´・ω・` )</Text>
       <Text style={styles.hint}>重新调整一下筛选范围吧</Text>
-      </View>
+      </ScrollView>
     )
   }
 
@@ -139,9 +140,6 @@ var styles = StyleSheet.create({
     backgroundColor: '#8bc34a',
   },
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#f0f0f0',
   },
   alert: {

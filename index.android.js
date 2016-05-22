@@ -361,13 +361,14 @@ class Main extends React.Component {
       <View style={styles.menuSpace}></View>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{
         this.drawer.closeDrawer();
+        this.setState({view:0});
         myDb.getFav().then(dbFav => {
           if(dbFav)fav = dbFav.fav;
           else fav = [];
           myDb.getCardData(fav, order%3).then(result => {
             if(result)cardData = result;
             else cardData = [];
-            this.setState({view:0});
+            this.forceUpdate();
           });
         })
       }}>
@@ -380,13 +381,14 @@ class Main extends React.Component {
       </TouchableHighlight>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{
         this.drawer.closeDrawer();
+        this.setState({view:1});
         syncFav();
         myDb.getFav().then(dbFav => {
           if(dbFav)fav = dbFav.fav;
           else fav = [];
           myDb.filter(filterFav).then(result => {
-            this.setState({view:1});
-            _main.refs.myPick.set(buildPick(result));
+            _main.refs.myPick.setState({data: buildPick(result)});
+            this.forceUpdate();
           });
         });
       }}>

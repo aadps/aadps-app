@@ -121,14 +121,14 @@ class Card extends React.Component {
     <TouchableWithoutFeedback onPress={()=>this.onExpand()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
-    source={Platform.os === 'android'?(this.state.expanded?require('image!ic_expand_less_white_24dp'):require('image!ic_expand_more_white_24dp')):
+    source={Platform.OS === 'android'?(this.state.expanded?require('image!ic_expand_less_white_24dp'):require('image!ic_expand_more_white_24dp')):
       (this.state.expanded?require('./image/ic_expand_less_white_24dp@3x.png'):require('./image/ic_expand_more_white_24dp@3x.png'))} />
     </TouchableWithoutFeedback>
 
     <TouchableWithoutFeedback onPress={()=>this.onClose()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
-    source={Platform.os === 'android'?require('image!ic_close_white_24dp'):require('./image/ic_close_white_24dp@3x.png')} />
+    source={Platform.OS === 'android'?require('image!ic_close_white_24dp'):require('./image/ic_close_white_24dp@3x.png')} />
     </TouchableWithoutFeedback>
 
     </View>
@@ -163,7 +163,7 @@ class Nav extends React.Component {
         </ScrollView>
       )
     }
-    else if(Platform.os === 'android')return(
+    else if(Platform.OS === 'android')return(
       <ScrollView style={styles.container}>
       <View style={{height: 160}} />
       <Text style={styles.alert}>空空如也呢( ´・ω・` )</Text>
@@ -189,7 +189,7 @@ var styles = StyleSheet.create({
   iconBar: {
     position: 'absolute',
     right: 12,
-    top: 8,
+    top: 10,
     flexDirection: 'row',
   },
   icon: {
@@ -212,14 +212,14 @@ var styles = StyleSheet.create({
     color: '#888',
   },
   photo: {
-    height: 140,
+    height: 144,
     width: cardWidth,
     borderRadius: 5,
     flexDirection: "column",
     justifyContent: "flex-end",
   },
   textArea: {
-    height: 52,
+    height: 56,
     width: cardWidth,
     top: 88,
     position: 'absolute',
@@ -228,7 +228,7 @@ var styles = StyleSheet.create({
   background: {
     backgroundColor: "#444",
     opacity: 0.5,
-    height: 52,
+    height: 56,
     width: cardWidth,
     top: 0,
     position: 'absolute',

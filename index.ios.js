@@ -401,13 +401,14 @@ class Main extends React.Component {
           title="大学"
           selected={this.state.view === 0}
           onPress={() => {
+            this.setState({view:0, color: viewProp[0].color,  popup: 0,});
             myDb.getFav().then(dbFav => {
               if(dbFav)fav = dbFav.fav;
               else fav = [];
               myDb.getCardData(fav, order%3).then(result => {
                 if(result)cardData = result;
                 else cardData = [];
-                this.setState({view:0, color: viewProp[0].color,  popup: 0,});
+                this.forceUpdate();
               });
             })
           }}>
@@ -418,13 +419,14 @@ class Main extends React.Component {
           title="选校"
           selected={this.state.view === 1}
           onPress={() => {
+            this.setState({view:1, color: viewProp[1].color, popup: 0,});
             syncFav();
             myDb.getFav().then(dbFav => {
               if(dbFav)fav = dbFav.fav;
               else fav = [];
               myDb.filter(filterFav).then(result => {
-                this.setState({view:1, color: viewProp[1].color, popup: 0,});
-                _main.refs.myPick.set(buildPick(result));
+                _main.refs.myPick.setState({data: buildPick(result)});
+                this.forceUpdate();
               });
             });
           }}>
