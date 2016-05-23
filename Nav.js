@@ -60,7 +60,7 @@ class Card extends React.Component {
         </TouchableHighlight>;
     }else guide = <View />;
     if(this.state.expanded){
-      content =       <WebView style={[styles.stat, {height: this.state.height - 154}]}
+      content =       <WebView style={[styles.stat, {height: this.state.height - 156}]}
             source={{uri: 'http://aadps.net/wp-content/themes/aadps/stat.php?id=' + this.props.data.id}}
             javaScriptEnabled={true}
             domStorageEnabled={false}
