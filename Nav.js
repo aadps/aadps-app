@@ -46,7 +46,8 @@ class Card extends React.Component {
   onExpand() {
     LayoutAnimation.spring();
     if(this.state.expanded)this.setState({height: 240, expanded: false});
-    else this.setState({height: 140, expanded: true});
+    else this.setState({height: 144, expanded: true});
+
   }
 
   render() {
