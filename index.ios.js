@@ -52,7 +52,7 @@ const viewProp = [{
     order++;
     myDb.filter(filterFav).then(result => {
       _main.setState({popup: 0});
-      setInterval(function(){_main.refs.myPick.set(buildPick(result))}, 200);
+      setTimeout(function(){_main.refs.myPick.set(buildPick(result))}, 200);
     });
   }
 }, {name: '筛选',
@@ -60,6 +60,7 @@ function: function(){
   _nav.push({
     component: Pick,
     passProps: {data:filterData, picked:filterFav, isPerm:false, callback: function(){
+
       myDb.filter(filterFav).then(result => {
         _main.refs.myPick.set(buildPick(result));
       });
