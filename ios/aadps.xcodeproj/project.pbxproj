@@ -21,6 +21,12 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		8455AB751CF7DC30002960EB /* libBPush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8455AB741CF7DC30002960EB /* libBPush.a */; };
+		8455AB771CF7DCA5002960EB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8455AB761CF7DCA5002960EB /* Foundation.framework */; };
+		8455AB791CF7DCB5002960EB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8455AB781CF7DCB5002960EB /* CoreTelephony.framework */; };
+		8455AB7B1CF7DCE0002960EB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8455AB7A1CF7DCE0002960EB /* libz.tbd */; };
+		8455AB7D1CF7DCF0002960EB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8455AB7C1CF7DCF0002960EB /* SystemConfiguration.framework */; };
+		8455AB7F1CF7DCFF002960EB /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8455AB7E1CF7DCFF002960EB /* CoreLocation.framework */; };
 		84A62E541CE759630097EAE5 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A62E531CE759630097EAE5 /* libsqlite3.0.tbd */; };
 		84A62E611CE7729E0097EAE5 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A62E601CE7729E0097EAE5 /* splash.png */; };
 		9436FDB192514EAA872C1D6B /* libSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CE92E2BAFAC4191B598D833 /* libSQLite.a */; };
@@ -135,6 +141,12 @@
 		6CE92E2BAFAC4191B598D833 /* libSQLite.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSQLite.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8455AB741CF7DC30002960EB /* libBPush.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libBPush.a; path = aadps/libBPush.a; sourceTree = "<group>"; };
+		8455AB761CF7DCA5002960EB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8455AB781CF7DCB5002960EB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		8455AB7A1CF7DCE0002960EB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		8455AB7C1CF7DCF0002960EB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		8455AB7E1CF7DCFF002960EB /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		84A62E531CE759630097EAE5 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		84A62E601CE7729E0097EAE5 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash.png; path = aadps/splash.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,6 +163,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8455AB7F1CF7DCFF002960EB /* CoreLocation.framework in Frameworks */,
+				8455AB7D1CF7DCF0002960EB /* SystemConfiguration.framework in Frameworks */,
+				8455AB7B1CF7DCE0002960EB /* libz.tbd in Frameworks */,
+				8455AB791CF7DCB5002960EB /* CoreTelephony.framework in Frameworks */,
+				8455AB771CF7DCA5002960EB /* Foundation.framework in Frameworks */,
+				8455AB751CF7DC30002960EB /* libBPush.a in Frameworks */,
 				84A62E541CE759630097EAE5 /* libsqlite3.0.tbd in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -284,6 +302,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				8455AB7E1CF7DCFF002960EB /* CoreLocation.framework */,
+				8455AB7C1CF7DCF0002960EB /* SystemConfiguration.framework */,
+				8455AB7A1CF7DCE0002960EB /* libz.tbd */,
+				8455AB781CF7DCB5002960EB /* CoreTelephony.framework */,
+				8455AB761CF7DCA5002960EB /* Foundation.framework */,
+				8455AB741CF7DC30002960EB /* libBPush.a */,
 				84A62E531CE759630097EAE5 /* libsqlite3.0.tbd */,
 				13B07FAE1A68108700A75B9A /* aadps */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -365,6 +389,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = NC6EW97GD3;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -637,6 +666,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -646,9 +676,14 @@
 				);
 				INFOPLIST_FILE = aadps/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/aadps",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = net.aadps.app;
 				PRODUCT_NAME = AADPS;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -658,6 +693,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -666,9 +702,14 @@
 				);
 				INFOPLIST_FILE = aadps/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/aadps",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = net.aadps.app;
 				PRODUCT_NAME = AADPS;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

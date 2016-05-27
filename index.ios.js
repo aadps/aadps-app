@@ -298,7 +298,7 @@ class Main extends React.Component {
   fetchView() {
     myDb.getPushView().then(view => {
       if(view){
-        this.setState({view: view});
+        this.setState({view: view, color: viewProp[view].color, popup: 0,});
       }
     });
   }
