@@ -12,6 +12,7 @@ import {
   PixelRatio,
   Alert,
   Platform,
+  ScrollView,
 } from 'react-native';
 
 var Dimensions = require('Dimensions');
@@ -100,18 +101,17 @@ class User extends React.Component {
     />
     </View>;
 
-    return (
+    if(Platform.OS === 'android')return (
       <View style={{flexDirection: "column", flex: 1, backgroundColor: '#f0f0f0'}}>
-
       <ToolbarAndroid
-      navIcon={require('image!ic_arrow_back_white_24dp')}
-      onIconClicked={() => {this.props.nav.pop()} }
-      style={[styles.toolbar,{backgroundColor: '#888'}]}
-      title={this.state.register?'注册':'登录'}
-      titleColor='#ffffff'>
+            navIcon={require('image!ic_arrow_back_white_24dp')}
+            onIconClicked={() => {this.props.nav.pop()} }
+            style={[styles.toolbar,{backgroundColor: '#888'}]}
+            title={this.state.register?'注册':'登录'}
+            titleColor='#ffffff'>
       </ToolbarAndroid>
       <View style={{flex: 1,}} >
-      <View style={{height: 52,}} />
+      <View style={{height: 44,}} />
       {namefield}
       <View style={styles.container}>
       <View style={styles.iconBox}>
@@ -163,6 +163,60 @@ class User extends React.Component {
       </View>
       </View>
       </View>
+    )
+    else return (
+      <ScrollView style={{flex: 1, backgroundColor: '#f0f0f0'}}>
+      <View style={{height: 44 - 1 / PixelRatio.get(),}} />
+      {namefield}
+      <View style={styles.container}>
+      <View style={styles.iconBox}>
+      <Image style={styles.icon}
+      resizeMode={Image.resizeMode.cover}
+      source={Platform.OS === 'android'?require('image!ic_phone_android_white_24dp'):require('./image/ic_phone_android_white_24dp.png')} />
+      </View>
+      <TextInput
+      underlineColorAndroid='#fff'
+      selectionColor="#009688"
+      style={styles.input}
+      autoCorrect={false}
+      onChangeText={(user) => this.setState({user})}
+      value={this.state.user}
+      placeholder={this.state.register?'11位中国大陆手机号':'手机号或aadps.net账户'}
+      placeholderTextColor='#888'
+      />
+      </View>
+      <View style={styles.container}>
+      <View style={styles.iconBox}>
+      <Image style={styles.icon}
+      resizeMode={Image.resizeMode.cover}
+      source={Platform.OS === 'android'?require('image!ic_vpn_key_white_24dp'):require('./image/ic_vpn_key_white_24dp.png')} />
+      </View>
+      <TextInput
+      underlineColorAndroid='#fff'
+      selectionColor="#009688"
+      style={styles.input}
+      autoCorrect={false}
+      secureTextEntry={true}
+      onChangeText={(passwd) => this.setState({passwd})}
+      value={this.state.passwd}
+      placeholder={'密码'}
+      placeholderTextColor='#888'
+      />
+      </View>
+      <View style={{borderTopWidth: 1 / PixelRatio.get(), borderColor: '#ccc', height: 36,}} />
+      <View style={styles.buttonRow}>
+      <TouchableHighlight style={styles.buttonBox} onPress={()=>{this.state.register?this.register():this.login();}}>
+      <View style={[styles.button, {backgroundColor: "#009688"}]}>
+      <Text style={{alignSelf: 'center', color: '#fff'}}>{this.state.register?'注册':'登录'}</Text>
+      </View>
+      </TouchableHighlight>
+      <TouchableHighlight style={styles.buttonBox} onPress={()=>{this.setState({register:!this.state.register})}}>
+      <View style={[styles.button, {borderWidth: 1, backgroundColor: "#f0f0f0"}]}>
+      <Text style={{alignSelf: 'center', color: '#888'}}>{this.state.register?'已有账户，登录':'注册新账户'}</Text>
+      </View>
+      </TouchableHighlight>
+      </View>
+      </ScrollView>
     )
   }
 }
