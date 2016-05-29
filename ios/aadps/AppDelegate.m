@@ -68,7 +68,7 @@
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
   }
   
-  [BPush registerChannel:launchOptions apiKey:@"MwbVNFcqWFNq3PRAZIfD6owE" pushMode:BPushModeDevelopment withFirstAction:@"打开" withSecondAction:@"回复" withCategory:@"test" useBehaviorTextInput:YES isDebug:YES];
+  [BPush registerChannel:launchOptions apiKey:@"MwbVNFcqWFNq3PRAZIfD6owE" pushMode:BPushModeProduction withFirstAction:nil withSecondAction:nil withCategory:nil useBehaviorTextInput:YES isDebug:NO];
   
   // 禁用地理位置推送 需要再绑定接口前调用。
   
