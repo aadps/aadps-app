@@ -165,15 +165,22 @@ class Chat extends Component {
         ref={(c) => this._GiftedMessenger = c}
 
         styles={{
+          bubble: {
+            flex: 0.5,
+            borderRadius: 15,
+            paddingLeft: 14,
+            paddingRight: 14,
+            paddingBottom: 10,
+            paddingTop: 8,
+          },
           container: {
-            flex: 1,
             backgroundColor: '#f0f0f0',
           },
           bubbleLeft: {
-            marginRight: 70,
             backgroundColor: '#fff',
             borderWidth: 1 / PixelRatio.get(),
             borderColor: '#888',
+            marginRight: 48,
           },
           textLeft: {
             color: '#333',
@@ -188,10 +195,11 @@ class Chat extends Component {
             backgroundColor: '#fff',
           },
           bubbleRight: {
-            marginLeft: 70,
             backgroundColor: '#2196f3',
+            marginLeft: 48,
           },
         }}
+
         dateLocale={'zh-cn'}
         autoFocus={false}
         messages={this.state.messages}
@@ -199,7 +207,6 @@ class Chat extends Component {
         onErrorButtonPress={this.onErrorButtonPress.bind(this)}
         maxHeight={Platform.OS === 'android'?Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT:Dimensions.get('window').height}
 
-        senderName='Awesome Developer'
         senderImage={null}
         displayNames={true}
         placeholder={'输入聊天内容'}
