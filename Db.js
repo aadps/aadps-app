@@ -182,7 +182,7 @@ class Db {
 
 module.exports = Db;
 
-var ver = 1;
+var ver = 2;
 var data = [
   {
     "id": 177,
@@ -348,11 +348,11 @@ var data = [
     "city": "Cambridge, MA",
     "setting": "都市",
     "ceeb": 3434,
-    "ranking": 99,
+    "ranking": 100,
     "comment": "",
     "order1": 40,
     "order2": 51,
-    "order3": 2,
+    "order3": 1,
     "guide": 0
   },
   {
@@ -519,11 +519,11 @@ var data = [
     "city": "Stanford, CA",
     "setting": "市郊",
     "ceeb": 4704,
-    "ranking": 100,
-    "comment": "",
+    "ranking": 99,
+    "comment": "恶性治安事件",
     "order1": 103,
     "order2": 99,
-    "order3": 1,
+    "order3": 2,
     "guide": 0
   },
   {
@@ -713,7 +713,7 @@ var data = [
     "comment": "",
     "order1": 35,
     "order2": 112,
-    "order3": 42,
+    "order3": 41,
     "guide": 0
   },
   {
@@ -732,7 +732,7 @@ var data = [
     "comment": "",
     "order1": 86,
     "order2": 97,
-    "order3": 41,
+    "order3": 40,
     "guide": 4666
   },
   {
@@ -1473,7 +1473,7 @@ var data = [
     "comment": "",
     "order1": 75,
     "order2": 61,
-    "order3": 40,
+    "order3": 39,
     "guide": 0
   },
   {
@@ -1735,11 +1735,11 @@ var data = [
     "city": "Los Angeles, CA",
     "setting": "都市",
     "ceeb": 4837,
-    "ranking": 82,
-    "comment": "",
+    "ranking": 80,
+    "comment": "恶性治安事件",
     "order1": 50,
     "order2": 18,
-    "order3": 39,
+    "order3": 42,
     "guide": 4660
   },
   {
