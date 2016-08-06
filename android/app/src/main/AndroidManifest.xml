@@ -8,12 +8,15 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
-    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+
+    <uses-permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.net.aadps" />
+      <permission
+          android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.net.aadps"
+          android:protectionLevel="normal">
+      </permission>
 
     <application
       android:allowBackup="true"
@@ -86,13 +89,13 @@
           android:name="com.baidu.android.pushservice.CommandService"
           android:exported="true" />
 
-      <!-- 4.6.2版本增加一个可选的Activity声明 -->
-      <activity
-          android:launchMode="singleInstance"
-          android:name="com.baidu.android.pushservice.PushKeepAlive"
-          android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <provider
+                    android:name="com.baidu.android.pushservice.PushInfoProvider"
+                    android:authorities="net.aadps.bdpush"
+                    android:writePermission="baidu.push.permission.WRITE_PUSHINFOPROVIDER.net.aadps"
+                    android:exported="true" />
 
-      <!-- 在百度开发者中心查询应用的API Key -->
+        <!-- 在百度开发者中心查询应用的API Key -->
       <meta-data
           android:name="api_key"
           android:value="3DPl8pRMc0g9M1cbS4GY3lowhG7hN3z7" />
