@@ -87,7 +87,7 @@ class User extends React.Component {
     <View style={styles.iconBox}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.cover}
-    source={Platform.OS === 'android'?require('image!ic_person_white_24dp'):require('./image/ic_person_white_24dp.png')} />
+    source={require('./image/ic_person_white_24dp.png')} />
     </View>
     <TextInput
     underlineColorAndroid='#fff'
@@ -104,7 +104,7 @@ class User extends React.Component {
     if(Platform.OS === 'android')return (
       <View style={{flexDirection: "column", flex: 1, backgroundColor: '#f0f0f0'}}>
       <ToolbarAndroid
-            navIcon={require('image!ic_arrow_back_white_24dp')}
+            navIcon={require('./image/ic_arrow_back_white_24dp.png')}
             onIconClicked={() => {this.props.nav.pop()} }
             style={[styles.toolbar,{backgroundColor: '#888'}]}
             title={this.state.register?'注册':'登录'}
@@ -117,7 +117,7 @@ class User extends React.Component {
       <View style={styles.iconBox}>
       <Image style={styles.icon}
       resizeMode={Image.resizeMode.cover}
-      source={Platform.OS === 'android'?require('image!ic_phone_android_white_24dp'):require('./image/ic_phone_android_white_24dp.png')} />
+      source={require('./image/ic_phone_android_white_24dp.png')} />
       </View>
       <TextInput
       underlineColorAndroid='#fff'
@@ -134,7 +134,7 @@ class User extends React.Component {
       <View style={styles.iconBox}>
       <Image style={styles.icon}
       resizeMode={Image.resizeMode.cover}
-      source={Platform.OS === 'android'?require('image!ic_vpn_key_white_24dp'):require('./image/ic_vpn_key_white_24dp.png')} />
+      source={require('./image/ic_vpn_key_white_24dp.png')} />
       </View>
       <TextInput
       underlineColorAndroid='#fff'
@@ -172,7 +172,7 @@ class User extends React.Component {
       <View style={styles.iconBox}>
       <Image style={styles.icon}
       resizeMode={Image.resizeMode.cover}
-      source={Platform.OS === 'android'?require('image!ic_phone_android_white_24dp'):require('./image/ic_phone_android_white_24dp.png')} />
+      source={require('./image/ic_phone_android_white_24dp.png')} />
       </View>
       <TextInput
       underlineColorAndroid='#fff'
@@ -189,7 +189,7 @@ class User extends React.Component {
       <View style={styles.iconBox}>
       <Image style={styles.icon}
       resizeMode={Image.resizeMode.cover}
-      source={Platform.OS === 'android'?require('image!ic_vpn_key_white_24dp'):require('./image/ic_vpn_key_white_24dp.png')} />
+      source={require('./image/ic_vpn_key_white_24dp.png')} />
       </View>
       <TextInput
       underlineColorAndroid='#fff'

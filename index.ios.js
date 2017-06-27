@@ -397,8 +397,9 @@ class Main extends React.Component {
     return (
       <TabBarIOS tintColor={this.state.color}>
         <TabBarIOS.Item
-          icon={require('./image/ic_star_border_white_24dp.png')}
-          selectedIcon={require('./image/ic_star_white_24dp.png')}
+          icon={require('./image/tab/ic_star_border_white_24dp.png')}
+          selectedIcon={require('./image/tab/ic_star_white_24dp.png')}
+          iconSize={24}
           title="大学"
           selected={this.state.view === 0}
           onPress={() => {
@@ -416,7 +417,7 @@ class Main extends React.Component {
           {this._renderContent(0)}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          icon={require('./image/ic_search_white_24dp.png')}
+          icon={require('./image/tab/ic_search_white_24dp.png')}
           title="选校"
           selected={this.state.view === 1}
           onPress={() => {
@@ -434,7 +435,7 @@ class Main extends React.Component {
           {this._renderContent(1)}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          icon={require('./image/ic_description_white_24dp.png')}
+          icon={require('./image/tab/ic_description_white_24dp.png')}
           title="资讯"
           selected={this.state.view === 2}
           onPress={() => {
@@ -445,7 +446,7 @@ class Main extends React.Component {
           {this._renderContent(2)}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          icon={require('./image/ic_chat_white_24dp.png')}
+          icon={require('./image/tab/ic_chat_white_24dp.png')}
           title="聊天"
           selected={this.state.view === 3}
           onPress={() => {
@@ -457,8 +458,8 @@ class Main extends React.Component {
           {this._renderContent(3)}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          icon={require('./image/ic_person_outline_white_24dp.png')}
-          selectedIcon={require('./image/person.png')}
+          icon={require('./image/tab/ic_person_outline_white_24dp.png')}
+          selectedIcon={require('./image/tab/ic_person_white_24dp.png')}
           title="我"
           selected={this.state.view === 4}
           onPress={() => {

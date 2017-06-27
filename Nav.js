@@ -122,14 +122,13 @@ class Card extends React.Component {
     <TouchableWithoutFeedback onPress={()=>this.onExpand()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
-    source={Platform.OS === 'android'?(this.state.expanded?require('image!ic_expand_less_white_24dp'):require('image!ic_expand_more_white_24dp')):
-      (this.state.expanded?require('./image/ic_expand_less_white_24dp@3x.png'):require('./image/ic_expand_more_white_24dp@3x.png'))} />
+    source={this.state.expanded?require('./image/ic_expand_less_white_24dp@3x.png'):require('./image/ic_expand_more_white_24dp@3x.png')} />
     </TouchableWithoutFeedback>
 
     <TouchableWithoutFeedback onPress={()=>this.onClose()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
-    source={Platform.OS === 'android'?require('image!ic_close_white_24dp'):require('./image/ic_close_white_24dp@3x.png')} />
+    source={require('./image/ic_close_white_24dp@3x.png')} />
     </TouchableWithoutFeedback>
 
     </View>

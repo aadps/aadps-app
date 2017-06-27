@@ -11,9 +11,9 @@ import {
   DrawerLayoutAndroid,
   ToolbarAndroid,
   TouchableHighlight,
-  Navigator,
   BackAndroid,
 } from 'react-native';
+import {Navigator} from 'react-native-deprecated-custom-components';
 
 var Db = require('./Db');
 var myDb = new Db();
@@ -33,12 +33,12 @@ var _main;
 const viewProp = [{
   title: '我的大学',
   color: '#ffc107',
-  actions: [{title: '排序', icon: require('image!ic_swap_vert_white_24dp'), show: 'always'}],
+  actions: [{title: '排序', icon: require('./image/ic_swap_vert_white_24dp.png'), show: 'always'}],
 },{
   title: '院校筛选',
   color: '#8bc34a',
-  actions: [{title: '筛选', icon: require('image!ic_filter_list_white_24dp'), show: 'always'},
-  {title: '排序', icon: require('image!ic_swap_vert_white_24dp'), show: 'always'}],
+  actions: [{title: '筛选', icon: require('./image/ic_filter_list_white_24dp.png'), show: 'always'},
+  {title: '排序', icon: require('./image/ic_swap_vert_white_24dp.png'), show: 'always'}],
 },{
   title: '留学资讯',
   color: '#f44336',
@@ -207,8 +207,9 @@ function regChat(){
   });
 }
 
-class aadps extends React.Component{
+class aadps extends Component{
   render() {
+
     if(this.props.view != undefined)view = this.props.view;
     return (
       <Navigator
@@ -230,7 +231,7 @@ class aadps extends React.Component{
         return (
           <View style={{flexDirection: "column", flex: 1, }}>
           <ToolbarAndroid
-          navIcon={require('image!ic_arrow_back_white_24dp')}
+          navIcon={require('./image/ic_arrow_back_white_24dp.png')}
           onIconClicked={() => {
             navigator.pop();
             myDb.filter(filterFav).then(result => {
@@ -250,7 +251,7 @@ class aadps extends React.Component{
         return (
           <View style={{flexDirection: "column", flex: 1, }}>
           <ToolbarAndroid
-          navIcon={require('image!ic_arrow_back_white_24dp')}
+          navIcon={require('./image/ic_arrow_back_white_24dp.png')}
           onIconClicked={() => {
             navigator.pop();
           }}
@@ -375,7 +376,7 @@ class Main extends React.Component {
       <View style={[styles.menuItem,{backgroundColor: this.state.view==0?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#ffc107'}]}
       resizeMode={Image.resizeMode.stretch}
-      source={require('image!ic_star_white_24dp')} />
+      source={require('./image/ic_star_white_24dp.png')} />
       <Text style={[styles.menuText,{color: this.state.view==0?'#ffc107':'#000000'} ]}>我的大学</Text>
       </View>
       </TouchableHighlight>
@@ -395,7 +396,7 @@ class Main extends React.Component {
       <View style={[styles.menuItem,{backgroundColor: this.state.view==1?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#8bc34a'}]}
       resizeMode={Image.resizeMode.stretch}
-      source={require('image!ic_search_white_24dp')} />
+      source={require('./image/ic_search_white_24dp.png')} />
       <Text style={[styles.menuText, {color: this.state.view==1?'#8bc34a':'#000000'}]}>院校筛选</Text>
       </View>
       </TouchableHighlight>
@@ -403,7 +404,7 @@ class Main extends React.Component {
       <View style={[styles.menuItem,{backgroundColor: this.state.view==2?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#f44336'}]}
       resizeMode={Image.resizeMode.stretch}
-      source={require('image!ic_description_white_24dp')} />
+      source={require('./image/ic_description_white_24dp.png')} />
       <Text style={[styles.menuText, {color: this.state.view==2?'#f44336':'#000000'}]}>留学资讯</Text>
       </View>
       </TouchableHighlight>
@@ -411,7 +412,7 @@ class Main extends React.Component {
       <View style={[styles.menuItem,{backgroundColor: this.state.view==3?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#2196f3'}]}
       resizeMode={Image.resizeMode.stretch}
-      source={require('image!ic_chat_white_24dp')} />
+      source={require('./image/ic_chat_white_24dp.png')} />
       <Text style={[styles.menuText, {color: this.state.view==3?'#2196f3':'#000000'}]}>即时聊天</Text>
       </View>
       </TouchableHighlight>
@@ -419,20 +420,20 @@ class Main extends React.Component {
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{Linking.openURL('tel:4000223774')}}><View style={styles.menuItem}>
       <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
       resizeMode={Image.resizeMode.stretch}
-      source={require('image!ic_call_white_24dp')} />
+      source={require('./image/ic_call_white_24dp.png')} />
       <Text style={styles.menuText}>电话咨询</Text>
       </View></TouchableHighlight>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{Linking.openURL('http://aadps.net/about')}}><View style={styles.menuItem}>
       <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
       resizeMode={Image.resizeMode.stretch}
-      source={require('image!ic_help_white_24dp')} />
+      source={require('./image/ic_help_white_24dp.png')} />
       <Text style={styles.menuText}>关于AADPS</Text>
       </View></TouchableHighlight>
       <View style={styles.menuSeparator}></View>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.isLoggedIn()?this.logout():this.props.nav.push({id: 'user'});}}><View style={styles.menuItem}>
       <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
       resizeMode={Image.resizeMode.stretch}
-      source={!this.isLoggedIn()?require('image!ic_person_white_24dp'):require('image!ic_person_outline_white_24dp')} />
+      source={!this.isLoggedIn()?require('./image/ic_person_white_24dp.png'):require('./image/ic_person_outline_white_24dp.png')} />
       <Text style={styles.menuText}>{this.isLoggedIn()?'注销':'注册/登录'}</Text>
       </View></TouchableHighlight>
       </ScrollView>
@@ -455,7 +456,7 @@ class Main extends React.Component {
       renderNavigationView={() => navigationView}>
 
       <ToolbarAndroid
-      navIcon={require('image!ic_menu_white_24dp')}
+      navIcon={require('./image/ic_menu_white_24dp.png')}
       onIconClicked={() => this.drawer.openDrawer()}
       style={[styles.toolbar,{backgroundColor: viewProp[this.state.view].color}]}
       title={viewProp[this.state.view].title}
