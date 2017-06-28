@@ -2,21 +2,16 @@
 
 import React, { Component } from 'react';
 import {
-  Linking,
-  Platform,
-  ActionSheetIOS,
-  Dimensions,
   View,
-  Text,
-  Navigator,
-  PixelRatio,
+  StyleSheet,
+  Clipboard,
+  Text
 } from 'react-native';
 
-var GiftedMessenger = require('react-native-gifted-messenger');
-
+import {Navigator} from 'react-native-deprecated-custom-components';
+import {GiftedChat, Send} from 'react-native-gifted-chat';
 
 var STATUS_BAR_HEIGHT = 24;
-
 
 class Chat extends Component {
   getChat() {
@@ -28,14 +23,22 @@ class Chat extends Component {
       body: 'getchat=&user='+this._user+'&passwd='+this._passwd+'&chan='+this.props.chan+'&id='+this._id
     })
     .then((response) => response.json())
-    .then((message) => {
-      if(message.length>0){
-        for(var i in message){
-          var t = message[i]["date"].split(/[- :]/);
-          message[i]["date"] = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+    .then((response) => {
+      if(response.length>0){
+        for(var i in response){
+          var message = new Array();
+          message[0]={};
+          var t = response[i]["date"].split(/[- :]/);
+          message[0].createdAt = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+          message[0].text = response[i].text;
+          message[0]._id = parseInt(response[i].uniqueId);
+          this._id = message[0]._id;
+          message[0].user = {};
+          message[0].user.name = response[i].name;
+          message[0].user.avatar = response[i].image.uri;
+          message[0].user._id = (response[i].position=="left")?2:1;
+          this.setMessages(message.concat(this._messages));
         }
-        this.handleReceive(message);
-        if(this._messages.length != 0)this._id = this._messages[this._messages.length-1].uniqueId;
       }
     }).catch((error) => {});
   }
@@ -58,8 +61,8 @@ class Chat extends Component {
     this.state = {
       messages: this._messages,
       isLoadingEarlierMessages: false,
+      error: null,
     };
-
   }
 
   componentDidMount() {
@@ -101,7 +104,7 @@ class Chat extends Component {
     });
   }
 
-  handleSend(message = {}) {
+  handleSend(message = []) {
 
     // Your logic here
     // Send message.text to your server
@@ -110,122 +113,88 @@ class Chat extends Component {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
-      body: 'setchat=&user='+this._user+'&passwd='+this._passwd+'&chan='+this.props.chan+'&text='+message.text
+      body: 'setchat=&user='+this._user+'&passwd='+this._passwd+'&chan='+this.props.chan+'&text='+message[0].text
     })
-    .then(() => {this.getChat()})
+    .then(() => {this.getChat();this.setState({error: null})})
     .catch((error) => {
-      message.uniqueId = -Math.round(Math.random() * 10000);
-      this.setMessages(this._messages.concat(message));
-      this.setMessageStatus(message.uniqueId, 'ErrorButton');
-    });
-
-    // if you couldn't send the message to your server :
-    // this.setMessageStatus(message.uniqueId, 'ErrorButton');
-  }
-
-  handleReceive(message = {}) {
-    // make sure that your message contains :
-    // text, name, image, position: 'left', date, uniqueId
-    this.setMessages(this._messages.concat(message));
-  }
-
-  onErrorButtonPress(message = {}) {
-    // Your logic here
-    // re-send the failed message
-
-    // remove the status
-    fetch('https://aadps.net/wp-content/themes/aadps/ajax.php', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: 'setchat=&user='+this._user+'&passwd='+this._passwd+'&chan='+this.props.chan+'&text='+message.text
-    })
-    .then(() => {
-      for(var i = this._messages.length - 1; i >= 0; i--){
-        if(this._messages[i].uniqueId == message.uniqueId){
-          this._messages.splice(i, 1);
-          this.setState({messages: this._messages});
-          break;
-        }
-      }
-      this.getChat();
+      this.setState({error: '因网络原因，消息“' + message[0].text + '”发送失败'});
     });
   }
 
-  // will be triggered when the Image of a row is touched
-  onImagePress(message = {}) {
-    // Your logic here
-    // Eg: Navigate to the user profile
+  renderFooter(props) {
+    if (this.state.error) {
+      return (
+      <View style={styles.footerContainer}>
+        <Text style={styles.footerText}>
+          {this.state.error}
+        </Text>
+      </View>
+      );
+    }
+    return null;
   }
 
-  render() {
+  renderSend(props) {
     return (
-      <GiftedMessenger
-        ref={(c) => this._GiftedMessenger = c}
-
-        styles={{
-          bubble: {
-            flex: 0.5,
-            borderRadius: 15,
-            paddingLeft: 14,
-            paddingRight: 14,
-            paddingBottom: 10,
-            paddingTop: 8,
-          },
-          container: {
-            backgroundColor: '#f0f0f0',
-          },
-          bubbleLeft: {
-            backgroundColor: '#fff',
-            borderWidth: 1 / PixelRatio.get(),
-            borderColor: '#888',
-            marginRight: 48,
-          },
-          textLeft: {
-            color: '#333',
-          },
-          textInputContainer: {
-            height: 44,
-            borderTopWidth: 1 / PixelRatio.get(),
-            borderColor: '#bbb',
-            flexDirection: 'row',
-            paddingLeft: 10,
-            paddingRight: 10,
-            backgroundColor: '#fff',
-          },
-          bubbleRight: {
-            backgroundColor: '#2196f3',
-            marginLeft: 48,
-          },
-        }}
-
-        dateLocale={'zh-cn'}
-        autoFocus={false}
-        messages={this.state.messages}
-        handleSend={this.handleSend.bind(this)}
-        onErrorButtonPress={this.onErrorButtonPress.bind(this)}
-        maxHeight={Platform.OS === 'android'?Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT:Dimensions.get('window').height}
-
-        senderImage={null}
-        displayNames={true}
-        placeholder={'输入聊天内容'}
-        sendButtonText={'发送'}
-
-        parseText={true}
-        handlePhonePress={this.handlePhonePress}
-        handleUrlPress={this.handleUrlPress}
+      <Send
+        {...props}
+        label = '发送'
       />
     );
   }
 
-  handleUrlPress(url) {
-    Linking.openURL(url);
+  onLongPress(context, message) {
+      if (message.text) {
+        const options = [
+          '复制',
+          '取消',
+        ];
+        const cancelButtonIndex = options.length - 1;
+        context.actionSheet().showActionSheetWithOptions({
+          options,
+          cancelButtonIndex,
+        },
+        (buttonIndex) => {
+          switch (buttonIndex) {
+            case 0:
+              Clipboard.setString(message.text);
+              break;
+          }
+        });
+      }
   }
 
-  handlePhonePress(phone) {
-    Linking.openURL('tel:' + phone);
+  render() {
+    return (
+      <GiftedChat
+
+        locale={'zh-cn'}
+        messages={this.state.messages}
+        onSend={this.handleSend.bind(this)}
+        renderSend={this.renderSend}
+        renderFooter={this.renderFooter.bind(this)}
+        onLongPress={this.onLongPress.bind(this)}
+
+        placeholder={'输入聊天内容'}
+        user={{
+          _id: 1,
+        }}
+      />
+    );
   }
 }
+
+const styles = StyleSheet.create({
+  footerContainer: {
+    marginTop: 5,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+  },
+  footerText: {
+    fontSize: 14,
+    color: '#aaa',
+  },
+});
 
 module.exports = Chat;
