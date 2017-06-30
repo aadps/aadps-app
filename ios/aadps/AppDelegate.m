@@ -34,7 +34,7 @@
    * on the same Wi-Fi network.
    */
 
-  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+//  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
 
   /**
    * OPTION 2
@@ -44,7 +44,7 @@
    * simulator in the "Release" build configuration.
    */
 
-//   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"aadps"
@@ -116,9 +116,9 @@
       // 获取channel_id
       NSString *myChannel_id = [BPush getChannelId];
       NSLog(@"==%@",myChannel_id);
-      NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-      NSString *documents = [paths objectAtIndex:0];
-      NSString *database_path = [documents stringByAppendingPathComponent:DBNAME];
+      NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+      NSString *library_path = [paths objectAtIndex:0];
+      NSString *database_path = [[library_path stringByAppendingString:@"/LocalDatabase"] stringByAppendingPathComponent:DBNAME];
       
       if (sqlite3_open([database_path UTF8String], &db) != SQLITE_OK) {
         sqlite3_close(db);
@@ -128,6 +128,22 @@
         char *error;
         sqlite3_exec(db, "DELETE FROM options WHERE id = 4", NULL, NULL, &error);
         sqlite3_exec(db, [[NSString stringWithFormat:@"%@%@%@", @"INSERT INTO options VALUES(4, \"", myChannel_id, @"\")"]  cStringUsingEncoding:NSASCIIStringEncoding], NULL, NULL, &error);
+        NSString  * query = @"SELECT * from options";
+        sqlite3_stmt* stmt =NULL;
+        sqlite3_prepare_v2(db, [query UTF8String], -1, &stmt, NULL);
+        while (sqlite3_step(stmt) == SQLITE_ROW) //get each row in loop
+        {
+                    NSInteger age =  sqlite3_column_int(stmt, 0);
+          NSString * name =@"";
+          if(sqlite3_column_text(stmt, 1)!=NULL)name =[NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 1)];
+
+          
+          NSLog(@"选项%ld：%@", (long)age, name);
+          
+        }
+        NSLog(@"Done");
+        sqlite3_finalize(stmt);
+        sqlite3_prepare_v2(db, [query UTF8String], -1, &stmt, NULL);
         sqlite3_close(db);
       }
     }

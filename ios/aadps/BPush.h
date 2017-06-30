@@ -1,6 +1,6 @@
 //
 //  BPush.h
-//  Version: 1.4.5
+//  Version: 1.4.9
 //  百度云推送iOS版本头文件 //
 //
 
@@ -75,22 +75,23 @@ typedef void (^BPushCallBack)(id result, NSError *error);
 + (void)setAccessToken:(NSString *)token;
 
 /**
- * 设置 Bduss
- * @param
- *     bduss - 百度账号体系相关 Bduss
- * @return
- *     none
- */
-+ (void)setBduss:(NSString *)bduss forApp:(NSString *)appid;
-
-/**
  * 关闭 lbs
  * @param
- *      - 关闭lbs推送模式，默认是开启的，用户可以选择关闭 需要在调用绑定接口前调用。
+ *      - 关闭lbs推送模式，默认是开启的，用户可以选择关闭
  * @return
  *     none
  */
 + (void)disableLbs;
+
+/**
+ * 开启BPush 崩溃日志收集
+ * @param
+ *      - 开启BPush 崩溃日志收集 没有使用其他第三方崩溃收集工具的，建议调用此接口，BPush 会收集由于BPush SDK 本身引起的崩溃 便于SDK搜集已知问题，更快的修复问题。
+ * @return
+ *     none
+ */
++ (void)uploadBPushCrashLog;
+
 
 /**
  * @brief 绑定channel.将会在回调中看获得channnelid appid userid 等。
