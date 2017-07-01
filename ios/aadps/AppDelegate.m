@@ -157,9 +157,9 @@
   
   NSLog(@"%@",userInfo);
   
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString *documents = [paths objectAtIndex:0];
-  NSString *database_path = [documents stringByAppendingPathComponent:DBNAME];
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+  NSString *library_path = [paths objectAtIndex:0];
+  NSString *database_path = [[library_path stringByAppendingString:@"/LocalDatabase"] stringByAppendingPathComponent:DBNAME];
   
   if (sqlite3_open([database_path UTF8String], &db) != SQLITE_OK) {
     sqlite3_close(db);
