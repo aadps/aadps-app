@@ -9,6 +9,7 @@ import {
   ListView,
   TouchableHighlight,
   Platform,
+  PixelRatio,
 } from 'react-native';
 
 var Chat = require('./Chat');
@@ -134,7 +135,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#888',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1 / PixelRatio.get(),
     backgroundColor: '#fff',
   },
   rightContainer: {

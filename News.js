@@ -9,6 +9,7 @@ import {
   ListView,
   ScrollView,
   TouchableHighlight,
+  PixelRatio,
 } from 'react-native';
 
 var Linking = require('Linking');
@@ -23,11 +24,28 @@ class News extends React.Component {
       loaded: false,
       page: 0,
       news: [],
+      id: (this.props.id)?this.props.id:0,
     };
   }
 
   componentDidMount() {
     this.fetchData();
+    setInterval(() => {this.checkUpdate()}, 1000);;
+  }
+
+  checkUpdate(){
+    if (this.props.id && this.props.id != this.state.id){
+      this.setState({
+        dataSource: new ListView.DataSource({
+          rowHasChanged: (row1, row2) => row1 !== row2,
+        }),
+        loaded: false,
+        page: 0,
+        news: [],
+        id: this.props.id,
+      });
+      this.fetchData();
+    }
   }
 
   fetchData() {
@@ -44,6 +62,7 @@ class News extends React.Component {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(expandedNews),
         loaded: true,
+        page: this.state.page + 1,
         news: expandedNews,
       });
     })
@@ -60,7 +79,7 @@ class News extends React.Component {
       dataSource={this.state.dataSource}
       renderRow={this.renderNews}
       style={styles.listView}
-      onEndReached={()=>{this.setState({page: this.state.page+1});this.fetchData();}}
+      onEndReached={()=>{this.fetchData();}}
       />
     );
   }
@@ -113,7 +132,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#888',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1  / PixelRatio.get(),
     backgroundColor: '#fff',
   },
   rightContainer: {

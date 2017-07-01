@@ -288,7 +288,7 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    this._intId = setInterval(() => {this.fetchView()}, 3000);
+    this._intId = setInterval(() => {this.fetchView()}, 2000);
   }
 
   componentWillUnmount() {
@@ -318,7 +318,7 @@ class Main extends React.Component {
     switch (view) {
       case 0: mainView=<Nav db={myDb} data={cardData} />; break;
       case 1: mainView=<Pick db={myDb} data={lists[order%3]} picked={fav} isPerm={true} ref="myPick" />; break;
-      case 2: mainView=<News />; break;
+      case 2: mainView=<News id={Math.random()}/>; break;
       case 3: mainView=<Chan db={myDb}  nav = {_nav}/>; break;
       case 4: mainView=(
         <ScrollView style={styles.menu}>
