@@ -112,6 +112,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/x86Debug" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/x86Release" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
       <excludeFolder url="jar://$MODULE_DIR$/build/intermediates/mockable-android-23.jar!/" />
     </content>

@@ -53,7 +53,7 @@ class Card extends React.Component {
   render() {
     var content, card, guide;
     if(this.props.data.guide){
-      guide = <TouchableHighlight  activeOpacity={0.935} onPress={() => {Linking.openURL('http://aadps.net/2016/' + this.props.data.guide + '.html')}}>
+      guide = <TouchableHighlight  activeOpacity={0.935} onPress={() => {Linking.openURL('http://aadps.net/?p=' + this.props.data.guide)}}>
         <View style={styles.link}>
         <Text style={styles.linkText}>院校指南</Text>
         </View>
@@ -87,7 +87,7 @@ class Card extends React.Component {
     </View>
 
     <View style={{position: 'absolute', left: windowWidth / 2 + 65,}}>
-    <Text style={styles.line1}>CEEB</Text>
+    <Text style={styles.line1}>SAT/ACT码</Text>
     <Text style={styles.line2}>{this.props.data.ceeb}</Text>
     </View>
 
@@ -95,7 +95,7 @@ class Card extends React.Component {
 
     <View style={styles.linkList}>
 
-    <TouchableHighlight  activeOpacity={0.935} onPress={() => {Linking.openURL('http://aadps.net/2016/' + this.props.data.id + '.html')}}>
+    <TouchableHighlight  activeOpacity={0.935} onPress={() => {Linking.openURL('http://aadps.net/?p=' + this.props.data.id)}}>
     <View style={styles.link}>
     <Text style={styles.linkText}>文书题目</Text>
     </View>
