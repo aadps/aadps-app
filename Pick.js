@@ -47,7 +47,7 @@ class Pick extends React.Component {
         if(this.props.isPerm)this.props.db.setFav(array, parseInt(new Date().getTime() / 1000));
       }}>
       <View style={[styles.item, picked?styles.itemPicked:{}]}>
-      <Text style={picked?{color: '#fff'}:{color: '#888'}}>{data.name}</Text>
+      <Text style={picked?{fontSize: 16, color: '#fff'}:{fontSize: 16, color: '#888'}}>{data.name}</Text>
       </View>
       </TouchableWithoutFeedback>
     )
@@ -132,6 +132,7 @@ var styles = StyleSheet.create({
     paddingLeft: 8,
     paddingRight: 8,
     margin: 6,
+    height: 24,
     borderColor: '#888',
     backgroundColor: '#fff',
   },

@@ -64,10 +64,10 @@ export const lists = [
   {name: 'A指数49-', ids: [3644, 3648, 3685, 3665, 3679, 3669, 3671, 3675, 3681,
   3683, 3687, 3539, 3689]}]
   ];
-export const filterData = [{name: '地理位置', data: [{id: 1, name: '东北'},
+export const filterData = [{name: '地理位置', data: [{id: 1, name: '新英格兰'},
     {id: 2, name: '五大湖'},
-    {id: 3, name: '南方'},
-    {id: 4, name: '中部'},
+    {id: 3, name: '老南方'},
+    {id: 4, name: '中部山区'},
     {id: 5, name: '西北'},
     {id: 6, name: '加州'}]},
     {name: '申请难度', data: [{id: 11, name: '极难'},
