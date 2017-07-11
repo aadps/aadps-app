@@ -209,6 +209,34 @@
 			remoteGlobalIDString = E23D7B471ACEFE2A00C59171;
 			remoteInfo = SQLite;
 		};
+		84CD2B8B1F14BFD900079719 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 139D7ECE1E25DB7D00323FB7;
+			remoteInfo = "third-party";
+		};
+		84CD2B8D1F14BFD900079719 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D383D3C1EBD27B6005632C8;
+			remoteInfo = "third-party-tvOS";
+		};
+		84CD2B8F1F14BFD900079719 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 139D7E881E25C6D100323FB7;
+			remoteInfo = "double-conversion";
+		};
+		84CD2B911F14BFD900079719 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D383D621EBD27B9005632C8;
+			remoteInfo = "double-conversion-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -366,6 +394,10 @@
 				8429E2BB1F02136800A45D77 /* libcxxreact.a */,
 				8429E2BD1F02136800A45D77 /* libjschelpers.a */,
 				8429E2BF1F02136800A45D77 /* libjschelpers.a */,
+				84CD2B8C1F14BFD900079719 /* libthird-party.a */,
+				84CD2B8E1F14BFD900079719 /* libthird-party.a */,
+				84CD2B901F14BFD900079719 /* libdouble-conversion.a */,
+				84CD2B921F14BFD900079719 /* libdouble-conversion.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -745,6 +777,34 @@
 			fileType = archive.ar;
 			path = libSQLite.a;
 			remoteRef = 845E7F5D1CE7585300EE3677 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		84CD2B8C1F14BFD900079719 /* libthird-party.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libthird-party.a";
+			remoteRef = 84CD2B8B1F14BFD900079719 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		84CD2B8E1F14BFD900079719 /* libthird-party.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libthird-party.a";
+			remoteRef = 84CD2B8D1F14BFD900079719 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		84CD2B901F14BFD900079719 /* libdouble-conversion.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libdouble-conversion.a";
+			remoteRef = 84CD2B8F1F14BFD900079719 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		84CD2B921F14BFD900079719 /* libdouble-conversion.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libdouble-conversion.a";
+			remoteRef = 84CD2B911F14BFD900079719 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

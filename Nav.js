@@ -15,8 +15,6 @@ import {
   Platform,
 } from 'react-native';
 
-UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-
 var Dimensions = require('Dimensions');
 var Linking = require('Linking');
 var LayoutAnimation = require('LayoutAnimation');
@@ -60,7 +58,7 @@ class Card extends React.Component {
         </TouchableHighlight>;
     }else guide = <View />;
     if(this.state.expanded){
-      content =       <WebView style={[styles.stat, {height: this.state.height - 156}]}
+      content =       <WebView style={styles.stat}
             source={{uri: 'http://aadps.net/wp-content/themes/aadps/stat.php?id=' + this.props.data.id}}
             javaScriptEnabled={true}
             domStorageEnabled={false}
@@ -122,18 +120,18 @@ class Card extends React.Component {
     <TouchableWithoutFeedback onPress={()=>this.onExpand()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
-    source={this.state.expanded?require('./image/ic_expand_less_white_24dp@3x.png'):require('./image/ic_expand_more_white_24dp@3x.png')} />
+    source={this.state.expanded?require('./image/ic_expand_less_white_24dp.png'):require('./image/ic_expand_more_white_24dp.png')} />
     </TouchableWithoutFeedback>
 
     <TouchableWithoutFeedback onPress={()=>this.onClose()}>
     <Image style={styles.icon}
     resizeMode={Image.resizeMode.stretch}
-    source={require('./image/ic_close_white_24dp@3x.png')} />
+    source={require('./image/ic_close_white_24dp.png')} />
     </TouchableWithoutFeedback>
 
     </View>
     </View>
-    {content}
+    <View style={{height: this.state.height - 156}}>{content}</View>
     </View>;
 
     return (

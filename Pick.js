@@ -12,8 +12,6 @@ import {
   PixelRatio,
 } from 'react-native';
 
-UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-
 var Dimensions = require('Dimensions');
 var LayoutAnimation = require('LayoutAnimation');
 
