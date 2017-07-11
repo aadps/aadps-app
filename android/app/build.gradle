@@ -59,7 +59,11 @@ import com.android.build.OutputFile
  * ]
  */
 
-apply from: "react.gradle"
+project.ext.react = [
+nodeExecutableAndArgs: ["/usr/local/bin/node"]
+]
+
+apply from: "../../node_modules/react-native/react.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
