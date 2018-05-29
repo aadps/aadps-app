@@ -152,8 +152,9 @@ class Nav extends React.Component {
     if(this.props.data && this.props.data.length > 0){
       var cards = [], fav = [];
       for(var i = 0; i < this.props.data.length; i++)fav.push(this.props.data[i].id);
-      for(var i = 0; i < this.props.data.length; i++)
-        cards.push(<Card db={this.props.db} key={this.props.data[i].id} data={this.props.data[i]} fav={fav} onChange={this.onChange} />);
+      for(var i = 0; i < this.props.data.length; i++){
+        cards.push(<Card db={this.props.db} key={this.props.data[i].id} data={this.props.data[i]} fav={fav} onChange={this.onChange} ref={(c) => {if(c)c.setState({expanded: false, height: 240, closed: false})} }/>);
+      }
       return (
         <ScrollView style={styles.container}>
         {cards}
