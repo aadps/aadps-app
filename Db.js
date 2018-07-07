@@ -186,7 +186,7 @@ class Db {
 
 module.exports = Db;
 
-var ver = 5;
+var ver = 6;
 var data = [
   {
     "id": 937,
@@ -205,7 +205,7 @@ var data = [
     "order1": 40,
     "order2": 51,
     "order3": 1,
-    "guide": 0
+    "guide": 13145
   },
   {
     "id": 1399,
@@ -224,7 +224,7 @@ var data = [
     "order1": 103,
     "order2": 99,
     "order3": 2,
-    "guide": 0
+    "guide": 13306
   },
   {
     "id": 1387,
@@ -243,7 +243,7 @@ var data = [
     "order1": 93,
     "order2": 87,
     "order3": 3,
-    "guide": 0
+    "guide": 13607
   },
   {
     "id": 1391,
@@ -262,7 +262,7 @@ var data = [
     "order1": 119,
     "order2": 124,
     "order3": 4,
-    "guide": 0
+    "guide": 13237
   },
   {
     "id": 928,
@@ -281,7 +281,7 @@ var data = [
     "order1": 38,
     "order2": 33,
     "order3": 5,
-    "guide": 0
+    "guide": 13555
   },
   {
     "id": 1397,
@@ -300,7 +300,7 @@ var data = [
     "order1": 74,
     "order2": 64,
     "order3": 6,
-    "guide": 0
+    "guide": 13374
   },
   {
     "id": 1554,
@@ -319,7 +319,7 @@ var data = [
     "order1": 49,
     "order2": 16,
     "order3": 7,
-    "guide": 0
+    "guide": 13547
   },
   {
     "id": 1801,
@@ -357,7 +357,7 @@ var data = [
     "order1": 109,
     "order2": 118,
     "order3": 9,
-    "guide": 0
+    "guide": 13400
   },
   {
     "id": 177,
@@ -372,7 +372,7 @@ var data = [
     "setting": "都市",
     "ceeb": "1832/1152",
     "ranking": 92,
-    "comment": "过渡宣传",
+    "comment": "",
     "order1": 122,
     "order2": 27,
     "order3": 10,
@@ -448,11 +448,11 @@ var data = [
     "setting": "乡村",
     "ceeb": "3965/1936",
     "ranking": 89,
-    "comment": "国际学生录取率低",
+    "comment": "",
     "order1": 111,
     "order2": 121,
     "order3": 14,
-    "guide": 0
+    "guide": 13196
   },
   {
     "id": 2110,
@@ -509,7 +509,7 @@ var data = [
     "order1": 104,
     "order2": 101,
     "order3": 17,
-    "guide": 0
+    "guide": 13316
   },
   {
     "id": 1791,
@@ -524,11 +524,11 @@ var data = [
     "setting": "乡村",
     "ceeb": "3003/1774",
     "ranking": 87,
-    "comment": "国际学生录取率低",
+    "comment": "",
     "order1": 2,
     "order2": 3,
     "order3": 18,
-    "guide": 0
+    "guide": 13184
   },
   {
     "id": 930,
@@ -1056,7 +1056,7 @@ var data = [
     "setting": "城镇",
     "ceeb": "1841/1252",
     "ranking": 80,
-    "comment": "要求四年财产证明",
+    "comment": "",
     "order1": 98,
     "order2": 77,
     "order3": 46,
@@ -1265,7 +1265,7 @@ var data = [
     "setting": "都市",
     "ceeb": "5248/0818",
     "ranking": 78,
-    "comment": "标化要求高",
+    "comment": "",
     "order1": 124,
     "order2": 48,
     "order3": 57,
@@ -1588,7 +1588,7 @@ var data = [
     "setting": "城镇",
     "ceeb": "1836/1154",
     "ranking": 72,
-    "comment": "恶性治安事件",
+    "comment": "",
     "order1": 120,
     "order2": 55,
     "order3": 74,
@@ -1664,7 +1664,7 @@ var data = [
     "setting": "城镇",
     "ceeb": "2660/3656",
     "ranking": 70,
-    "comment": "可能被转入2+2项目",
+    "comment": "",
     "order1": 13,
     "order2": 83,
     "order3": 78,
@@ -1683,7 +1683,7 @@ var data = [
     "setting": "市郊",
     "ceeb": "3092/1802",
     "ranking": 70,
-    "comment": "可能被要求进入语言项目",
+    "comment": "",
     "order1": 17,
     "order2": 10,
     "order3": 79,
@@ -1759,7 +1759,7 @@ var data = [
     "setting": "市郊",
     "ceeb": "2757/2866",
     "ranking": 68,
-    "comment": "要求两年财产证明",
+    "comment": "",
     "order1": 71,
     "order2": 89,
     "order3": 83,
@@ -1873,7 +1873,7 @@ var data = [
     "setting": "都市",
     "ceeb": "3667/1880",
     "ranking": 64,
-    "comment": "可能被转入NU Bound项目",
+    "comment": "",
     "order1": 26,
     "order2": 75,
     "order3": 89,
@@ -2044,7 +2044,7 @@ var data = [
     "setting": "都市",
     "ceeb": "6882/4240",
     "ranking": 57,
-    "comment": "国际学生录取率低",
+    "comment": "",
     "order1": 24,
     "order2": 104,
     "order3": 98,

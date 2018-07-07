@@ -265,19 +265,20 @@ class Main extends React.Component {
 
         <View style={styles.menuSpace}></View>
         <View style={styles.menuGroup}>
-        <TouchableHighlight onPress={()=>{Linking.openURL('tel:4000223774')}}><View style={styles.menuItem}>
-        <Image style={[styles.menuIcon, {tintColor: viewProp[4].color}]}
-        resizeMode={Image.resizeMode.stretch}
-        source={require('./image/ic_call_white_24dp.png')} />
-        <Text style={styles.menuText}>电话咨询</Text>
+
+        <TouchableHighlight onPress={()=>{Linking.openURL('https://aadps.net/service1')}}><View style={styles.menuItem}>
+        <Text style={styles.menuText}>美本规划服务</Text>
         </View></TouchableHighlight>
 
         <View style={styles.menuLine}></View>
 
-        <TouchableHighlight onPress={()=>{Linking.openURL('http://aadps.net/about')}}><View style={styles.menuItem}>
-        <Image style={[styles.menuIcon, {tintColor: viewProp[4].color}]}
-        resizeMode={Image.resizeMode.stretch}
-        source={require('./image/ic_help_white_24dp.png')} />
+        <TouchableHighlight onPress={()=>{Linking.openURL('https://aadps.net/service2')}}><View style={styles.menuItem}>
+        <Text style={styles.menuText}>美本申请服务</Text>
+        </View></TouchableHighlight>
+
+        <View style={styles.menuLine}></View>
+
+        <TouchableHighlight onPress={()=>{Linking.openURL('https://aadps.net/about')}}><View style={styles.menuItem}>
         <Text style={styles.menuText}>关于AADPS</Text>
         </View></TouchableHighlight>
         </View>
@@ -454,7 +455,6 @@ var styles = StyleSheet.create({
   menuLine: {
     borderColor: '#ccc',
     borderTopWidth: 1 / PixelRatio.get(),
-    marginLeft: 64,
   },
   menuSpaceF: {
     height: 44,

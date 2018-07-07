@@ -337,16 +337,19 @@ class Main extends React.Component {
       </View>
       </TouchableHighlight>
       <View style={styles.menuSeparator}></View>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{Linking.openURL('tel:4000223774')}}><View style={styles.menuItem}>
-      <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
-      resizeMode={Image.resizeMode.stretch}
-      source={require('./image/ic_call_white_24dp.png')} />
-      <Text style={styles.menuText}>电话咨询</Text>
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{Linking.openURL('https://aadps.net/service1')}}>
+      <View style={styles.menuItem}>
+        <View style={styles.menuIcon} />
+      <Text style={styles.menuText}>美本留学规划</Text>
       </View></TouchableHighlight>
-      <TouchableHighlight activeOpacity={0.935} onPress={()=>{Linking.openURL('http://aadps.net/about')}}><View style={styles.menuItem}>
-      <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
-      resizeMode={Image.resizeMode.stretch}
-      source={require('./image/ic_help_white_24dp.png')} />
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{Linking.openURL('https://aadps.net/service2')}}>
+      <View style={styles.menuItem}>
+        <View style={styles.menuIcon} />
+      <Text style={styles.menuText}>美本留学申请</Text>
+      </View></TouchableHighlight>
+      <TouchableHighlight activeOpacity={0.935} onPress={()=>{Linking.openURL('https://aadps.net/about')}}>
+      <View style={styles.menuItem}>
+        <View style={styles.menuIcon} />
       <Text style={styles.menuText}>关于AADPS</Text>
       </View></TouchableHighlight>
       <View style={styles.menuSeparator}></View>
