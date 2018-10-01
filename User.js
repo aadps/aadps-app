@@ -14,6 +14,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
+import ImageResizeMode from 'react-native/Libraries/Image/ImageResizeMode';
 
 var Dimensions = require('Dimensions');
 
@@ -86,7 +87,7 @@ class User extends React.Component {
     <View style={styles.container}>
     <View style={styles.iconBox}>
     <Image style={styles.icon}
-    resizeMode={Image.resizeMode.cover}
+    resizeMode={ImageResizeMode.cover}
     source={require('./image/ic_person_white_24dp.png')} />
     </View>
     <TextInput
@@ -116,7 +117,7 @@ class User extends React.Component {
       <View style={styles.container}>
       <View style={styles.iconBox}>
       <Image style={styles.icon}
-      resizeMode={Image.resizeMode.cover}
+      resizeMode={ImageResizeMode.cover}
       source={require('./image/ic_phone_android_white_24dp.png')} />
       </View>
       <TextInput
@@ -133,7 +134,7 @@ class User extends React.Component {
       <View style={styles.container}>
       <View style={styles.iconBox}>
       <Image style={styles.icon}
-      resizeMode={Image.resizeMode.cover}
+      resizeMode={ImageResizeMode.cover}
       source={require('./image/ic_vpn_key_white_24dp.png')} />
       </View>
       <TextInput
@@ -171,7 +172,7 @@ class User extends React.Component {
       <View style={styles.container}>
       <View style={styles.iconBox}>
       <Image style={styles.icon}
-      resizeMode={Image.resizeMode.cover}
+      resizeMode={ImageResizeMode.cover}
       source={require('./image/ic_phone_android_white_24dp.png')} />
       </View>
       <TextInput
@@ -188,7 +189,7 @@ class User extends React.Component {
       <View style={styles.container}>
       <View style={styles.iconBox}>
       <Image style={styles.icon}
-      resizeMode={Image.resizeMode.cover}
+      resizeMode={ImageResizeMode.cover}
       source={require('./image/ic_vpn_key_white_24dp.png')} />
       </View>
       <TextInput

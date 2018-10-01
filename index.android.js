@@ -12,8 +12,10 @@ import {
   ToolbarAndroid,
   TouchableHighlight,
   BackAndroid,
+  ImageBackground
 } from 'react-native';
 import {Navigator} from 'react-native-deprecated-custom-components';
+import ImageResizeMode from 'react-native/Libraries/Image/ImageResizeMode';
 
 import {lists, filterData, nullProfile} from './Const';
 
@@ -273,11 +275,11 @@ class Main extends React.Component {
     var navigationView = (
       <ScrollView style={styles.menu}>
 
-      <Image style={styles.menuHead} resizeMode={Image.resizeMode.cover} source={require('./image/head.jpg')}>
-      <Image style={styles.menuAvatar} resizeMode={Image.resizeMode.cover} source={this.isLoggedIn()?{uri: this.state.profile[0]}:require('./image/nullavatar.gif')} />
+      <ImageBackground style={styles.menuHead} resizeMode={ImageResizeMode.cover} source={require('./image/head.jpg')}>
+      <Image style={styles.menuAvatar} resizeMode={ImageResizeMode.cover} source={this.isLoggedIn()?{uri: this.state.profile[0]}:require('./image/nullavatar.gif')} />
       <Text style={styles.menuName}>{this.state.profile[1]}</Text>
       <Text style={styles.menuCell}>{this.state.profile[2]}</Text>
-      </Image>
+      </ImageBackground>
 
       <View style={styles.menuSpace}></View>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{
@@ -295,7 +297,7 @@ class Main extends React.Component {
       }}>
       <View style={[styles.menuItem,{backgroundColor: this.state.view==0?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#ffc107'}]}
-      resizeMode={Image.resizeMode.stretch}
+      resizeMode={ImageResizeMode.stretch}
       source={require('./image/ic_star_white_24dp.png')} />
       <Text style={[styles.menuText,{color: this.state.view==0?'#ffc107':'#000000'} ]}>我的大学</Text>
       </View>
@@ -315,7 +317,7 @@ class Main extends React.Component {
       }}>
       <View style={[styles.menuItem,{backgroundColor: this.state.view==1?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#8bc34a'}]}
-      resizeMode={Image.resizeMode.stretch}
+      resizeMode={ImageResizeMode.stretch}
       source={require('./image/ic_search_white_24dp.png')} />
       <Text style={[styles.menuText, {color: this.state.view==1?'#8bc34a':'#000000'}]}>院校筛选</Text>
       </View>
@@ -323,7 +325,7 @@ class Main extends React.Component {
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.setState({view:2});this.drawer.closeDrawer();}}>
       <View style={[styles.menuItem,{backgroundColor: this.state.view==2?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#f44336'}]}
-      resizeMode={Image.resizeMode.stretch}
+      resizeMode={ImageResizeMode.stretch}
       source={require('./image/ic_description_white_24dp.png')} />
       <Text style={[styles.menuText, {color: this.state.view==2?'#f44336':'#000000'}]}>留学资讯</Text>
       </View>
@@ -331,7 +333,7 @@ class Main extends React.Component {
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{regChat();this.setState({view:3});this.drawer.closeDrawer();}}>
       <View style={[styles.menuItem,{backgroundColor: this.state.view==3?'#eee':'#fff'}]}>
       <Image style={[styles.menuIcon, {tintColor: '#2196f3'}]}
-      resizeMode={Image.resizeMode.stretch}
+      resizeMode={ImageResizeMode.stretch}
       source={require('./image/ic_chat_white_24dp.png')} />
       <Text style={[styles.menuText, {color: this.state.view==3?'#2196f3':'#000000'}]}>即时聊天</Text>
       </View>
@@ -355,7 +357,7 @@ class Main extends React.Component {
       <View style={styles.menuSeparator}></View>
       <TouchableHighlight activeOpacity={0.935} onPress={()=>{this.isLoggedIn()?this.logout():this.props.nav.push({id: 'user'});}}><View style={styles.menuItem}>
       <Image style={[styles.menuIcon, {tintColor: '#888888'}]}
-      resizeMode={Image.resizeMode.stretch}
+      resizeMode={ImageResizeMode.stretch}
       source={!this.isLoggedIn()?require('./image/ic_person_white_24dp.png'):require('./image/ic_person_outline_white_24dp.png')} />
       <Text style={styles.menuText}>{this.isLoggedIn()?'注销':'注册/登录'}</Text>
       </View></TouchableHighlight>

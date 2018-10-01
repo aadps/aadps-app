@@ -1,12 +1,13 @@
 package net.aadps;
 
 import android.app.Application;
-import android.net.Uri;
-import android.os.Bundle;
-import android.content.res.Resources;
-import android.content.Intent;
-import android.provider.MediaStore.Audio;
-import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.os.Build;
+import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -15,15 +16,15 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
 import org.pgsqlite.SQLitePluginPackage;
-
-import com.baidu.android.pushservice.BasicPushNotificationBuilder;
-import com.baidu.android.pushservice.PushConstants;
-import com.baidu.android.pushservice.PushManager;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.alibaba.sdk.android.push.*;
+import com.alibaba.sdk.android.push.register.*;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
+  private static final String TAG = "AADPS";
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -48,32 +49,54 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-    // Push: 以apikey的方式登录，一般放在主Activity的onCreate中。
-    // 这里把apikey存放于manifest文件中，只是一种存放方式，
-    // 您可以用自定义常量等其它方式实现，来替换参数中的Utils.getMetaValue(PushDemoActivity.this,
-    // "api_key")
-    Utils.logStringCache = Utils.getLogText(getApplicationContext());
-
-    Resources resource = this.getResources();
-    String pkgName = this.getPackageName();
-
-    PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY,
-            Utils.getMetaValue(MainApplication.this, "api_key"));
-    // Push: 如果想基于地理位置推送，可以打开支持地理位置的推送的开关
-    // PushManager.enableLbs(getApplicationContext());
-
-    // Push: 设置自定义的通知样式，具体API介绍见用户手册，如果想使用系统默认的可以不加这段代码
-    // 请在通知推送界面中，高级设置->通知栏样式->自定义样式，选中并且填写值：1，
-    // 与下方代码中 PushManager.setNotificationBuilder(this, 1, cBuilder)中的第二个参数对应
-    BasicPushNotificationBuilder nBuilder = new BasicPushNotificationBuilder();
-    nBuilder.setNotificationFlags(Notification.FLAG_AUTO_CANCEL);
-    nBuilder.setNotificationDefaults(Notification.DEFAULT_VIBRATE);
-    nBuilder.setStatusbarIcon(resource.getIdentifier(
-            "status", "drawable", pkgName));
-    nBuilder.setNotificationSound(Uri.withAppendedPath(
-            Audio.Media.INTERNAL_CONTENT_URI, "6").toString());
-    // 推送高级设置，通知栏样式设置为下面的ID
-    PushManager.setDefaultNotificationBuilder(this, nBuilder);
     SoLoader.init(this, /* native exopackage */ false);
+    initPushService(this);
+  }
+
+  private void initPushService(final Context applicationContext) {
+    MiPushRegister.register(applicationContext, "2882303761517871485", "5181787195485");
+    HuaWeiRegister.register(applicationContext);
+    PushServiceFactory.init(applicationContext);
+    final CloudPushService pushService = PushServiceFactory.getCloudPushService();
+    pushService.register(applicationContext, new CommonCallback() {
+      @Override
+      public void onSuccess(String response) {
+        Log.i(TAG, "init cloudchannel success: " + pushService.getDeviceId());
+        //setConsoleText("init cloudchannel success");
+        if(pushService.getDeviceId() != null){
+          SQLiteDatabase aadpsDb = SQLiteDatabase.openOrCreateDatabase("/data/data/net.aadps/databases/aadps.db", null);
+          aadpsDb.execSQL("DELETE FROM options WHERE id = 4");
+          aadpsDb.execSQL("INSERT INTO options VALUES(4, \"" + pushService.getDeviceId() + "\")");
+          aadpsDb.close();
+        }
+      }
+      @Override
+      public void onFailed(String errorCode, String errorMessage) {
+        Log.e(TAG, "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+        //setConsoleText("init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+      }
+    });
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+      // 通知渠道的id
+      String id = "1";
+      // 用户可以看到的通知渠道的名字.
+      CharSequence name = "AADPS";
+      // 用户可以看到的通知渠道的描述
+      String description = "AADPS推送通知";
+      int importance = NotificationManager.IMPORTANCE_HIGH;
+      NotificationChannel mChannel = new NotificationChannel(id, name, importance);
+      // 配置通知渠道的属性
+      mChannel.setDescription(description);
+      // 设置通知出现时的闪灯（如果 android 设备支持的话）
+      mChannel.enableLights(true);
+      mChannel.setLightColor(Color.WHITE);
+      // 设置通知出现时的震动（如果 android 设备支持的话）
+      mChannel.enableVibration(true);
+      mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+      //最后在notificationmanager中创建该通知渠道
+      mNotificationManager.createNotificationChannel(mChannel);
+    }
   }
 }

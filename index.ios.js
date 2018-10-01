@@ -15,6 +15,7 @@ import {
   PixelRatio,
   Alert,
 } from 'react-native';
+import ImageResizeMode from 'react-native/Libraries/Image/ImageResizeMode';
 
 import {lists, filterData, nullProfile} from './Const';
 
@@ -257,7 +258,7 @@ class Main extends React.Component {
           title: '登录',
           tintColor: viewProp[4].color});}}>
         <View style={styles.menuHead}>
-        <Image style={styles.menuAvatar} resizeMode={Image.resizeMode.cover} source={this.isLoggedIn()?{uri: this.state.profile[0]}:require('./image/nullavatar.gif')} />
+        <Image style={styles.menuAvatar} resizeMode={ImageResizeMode.cover} source={this.isLoggedIn()?{uri: this.state.profile[0]}:require('./image/nullavatar.gif')} />
         <Text style={styles.menuName}>{this.state.profile[1]}</Text>
         <Text style={styles.menuCell}>{this.state.profile[2]}</Text>
         </View>

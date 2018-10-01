@@ -14,6 +14,7 @@ import {
   Alert,
   Platform,
 } from 'react-native';
+import ImageResizeMode from 'react-native/Libraries/Image/ImageResizeMode'
 
 var Dimensions = require('Dimensions');
 var Linking = require('Linking');
@@ -107,7 +108,7 @@ class Card extends React.Component {
 
     if(this.state.closed)card = <View />;
     else card = <View>
-    <Image style={styles.photo} resizeMode={Image.resizeMode.cover} source={{uri: 'http://aadps.net/wp-content/uploads/2016/02/' + this.props.data.id + '.jpg'}} />
+    <Image style={styles.photo} resizeMode={ImageResizeMode.cover} source={{uri: 'http://aadps.net/wp-content/uploads/2016/02/' + this.props.data.id + '.jpg'}} />
     <View style={styles.textArea}>
     <View style={styles.background} />
 
@@ -119,13 +120,13 @@ class Card extends React.Component {
 
     <TouchableWithoutFeedback onPress={()=>this.onExpand()}>
     <Image style={styles.icon}
-    resizeMode={Image.resizeMode.stretch}
+    resizeMode={ImageResizeMode.stretch}
     source={this.state.expanded?require('./image/ic_expand_less_white_24dp.png'):require('./image/ic_expand_more_white_24dp.png')} />
     </TouchableWithoutFeedback>
 
     <TouchableWithoutFeedback onPress={()=>this.onClose()}>
     <Image style={styles.icon}
-    resizeMode={Image.resizeMode.stretch}
+    resizeMode={ImageResizeMode.stretch}
     source={require('./image/ic_close_white_24dp.png')} />
     </TouchableWithoutFeedback>
 
