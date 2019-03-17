@@ -77,10 +77,10 @@ class Card extends React.Component {
     </View>
 
     <View style={{position: 'absolute', left: windowWidth / 2 - 7,}}>
-    <Text style={styles.line1}>A指数</Text>
+    <Text style={styles.line1}>安全指数</Text>
     <TouchableWithoutFeedback onPress={() => {if(this.props.data.comment)Alert.alert('降权理由', this.props.data.comment)}}>
     <View>
-    <Text style={[styles.line2, {color: this.props.data.comment?'#f00':'#333'}]}>{this.props.data.ranking}</Text>
+    <Text style={[styles.line2, {color: this.props.data.comment?'#f00':'#333'}]}>{this.props.data.sec}</Text>
     </View>
     </TouchableWithoutFeedback>
     </View>
