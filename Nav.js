@@ -14,11 +14,15 @@ import {
   Alert,
   Platform,
 } from 'react-native';
+import imageCacheHoc from 'react-native-image-cache-hoc';
 import ImageResizeMode from 'react-native/Libraries/Image/ImageResizeMode'
 
 var Dimensions = require('Dimensions');
 var Linking = require('Linking');
 var LayoutAnimation = require('LayoutAnimation');
+const CacheableImage = imageCacheHoc(Image, {
+  fileHostWhitelist: ['aadps.net']
+});
 
 var windowWidth = Dimensions.get('window').width;
 var cardWidth = windowWidth - 16;
@@ -52,7 +56,7 @@ class Card extends React.Component {
   render() {
     var content, card, guide;
     if(this.props.data.guide){
-      guide = <TouchableHighlight  activeOpacity={0.935} onPress={() => {Linking.openURL('http://aadps.net/?p=' + this.props.data.guide)}}>
+      guide = <TouchableHighlight  activeOpacity={0.935} onPress={() => {Linking.openURL('https://aadps.net/?p=' + this.props.data.guide)}}>
         <View style={styles.link}>
         <Text style={styles.linkText}>院校指南</Text>
         </View>
@@ -60,7 +64,7 @@ class Card extends React.Component {
     }else guide = <View />;
     if(this.state.expanded){
       content =       <WebView style={styles.stat}
-            source={{uri: 'http://aadps.net/wp-content/themes/aadps/stat.php?id=' + this.props.data.id}}
+            source={{uri: 'https://aadps.net/wp-content/themes/aadps/stat.php?id=' + this.props.data.id}}
             javaScriptEnabled={true}
             domStorageEnabled={false}
             onLoadEnd={()=>{
@@ -94,7 +98,7 @@ class Card extends React.Component {
 
     <View style={styles.linkList}>
 
-    <TouchableHighlight  activeOpacity={0.935} onPress={() => {Linking.openURL('http://aadps.net/?p=' + this.props.data.id)}}>
+    <TouchableHighlight  activeOpacity={0.935} onPress={() => {Linking.openURL('https://aadps.net/?p=' + this.props.data.id)}}>
     <View style={styles.link}>
     <Text style={styles.linkText}>文书题目</Text>
     </View>
@@ -108,7 +112,7 @@ class Card extends React.Component {
 
     if(this.state.closed)card = <View />;
     else card = <View>
-    <Image style={styles.photo} resizeMode={ImageResizeMode.cover} source={{uri: 'http://aadps.net/wp-content/uploads/2016/02/' + this.props.data.id + '.jpg'}} />
+    <CacheableImage style={styles.photo} resizeMode={ImageResizeMode.cover} source={{uri: 'https://aadps.net/wp-content/uploads/2016/02/' + this.props.data.id + '.jpg'}} permanent={true} />
     <View style={styles.textArea}>
     <View style={styles.background} />
 

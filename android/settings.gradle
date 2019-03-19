@@ -1,4 +1,6 @@
 rootProject.name = 'aadps'
+include ':rn-fetch-blob'
+project(':rn-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/rn-fetch-blob/android')
 
 include ':app'
 include ':react-native-sqlite-storage'
