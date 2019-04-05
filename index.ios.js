@@ -16,6 +16,7 @@ import {
   Alert,
 } from 'react-native';
 import ImageResizeMode from 'react-native/Libraries/Image/ImageResizeMode';
+import { isIphoneX } from 'react-native-iphone-x-helper'
 
 import {lists, filterData, nullProfile} from './Const';
 
@@ -302,7 +303,7 @@ class Main extends React.Component {
       <TouchableWithoutFeedback onPress={()=>{this.setState({popup:0})}}>
       <View style={{backgroundColor: '#333', opacity: 0.5, height: this.state.popup&&viewProp[this.state.view].action.length?Dimensions.get('window').height:0, width: Dimensions.get('window').width, top: 0, left: 0, position: 'absolute'}} />
       </TouchableWithoutFeedback>
-      <View style={{shadowColor: '#000', shadowOffset: {height: 1, width: 3}, shadowRadius: 5, shadowOpacity: 0.8, borderRadius: 5, padding: this.state.popup&&viewProp[this.state.view].action.length?5:0, top: 66, opacity: 0.8, right: 6, width: 120, position: 'absolute'}}>
+      <View style={{shadowColor: '#000', shadowOffset: {height: 1, width: 3}, shadowRadius: 5, shadowOpacity: 0.8, borderRadius: 5, padding: this.state.popup&&viewProp[this.state.view].action.length?5:0, top: isIphoneX()?88:66, opacity: 0.8, right: 6, width: 120, position: 'absolute'}}>
       {buttons}
       </View>
       </View>
